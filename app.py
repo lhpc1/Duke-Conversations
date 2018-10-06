@@ -5,7 +5,7 @@ from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 
 # Import our resources
-from resources.User import UserRegister
+from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
 
 # Initialize our flask application
 app = Flask(__name__)
@@ -25,9 +25,13 @@ jwt = JWT(app, authenticate, identity) #/ auth
 @app.before_first_request
 def create_tables():
     db.create_all()
-    
+
 # Allow for the creation of standard user objects
-api.add_resource(UserRegister,"/register")
+api.add_resource(ProfessorRegistrar,"/professor/register")
+api.add_resource(ProfessorResource,"/professors/<string:uniqueID>")
+api.add_resource(ProfessorListResource,"/professors")
+
+
 
 if __name__ == "__main__":
     # We import SQLAlchemy here from DB alchemy due to the problems with circular importsself.
