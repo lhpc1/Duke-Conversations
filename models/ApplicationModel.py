@@ -35,13 +35,15 @@ class ApplicationModel(db.Model):
 
     # The "present" status a boolean indicating whether the applicant actually showed up at the dinner. Its value is automatically
     # set to false and is updated by a Duke Convos staff member at the time of the dinner.
-    db.present = db.Column(db.Boolean)
+    present = db.Column(db.Boolean)
 
     # Every single application should have a student object associated in memory.
-    # TODO: IMPLEMENT FOREIGN KEY RELATIONSHIP
+    studentID = db.Column(db.String, db.ForeignKey('students.netID'))
+    student = db.relationship("StudentModel")
 
     # Every student object is also the child object of a dinner
-    # TODO: IMPLEMENT FOREIGN KEY RELATIONSHIP
+    dinnerID = db.Column(db.String, db.ForeignKey("dinners.id"))
+    dinner = db.relationship("DinnerModel")
 
     ##################################################################################################################
     ### /MODEL PROPERTIES ############################################################################################
@@ -52,7 +54,7 @@ class ApplicationModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, interest):
+    def __init__(self, interest, studentID, dinnerID):
 
         # By default, the status is initially set on creation to be pending. The student is also not automatically confirmed or
         # marked present for similar reasons.
@@ -62,10 +64,13 @@ class ApplicationModel(db.Model):
 
         # The interst value is dynamically given by the user
         self.interest = interest
+        self.studentID = studentID
+        self.dinnerID = dinnerID
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
-        return {"id":self.id, "status":self.status, "interest":self.interest, "confirmed":self.confirmed, "present":self.present}
+        return {"id":self.id, "timeStamp": str(self.timeStamp), "status":self.status, "interest":self.interest, "confirmed":self.confirmed, "present":self.present, "studentID": self.studentID,
+        "dinnerID": self.dinnerID}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):

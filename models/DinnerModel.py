@@ -27,8 +27,42 @@ class DinnerModel(db.Model):
     timeStamp = db.Column(db.String)
 
     # This will record the time when an invitation is sent out for a dinner. It is similarly encoded in a UNIX style timestamp.
-    # TODO: Implement automatic datetime conversion. 
+    # TODO: Implement automatic datetime conversion.
     invitationSentTimeStamp = db.Column(db.String)
+
+    # This is a boolean to see if catering was ordered yet.
+    catering = db.Column(db.Boolean)
+
+    # This is a boolean to see if transportation was ordered yet.
+    transportation = db.Column(db.Boolean)
+
+    # This float holds the cost of the entire dinner. This can be updated later, and is defaulted at 0.
+    cost = db.Column(db.Float)
+
+    # The short, one line topic of the dinner
+    topic = db.Column(db.String)
+
+    # A longer description of the topic
+    description = db.Column(db.String)
+
+    # The absolute max amount of students allowed to attend the dinner. This is specified by the professor
+    studentLimit = db.Column(db.Integer)
+
+    # The address of the dinner. Generally the professor's home.
+    address = db.Column(db.String)
+
+    # The dietary restrictions of this dinner. By default, this is set to none.
+    dietaryRestrictions = db.Column(db.String)
+
+    # TODO: Store path to a static directory to hold pictures of the dinner.
+
+    # TODO: Implement child relationship for applications
+    applications = db.relationship("ApplicationModel", lazy = "dynamic")
+
+    # TODO: Implement child relationship for student reviews
+
+    # TODO: Implement child relationship for professor reviews
+
 
     ##################################################################################################################
     ### /MODEL PROPERTIES ############################################################################################
@@ -39,28 +73,28 @@ class DinnerModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, netID, uniqueID, firstName, lastName, phoneNumber, major, genderPronouns, graduationYear):
+    def __init__(self, timeStamp, topic, description, studentLimit, address, dietaryRestrictions):
 
-        self.netID = netID
-        self.uniqueID = uniqueID
-        self.firstName = firstName
-        self.lastName = lastName
-        self.phoneNumber = phoneNumber
-        self.major = major
-        self.genderPronouns = genderPronouns
-        self.graduationYear = graduationYear
+        # Instantiating the basic information about the dinner
+        self.timeStamp = timeStamp
+        self.topic = topic
+        self.description = description
+        self.studentLimit = studentLimit
+        self.address = address
+        self.dietaryRestrictions = dietaryRestrictions
 
-        # By the default, on the creation of a new student, the number of applications and selections will automatically be 0
-        self.numberApplications = 0
-        self.numberSelections = 0
-        self.numberApplicationsSemester = 0
-        self.numberSelectionsSemester = 0
+        # Setting defaults
+        self.invitationSentTimeStamp = "Not Sent"
+        self.catering = False
+        self.transportation = False
+
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
-        return {"netID": self.netID, "uniqueID":self.uniqueID, "firstName":self.firstName, "lastName":self.lastName, "phoneNumber": self.phoneNumber,
-                "major": self.major, "genderPronouns": self.genderPronouns, "graduationYear": self.graduationYear, "numberApplications": self.numberApplications,
-                "numberSelections": self.numberSelections, "numberApplicationsSemester": self.numberApplicationsSemester, "numberSelectionsSemester": self.numberSelectionsSemester}
+        applicationJSON = [app.json() for app in self.applications]
+        return {"id": self.id, "timeStamp": self.timeStamp, "topic": self.topic, "description": self.description, "studentLimit": self.studentLimit,
+                "address": self.address, "dietaryRestrictions":self.dietaryRestrictions, "invitationSentTimeStamp": self.invitationSentTimeStamp, "catering": self.catering,
+                "transportation": self.transportation, "applications": applicationJSON}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
@@ -74,12 +108,16 @@ class DinnerModel(db.Model):
 
     # Find a professor via their unique ID. This will automatically return an object in place of a SQL row.
     @classmethod
-    def find_by_id(cls,netID):
-        found = cls.query.filter_by(netID = netID).first() # All ID numbers are unique so this should always return one object
+    def find_by_id(cls,id):
+        found = cls.query.filter_by(id = id).first() # All ID numbers are unique so this should always return one object
         return found
 
     @classmethod
     def return_all(cls):
-        allStudents = cls.query.all()
-        allStudentsJSON = [student.json() for student in allStudents]
-        return allStudentsJSON
+        allDinners = cls.query.all()
+        allDinnersJSON = [dinner.json() for dinner in allDinners]
+        return allDinnersJSON
+
+    @classmethod
+    def return_last_item(cls):
+        return db.session.query(cls).order_by(cls.id.desc()).first()

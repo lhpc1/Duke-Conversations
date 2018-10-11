@@ -53,6 +53,11 @@ class StudentModel(db.Model):
 
     numberSelectionsSemester = db.Column(db.Integer)
 
+    # FOREIGN KEY RELATIONSHIPS ######################################################################################
+
+    # Here will be a list of associated applications which are taken by this student
+    apps = db.relationship("ApplicationModel", lazy = "dynamic")
+
     ##################################################################################################################
     ### /MODEL PROPERTIES ############################################################################################
     ##################################################################################################################

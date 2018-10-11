@@ -4,6 +4,8 @@
 from flask import Flask, request
 from flask_restful import Resource, reqparse
 from models.ApplicationModel import ApplicationModel
+from models.StudentModel import StudentModel
+from models.DinnerModel import DinnerModel
 from db import db
 
 class ApplicationResource(Resource):
@@ -16,68 +18,48 @@ class ApplicationResource(Resource):
 
         return {"message":"No application could be found with that ID"}
 
-# # A resource to register a new strain
-# class ApplicationRegistrar(Resource):
-#
-#     # Defining a parser that will handle data collection from post requests
-#     parser = reqparse.RequestParser()
-#
-#     parser.add_argument("uniqueID",
-#         type = str,
-#         required = True, # If there is no price argument, stop.
-#         help = "UniqueID cannot be left blank"
-#     )
-#
-#     parser.add_argument("firstName",
-#         type = str,
-#         required = True, # If there is no price argument, stop.
-#         help = "First name cannot be left blank"
-#     )
-#
-#     parser.add_argument("lastName",
-#         type = str,
-#         required = True, # If there is no price argument, stop.
-#         help = "Last Name cannot be left blank"
-#     )
-#
-#     parser.add_argument("genderPronouns",
-#         type = int,
-#         required = True, # If there is no price argument, stop.
-#         help = "Gender pronouncs cannot be left blank"
-#     )
-#
-#     parser.add_argument("department",
-#         type = int,
-#         required = True, # If there is no price argument, stop.
-#         help = "Department cannot be left blank"
-#     )
-#
-#     parser.add_argument("title",
-#         type = str,
-#         required = True, # If there is no price argument, stop.
-#         help = "Title cannot be left blank"
-#     )
-#
-#     parser.add_argument("school",
-#         type = int,
-#         required = True, # If there is no price argument, stop.
-#         help = "School cannot be left blank"
-#     )
-#
-#     # Create a new strain, add it to the table
-#     def post(self):
-#
-#         # Acquire all of the data in a dict of each argument defined in the parser above.
-#         data = ProfessorRegistrar.parser.parse_args();
-#
-#         # Error trapping to see if a professor already exists with that particular idea
-#         if(ProfessorModel.find_by_id(data.uniqueID)):
-#             return {"Error":"A professor with that Unique ID already exists"}
-#
-#         # Create a new ProfessorModel object containing the passed properties.
-#         newProf = ProfessorModel(**data) ## ** automatically separates dict keywords into arguments
-#
-#         # Save the new professor to the database.
-#         newProf.save_to_db()
-#
-#         return ProfessorModel.return_last_item().json()
+# A resource to register a new strain
+class ApplicationRegistrar(Resource):
+
+    # Defining a parser that will handle data collection from post requests
+    parser = reqparse.RequestParser()
+
+    parser.add_argument("interest",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "interest cannot be left blank"
+    )
+
+    parser.add_argument("studentID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "Student ID cannot be left blank"
+    )
+
+    parser.add_argument("dinnerID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "Dinner ID cannot be left blank"
+    )
+
+    # Create a new strain, add it to the table
+    def post(self):
+
+        # Acquire all of the data in a dict of each argument defined in the parser above.
+        data = ApplicationRegistrar.parser.parse_args();
+
+        # Checking to see if a student object even exists with that particular net id
+        if not (StudentModel.find_by_id(data["studentID"])):
+            return {"ERROR": "No student could be found with that ID"}, 500
+
+        # Checking to see if a dinner object even exists with that particular net id
+        if not (DinnerModel.find_by_id(data["dinnerID"])):
+            return {"ERROR": "No dinner could be found with that ID"}, 500
+
+        # Create a new Application object containing the passed properties.
+        newApp = ApplicationModel(**data) ## ** automatically separates dict keywords into arguments
+
+        # Save the new professor to the database.
+        newApp.save_to_db()
+
+        return ApplicationModel.return_last_item().json()

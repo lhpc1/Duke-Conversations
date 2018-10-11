@@ -7,6 +7,8 @@ from security import authenticate, identity
 # Import our resources
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
+from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource
+from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar
 
 # Initialize our flask application
 app = Flask(__name__)
@@ -34,6 +36,11 @@ api.add_resource(ProfessorListResource,"/professors")
 api.add_resource(StudentResource, "/student/<string:netID>")
 api.add_resource(StudentRegistrar, "/student/register")
 api.add_resource(StudentListResource,"/students")
+api.add_resource(DinnerResource, "/dinner/<int:id>")
+api.add_resource(DinnerRegistrar, "/dinner/register")
+api.add_resource(DinnerListResource, "/dinners")
+api.add_resource(ApplicationResource,"/applicaiton/<int:id>")
+api.add_resource(ApplicationRegistrar,"/application/register")
 
 
 if __name__ == "__main__":
