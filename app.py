@@ -6,6 +6,7 @@ from security import authenticate, identity
 
 # Import our resources
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
+from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
 
 # Initialize our flask application
 app = Flask(__name__)
@@ -30,7 +31,9 @@ def create_tables():
 api.add_resource(ProfessorRegistrar,"/professor/register")
 api.add_resource(ProfessorResource,"/professors/<string:uniqueID>")
 api.add_resource(ProfessorListResource,"/professors")
-
+api.add_resource(StudentResource, "/student/<string:netID>")
+api.add_resource(StudentRegistrar, "/student/register")
+api.add_resource(StudentListResource,"/students")
 
 
 if __name__ == "__main__":
