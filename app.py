@@ -24,6 +24,10 @@ api = Api(app)
 # Configuring token based authentication
 jwt = JWT(app, authenticate, identity) #/ auth
 
+# Setting up a basic route for the homepage without using Flask-RESTful. This enables us to run our angular on the front end
+@app.route("/")
+def home():
+    return send_file("templates/index.html")
 
 # Allow for the creation of standard user objects
 api.add_resource(ProfessorRegistrar,"/professor/register")
