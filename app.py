@@ -24,10 +24,6 @@ api = Api(app)
 # Configuring token based authentication
 jwt = JWT(app, authenticate, identity) #/ auth
 
-# first request is created unless they exist already. Pretty helpful. Will also automatically create data.db
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 # Allow for the creation of standard user objects
 api.add_resource(ProfessorRegistrar,"/professor/register")
