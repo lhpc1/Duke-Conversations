@@ -94,7 +94,7 @@ class ProfessorListResource(Resource):
 
     # Return all strains in a json format
     def get(self):
-        return ProfessorModel.return_all_professors(), 200, {'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"}
+        return ProfessorModel.return_all_professors(), 200
 
 # A resource to register a new strain
 class ProfessorRegistrar(Resource):

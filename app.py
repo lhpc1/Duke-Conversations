@@ -3,6 +3,7 @@ from flask import Flask, send_file, request, jsonify
 from flask_restful import Api
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
+from flask_cors import CORS
 
 # Import our resources
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
@@ -12,6 +13,7 @@ from resources.ApplicationResource import ApplicationResource, ApplicationRegist
 
 # Initialize our flask application
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configuring SQL Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
