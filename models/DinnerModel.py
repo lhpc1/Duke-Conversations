@@ -56,6 +56,10 @@ class DinnerModel(db.Model):
 
     # TODO: Store path to a static directory to hold pictures of the dinner.
 
+    # TODO: Implement a child relationship for professors.
+    # Since the relationship is always one-to-one, the uselist parameter keeps the reference only as one object.
+    professor = db.relationship("ProfessorModel", lazy = "dynamic", uselist = False)
+
     # TODO: Implement child relationship for applications
     applications = db.relationship("ApplicationModel", lazy = "dynamic")
 
@@ -94,7 +98,7 @@ class DinnerModel(db.Model):
         applicationJSON = [app.json() for app in self.applications]
         return {"id": self.id, "timeStamp": self.timeStamp, "topic": self.topic, "description": self.description, "studentLimit": self.studentLimit,
                 "address": self.address, "dietaryRestrictions":self.dietaryRestrictions, "invitationSentTimeStamp": self.invitationSentTimeStamp, "catering": self.catering,
-                "transportation": self.transportation, "applications": applicationJSON}
+                "transportation": self.transportation,"professor": self.professor.json(), "applications": applicationJSON }
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):

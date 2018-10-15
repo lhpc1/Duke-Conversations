@@ -8,6 +8,57 @@ from db import db
 
 class ProfessorResource(Resource):
 
+    # Defining a parser that will handle data collection from post requests
+    parser = reqparse.RequestParser()
+
+    parser.add_argument("uniqueID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "UniqueID cannot be left blank"
+    )
+
+    parser.add_argument("firstName",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "First name cannot be left blank"
+    )
+
+    parser.add_argument("lastName",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "Last Name cannot be left blank"
+    )
+
+    parser.add_argument("genderPronouns",
+        type = int,
+        required = True, # If there is no price argument, stop.
+        help = "Gender pronouncs cannot be left blank"
+    )
+
+    parser.add_argument("department",
+        type = int,
+        required = True, # If there is no price argument, stop.
+        help = "Department cannot be left blank"
+    )
+
+    parser.add_argument("title",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "Title cannot be left blank"
+    )
+
+    parser.add_argument("school",
+        type = int,
+        required = True, # If there is no price argument, stop.
+        help = "School cannot be left blank"
+    )
+
+    parser.add_argument("dinnerID",
+        type = int,
+        required = True, # If there is no price argument, stop.
+        help = "School cannot be left blank"
+    )
+
     # GET a particular strain's information by id
     def get(self,uniqueID):
         professorOfInterest = ProfessorModel.find_by_id(uniqueID)
@@ -16,12 +67,34 @@ class ProfessorResource(Resource):
 
         return {"message":"No professor could be found with that ID"}
 
+    # Allow for updates to professors
+    def put(self, uniqueID):
+
+        data = ProfessorResource.parser.parse_args()
+
+        if(ProfessorModel.find_by_id(uniqueID)):
+            professorOfInterest = ProfessorModel.find_by_id(uniqueID)
+            professorOfInterest.firstName = data["firstName"]
+            professorOfInterest.lastName = data["lastName"]
+            professorOfInterest.genderPronouns = data["genderPronouns"]
+            professorOfInterest.department = data["department"]
+            professorOfInterest.title = data["title"]
+            professorOfInterest.school = data["school"]
+            professorOfInterest.dinnerID = data["dinnerID"]
+        else:
+            professorOfInterest = ProfessorModel(**data)
+
+        professorOfInterest.save_to_db()
+
+        return ProfessorModel.find_by_id(uniqueID)
+
+
 # A resource to return a list of all strains in the db
 class ProfessorListResource(Resource):
 
     # Return all strains in a json format
     def get(self):
-        return ProfessorModel.return_all_professors()
+        return ProfessorModel.return_all_professors(), 200, {'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"}
 
 # A resource to register a new strain
 class ProfessorRegistrar(Resource):
@@ -66,6 +139,12 @@ class ProfessorRegistrar(Resource):
     )
 
     parser.add_argument("school",
+        type = int,
+        required = True, # If there is no price argument, stop.
+        help = "School cannot be left blank"
+    )
+
+    parser.add_argument("dinnerID",
         type = int,
         required = True, # If there is no price argument, stop.
         help = "School cannot be left blank"
