@@ -58,7 +58,7 @@ class DinnerModel(db.Model):
 
     # TODO: Implement a child relationship for professors.
     # Since the relationship is always one-to-one, the uselist parameter keeps the reference only as one object.
-    professor = db.relationship("ProfessorModel", lazy = "dynamic", uselist = False)
+    professor = db.relationship("ProfessorModel", uselist = False)
 
     # TODO: Implement child relationship for applications
     applications = db.relationship("ApplicationModel", lazy = "dynamic")
