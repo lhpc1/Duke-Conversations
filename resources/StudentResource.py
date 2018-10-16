@@ -12,16 +12,16 @@ class StudentResource(Resource):
     def get(self,netID):
         student = StudentModel.find_by_id(netID)
         if(student):
-            return student.json()
+            return student.json(), 200, {"Access-Control-Origin-Origin","*"}
 
-        return {"message":"No student could be found with that ID"}
+        return {"message":"No student could be found with that ID"}, 404, {"Access-Control-Origin-Origin","*"}
 
 # A resource to return all students
 class StudentListResource(Resource):
 
     # Return all students in a json format
     def get(self):
-        return StudentModel.return_all()
+        return StudentModel.return_all(), 200, {"Access-Control-Origin-Origin","*"}
 
 # A resource to register a new student
 class StudentRegistrar(Resource):

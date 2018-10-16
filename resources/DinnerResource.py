@@ -14,14 +14,14 @@ class DinnerResource(Resource):
         if(found):
             return found.json()
 
-        return {"message":"No Dinner could be found with that ID"}
+        return {"message":"No Dinner could be found with that ID"}, 200, {"Access-Control-Origin-Origin","*"}
 
 # A resource to return a list of all strains in the db
 class DinnerListResource(Resource):
 
     # Return all strains in a json format
     def get(self):
-        return DinnerModel.return_all()
+        return DinnerModel.return_all(), 200, {"Access-Control-Origin-Origin","*"}
 
 # A resource to register a new strain
 class DinnerRegistrar(Resource):
