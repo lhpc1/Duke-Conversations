@@ -14,14 +14,14 @@ class DinnerResource(Resource):
         if(found):
             return found.json()
 
-        return {"message":"No Dinner could be found with that ID"}, 200, {"Access-Control-Origin-Origin","*"}
+        return {"message":"No Dinner could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return a list of all strains in the db
 class DinnerListResource(Resource):
 
     # Return all strains in a json format
     def get(self):
-        return DinnerModel.return_all(), 200, {"Access-Control-Origin-Origin","*"}
+        return DinnerModel.return_all(), 200,{"Access-Control-Allow-Origin":"*"}
 
 # A resource to register a new strain
 class DinnerRegistrar(Resource):
@@ -78,4 +78,4 @@ class DinnerRegistrar(Resource):
         # Save the new professor to the database.
         newDinner.save_to_db()
 
-        return DinnerModel.return_last_item().json()
+        return DinnerModel.return_last_item().json(), 200

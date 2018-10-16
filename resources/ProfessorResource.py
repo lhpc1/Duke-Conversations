@@ -63,9 +63,9 @@ class ProfessorResource(Resource):
     def get(self,uniqueID):
         professorOfInterest = ProfessorModel.find_by_id(uniqueID)
         if(professorOfInterest):
-            return professorOfInterest.json(), {"Access-Control-Origin-Origin","*"}
+            return professorOfInterest.json(), {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No professor could be found with that ID"}
+        return {"message":"No professor could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
     def put(self, uniqueID):
@@ -94,7 +94,7 @@ class ProfessorListResource(Resource):
 
     # Return all strains in a json format
     def get(self):
-        return ProfessorModel.return_all_professors(), 200, {"Access-Control-Origin-Origin","*"}
+        return ProfessorModel.return_all_professors(), 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to register a new strain
 class ProfessorRegistrar(Resource):

@@ -14,9 +14,9 @@ class ApplicationResource(Resource):
     def get(self,id):
         application = ApplicationModel.find_by_id(id)
         if(application):
-            return application.json(), 200, {"Access-Control-Origin-Origin","*"}
+            return application.json(), 200,{"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No application could be found with that ID"}, 500, {"Access-Control-Origin-Origin","*"}
+        return {"message":"No application could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to register a new strain
 class ApplicationRegistrar(Resource):
@@ -50,11 +50,11 @@ class ApplicationRegistrar(Resource):
 
         # Checking to see if a student object even exists with that particular net id
         if not (StudentModel.find_by_id(data["studentID"])):
-            return {"ERROR": "No student could be found with that ID"}, 500, {"Access-Control-Origin-Origin","*"}
+            return {"ERROR": "No student could be found with that ID"}, 500,{"Access-Control-Allow-Origin":"*"}
 
         # Checking to see if a dinner object even exists with that particular net id
         if not (DinnerModel.find_by_id(data["dinnerID"])):
-            return {"ERROR": "No dinner could be found with that ID"}, 500, {"Access-Control-Origin-Origin","*"}
+            return {"ERROR": "No dinner could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new Application object containing the passed properties.
         newApp = ApplicationModel(**data) ## ** automatically separates dict keywords into arguments
@@ -62,4 +62,4 @@ class ApplicationRegistrar(Resource):
         # Save the new professor to the database.
         newApp.save_to_db()
 
-        return ApplicationModel.return_last_item().json(), 200, {"Access-Control-Origin-Origin","*"}
+        return ApplicationModel.return_last_item().json(), 200, {"Access-Control-Allow-Origin":"*"}
