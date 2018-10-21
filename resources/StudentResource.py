@@ -14,7 +14,7 @@ class StudentResource(Resource):
         if(student):
             return student.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No student could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"message":"No student could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return all students
 class StudentListResource(Resource):

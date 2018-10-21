@@ -25,11 +25,10 @@ api = Api(app)
 
 # Configuring token based authentication
 jwt = JWT(app, authenticate, identity) #/ auth
-
-# Ask the db to create all the necessary tables before operation
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
+#Ask the db to create all the necessary tables before operation
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 # Setting up a basic route for the homepage without using Flask-RESTful. This enables us to run our angular on the front end
 @app.route("/")

@@ -58,7 +58,8 @@ class DinnerModel(db.Model):
 
     # TODO: Implement a child relationship for professors.
     # Since the relationship is always one-to-one, the uselist parameter keeps the reference only as one object.
-    professor = db.relationship("ProfessorModel", uselist = False)
+    professorID = db.Column(db.String, db.ForeignKey("professors.uniqueID"))
+    professor = db.relationship("ProfessorModel")
 
     # TODO: Implement child relationship for applications
     applications = db.relationship("ApplicationModel", lazy = "dynamic")
@@ -77,7 +78,7 @@ class DinnerModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, timeStamp, topic, description, studentLimit, address, dietaryRestrictions):
+    def __init__(self, timeStamp, topic, description, studentLimit, address, dietaryRestrictions, professorID):
 
         # Instantiating the basic information about the dinner
         self.timeStamp = timeStamp
@@ -86,7 +87,7 @@ class DinnerModel(db.Model):
         self.studentLimit = studentLimit
         self.address = address
         self.dietaryRestrictions = dietaryRestrictions
-
+        self.professorID = professorID
         # Setting defaults
         self.invitationSentTimeStamp = "Not Sent"
         self.catering = False

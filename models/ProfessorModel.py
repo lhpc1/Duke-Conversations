@@ -41,9 +41,9 @@ class ProfessorModel(db.Model):
     # The school of the professor. 0 maps t Pratt, 1 maps to Trinity
     school = db.Column(db.Integer)
 
-    # Here we define the foreign key relationship to the parent dinner object.
-    dinnerID = db.Column(db.Integer, db.ForeignKey("dinners.id"))
-    dinner = db.relationship("DinnerModel")
+    # Here we define the child relationship of the dinner object. As one professor could have many dinners, it makes more sense to
+    # define them like this.
+    dinners = db.relationship("DinnerModel")
 
     ##################################################################################################################
     ### /MODEL PROPERTIES ############################################################################################
@@ -54,7 +54,7 @@ class ProfessorModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, uniqueID, firstName, lastName, genderPronouns, department, title, school, dinnerID):
+    def __init__(self, uniqueID, firstName, lastName, genderPronouns, department, title, school):
 
         # Construcint a professor object using the passed arguments
         self.uniqueID = uniqueID
@@ -64,7 +64,6 @@ class ProfessorModel(db.Model):
         self.department = department
         self.title = title
         self.school = school
-        self.dinnerID = dinnerID
 
         # Upon the initilization of a new professor, the starting dinner count should be 0
         self.dinnerCount = 0
@@ -72,7 +71,7 @@ class ProfessorModel(db.Model):
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         return {"uniqueID": self.uniqueID, "firstName": self.firstName, "lastName": self.lastName, "genderPronouns": self.genderPronouns,
-                "department": self.department, "title": self.title, "school": self.school, "dinnerCount": self.dinnerCount, "dinnerID": self.dinnerID}
+                "department": self.department, "title": self.title, "school": self.school, "dinnerCount": self.dinnerCount}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):

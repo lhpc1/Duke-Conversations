@@ -52,12 +52,12 @@ class ProfessorResource(Resource):
         required = True, # If there is no price argument, stop.
         help = "School cannot be left blank"
     )
-
-    parser.add_argument("dinnerID",
-        type = int,
-        required = True, # If there is no price argument, stop.
-        help = "School cannot be left blank"
-    )
+    #
+    # parser.add_argument("dinnerID",
+    #     type = int,
+    #     required = True, # If there is no price argument, stop.
+    #     help = "School cannot be left blank"
+    # )
 
     # GET a particular strain's information by id
     def get(self,uniqueID):
@@ -80,7 +80,6 @@ class ProfessorResource(Resource):
             professorOfInterest.department = data["department"]
             professorOfInterest.title = data["title"]
             professorOfInterest.school = data["school"]
-            professorOfInterest.dinnerID = data["dinnerID"]
         else:
             professorOfInterest = ProfessorModel(**data)
 
@@ -144,11 +143,11 @@ class ProfessorRegistrar(Resource):
         help = "School cannot be left blank"
     )
 
-    parser.add_argument("dinnerID",
-        type = int,
-        required = True, # If there is no price argument, stop.
-        help = "School cannot be left blank"
-    )
+    # parser.add_argument("dinnerID",
+    #     type = int,
+    #     required = True, # If there is no price argument, stop.
+    #     help = "School cannot be left blank"
+    # )
 
     # Create a new strain, add it to the table
     def post(self):

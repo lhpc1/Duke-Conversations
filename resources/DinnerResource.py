@@ -65,6 +65,11 @@ class DinnerRegistrar(Resource):
         help = "Dietary Restrictions cannot be left blank"
     )
 
+    parser.add_argument("professorID",
+        type = str,
+        required = True,
+        help = "Professor ID cannot be left blank. Must be integer."
+    )
 
     # Create a new strain, add it to the table
     def post(self):
@@ -78,4 +83,4 @@ class DinnerRegistrar(Resource):
         # Save the new professor to the database.
         newDinner.save_to_db()
 
-        return DinnerModel.return_last_item().json(), 200
+        return DinnerModel.return_last_item().json(), 201
