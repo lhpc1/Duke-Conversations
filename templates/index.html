@@ -1,9 +1,25 @@
 <h1> END POINTS </h1>
 <ul>
+
   <li> GET "/professors" will return a list of all professors </li>
   <li> GET "/dinners" will return a list of all dinners </li>
   <li> GET "/students" will return a list of all students </li>
   <li> GET "/professors/[string:uniqueID]" will return a specific professor by Unique ID</li>
   <li> GET "/student/[string:netID]" will return a specific student by netID </li>
   <li> GET "/dinner/[int:id]" will return a specific dinner by id </li>
+
+  <hr>
+
+  <li> POST "/professor/register" will create a new professor object in memory </li>
+  <ul>
+    <li> "uniqueID": String </li>
+    <li> "firstName": String <li>
+    <li> "lastName": String <li>
+    <li> "email": String <li>
+    <li> "genderPronouns": Integer <li>
+    <li> "department": Integer <li>
+    <li> "title": Integer <li>
+    <li> "school": Integer <li>
+  </ul>
+  
 </ul>
