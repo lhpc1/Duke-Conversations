@@ -165,7 +165,7 @@ class StudentRegistrar(Resource):
 
         # Error trapping to see if a professor already exists with that particular idea
         if(StudentModel.find_by_id(data.netID)):
-            return {"Error":"A student with that net ID already exists"}
+            return {"Error":"A student with that net ID already exists"}, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new StudentModel object containing the passed properties.
         netStudent = StudentModel(**data) ## ** automatically separates dict keywords into arguments
