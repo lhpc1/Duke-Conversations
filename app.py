@@ -29,13 +29,10 @@ jwt = JWT(app, authenticate, identity) #/ auth
 # @app.before_first_request
 # def create_tables():
 #     db.create_all()
-
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-    return response
+def options (self):
+    return {'Allow' : 'PUT' }, 200, \
+    { 'Access-Control-Allow-Origin': '*', \
+      'Access-Control-Allow-Methods' : 'PUT,GET' }
 
 # Setting up a basic route for the homepage without using Flask-RESTful. This enables us to run our angular on the front end
 @app.route("/")
