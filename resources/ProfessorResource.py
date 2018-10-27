@@ -164,7 +164,7 @@ class ProfessorRegistrar(Resource):
 
         # Error trapping to see if a professor already exists with that particular idea
         if(ProfessorModel.find_by_id(data.uniqueID)):
-            return {"Error":"A professor with that Unique ID already exists"}, 500, {"Access-Control-Allow-Origin":"*"}
+            return {"Error":"A professor with that Unique ID already exists"}, 200, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new ProfessorModel object containing the passed properties.
         newProf = ProfessorModel(**data) ## ** automatically separates dict keywords into arguments
@@ -172,4 +172,4 @@ class ProfessorRegistrar(Resource):
         # Save the new professor to the database.
         newProf.save_to_db()
 
-        return ProfessorModel.return_last_item().json(), 500, {"Access-Control-Allow-Origin":"*"}
+        return ProfessorModel.return_last_item().json(), 200, {"Access-Control-Allow-Origin":"*"}

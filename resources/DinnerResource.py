@@ -74,7 +74,7 @@ class DinnerResource(Resource):
     def get(self,id):
         found = DinnerModel.find_by_id(id)
         if(found):
-            return found.json()
+            return found.json(), {"Access-Control-Allow-Origin":"*"}
 
         return {"message":"No Dinner could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -176,4 +176,4 @@ class DinnerRegistrar(Resource):
         # Save the new professor to the database.
         newDinner.save_to_db()
 
-        return DinnerModel.return_last_item().json(), 201
+        return DinnerModel.return_last_item().json(), 201, {"Access-Control-Allow-Origin":"*"}
