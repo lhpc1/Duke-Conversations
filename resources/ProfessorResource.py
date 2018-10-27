@@ -85,8 +85,15 @@ class ProfessorResource(Resource):
 
         professorOfInterest.save_to_db()
 
-        return ProfessorModel.find_by_id(uniqueID)
+        return ProfessorModel.find_by_id(uniqueID).json()
 
+    def delete(self,uniqueID):
+
+        if(ProfessorModel.find_by_id(uniqueID)):
+            ProfessorModel.find_by_id(uniqueID).delete_from_db()
+            return {"Message":"Professor with id " + uniqueID + " deleted."}, 500, {"Access-Control-Allow-Origin":"*"}
+
+        return {"Message":"No professor with " + uniqueID + " found."}, 500, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return a list of all strains in the db
 class ProfessorListResource(Resource):
@@ -157,7 +164,7 @@ class ProfessorRegistrar(Resource):
 
         # Error trapping to see if a professor already exists with that particular idea
         if(ProfessorModel.find_by_id(data.uniqueID)):
-            return {"Error":"A professor with that Unique ID already exists"}
+            return {"Error":"A professor with that Unique ID already exists"}, 500, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new ProfessorModel object containing the passed properties.
         newProf = ProfessorModel(**data) ## ** automatically separates dict keywords into arguments
@@ -165,4 +172,4 @@ class ProfessorRegistrar(Resource):
         # Save the new professor to the database.
         newProf.save_to_db()
 
-        return ProfessorModel.return_last_item().json()
+        return ProfessorModel.return_last_item().json(), 500, {"Access-Control-Allow-Origin":"*"}
