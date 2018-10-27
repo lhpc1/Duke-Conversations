@@ -160,7 +160,8 @@ class StudentRegistrar(Resource):
     def options (self):
         return {'Allow' : 'PUT' }, 200, \
         { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET' }
+          'Access-Control-Allow-Methods' : 'PUT,GET', \
+          'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
     def post(self):
