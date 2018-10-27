@@ -45,7 +45,7 @@ api.add_resource(StudentListResource,"/students")
 api.add_resource(DinnerResource, "/dinner/<int:id>")
 api.add_resource(DinnerRegistrar, "/dinner/register")
 api.add_resource(DinnerListResource, "/dinners")
-api.add_resource(ApplicationResource,"/applicaiton/<int:id>")
+api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")
 
 
