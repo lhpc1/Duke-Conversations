@@ -101,6 +101,14 @@ class DinnerResource(Resource):
 
         return DinnerModel.find_by_id(id).json(), 500, {"Access-Control-Allow-Origin":"*"}
 
+    def delete(self,id):
+
+        if(DinnerModel.find_by_id(id)):
+            DinnerModel.find_by_id(id).delete_from_db()
+            return {"Message":"Dinner with id " + ID + " deleted."}, 500, {"Access-Control-Allow-Origin":"*"}
+
+        return {"Message":"No dinner with " + id + " found."}, 500, {"Access-Control-Allow-Origin":"*"}
+
 # A resource to return a list of all strains in the db
 class DinnerListResource(Resource):
 
