@@ -86,7 +86,7 @@ class StudentResource(Resource):
 
         studentOfInterest.save_to_db()
 
-        return StudentModel.find_by_id(uniqueID).json()
+        return StudentModel.find_by_id(uniqueID).json(), 500, {"Access-Control-Allow-Origin":"*"}
 
     def delete(self,netID):
 
