@@ -33,7 +33,34 @@
     <li> "professorID": String </li>
   </ul>
 
-  <li> POST "/dinner/register" will create a new professor object in memory </li>
+  <li> POST "/student/register" will create a new professor object in memory </li>
+  <ul>
+    <li> "netID": String </li>
+    <li> "uniqueID": String </li>
+    <li> "firstName": String </li>
+    <li> "lastName": String </li>
+    <li> "genderPronouns": Int </li>
+    <li> "phoneNumber": String </li>
+    <li> "major": Int </li>
+    <li> "graduationYear": Int </li>
+  </ul>
+
+  <hr>
+
+  <li> PUT "/professor/[ID]" will update a new professor object in memory </li>
+  <ul>
+    <li> "uniqueID": String </li>
+    <li> "firstName": String </li>
+    <li> "lastName": String </li>
+    <li> "email": String </li>
+    <li> "genderPronouns": Integer </li>
+    <li> "department": Integer </li>
+    <li> "title": Integer </li>
+    <li> "school": Integer </li>
+  </ul>
+
+
+  <li> PUT "/dinner/[ID]" will update a dinner object in memory </li>
   <ul>
     <li> "timeStamp": String </li>
     <li> "topic": String </li>
@@ -42,8 +69,10 @@
     <li> "address": String </li>
     <li> "dietaryRestrictions": String </li>
     <li> "professorID": String </li>
+    <li> "catering": String </li>
+    <li> "transportation": String </li>
+    <li> "invitationSentTimeStamp": String </li>
   </ul>
-
 
 
 </ul>

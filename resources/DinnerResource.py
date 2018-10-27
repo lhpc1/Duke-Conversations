@@ -46,6 +46,12 @@ class DinnerResource(Resource):
         help = "Dietary Restrictions cannot be left blank"
     )
 
+    parser.add_argument("invitationSentTimeStamp",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "InvitationSetnTimeStamp cannot be left blank"
+    )
+
     parser.add_argument("professorID",
         type = str,
         required = True,
@@ -87,6 +93,7 @@ class DinnerResource(Resource):
             dinnerOfInterest.professorID = data["professorID"]
             dinnerOfInterest.catering = data["catering"]
             dinnerOfInterest.transportation = data["transportation"]
+            dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
         else:
             dinnerOfInterest = DinnerModel(**data)
 
