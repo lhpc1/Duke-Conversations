@@ -37,7 +37,7 @@ def home():
 
 # Allow for the creation of standard user objects
 api.add_resource(ProfessorRegistrar,"/professor/register")
-api.add_resource(ProfessorResource,"/professors/<string:uniqueID>")
+api.add_resource(ProfessorResource,"/professor/<string:uniqueID>")
 api.add_resource(ProfessorListResource,"/professors")
 api.add_resource(StudentResource, "/student/<string:netID>")
 api.add_resource(StudentRegistrar, "/student/register")
