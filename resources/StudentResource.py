@@ -174,4 +174,4 @@ class StudentRegistrar(Resource):
         netStudent.save_to_db()
 
         # Return the just posted student
-        return StudentModel.find_by_id(data.netID).json()
+        return StudentModel.find_by_id(data.netID).json(), 201, {"Access-Control-Allow-Origin":"*"}
