@@ -114,7 +114,7 @@ class DinnerListResource(Resource):
 
     # Return all strains in a json format
     def get(self):
-        return DinnerModel.return_all(), 200,{"Access-Control-Allow-Origin":"*"}
+        return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to register a new strain
 class DinnerRegistrar(Resource):
