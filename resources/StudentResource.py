@@ -157,6 +157,11 @@ class StudentRegistrar(Resource):
         help = "Grad year cannot be left blank"
     )
 
+    def options (self):
+        return {'Allow' : 'PUT' }, 200, \
+        { 'Access-Control-Allow-Origin': '*', \
+          'Access-Control-Allow-Methods' : 'PUT,GET' }
+
     # Create a new strain, add it to the table
     def post(self):
 
@@ -165,7 +170,7 @@ class StudentRegistrar(Resource):
 
         # Error trapping to see if a professor already exists with that particular idea
         if(StudentModel.find_by_id(data.netID)):
-            return {"Error":"A student with that net ID already exists"}, {"Access-Control-Allow-Origin":"*"}
+            return {"Error":"A student with that net ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new StudentModel object containing the passed properties.
         netStudent = StudentModel(**data) ## ** automatically separates dict keywords into arguments
