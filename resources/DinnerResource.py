@@ -78,6 +78,12 @@ class DinnerResource(Resource):
 
         return {"message":"No Dinner could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
+    def options (self):
+        return {'Allow' : 'PUT' }, 200, \
+        { 'Access-Control-Allow-Origin': '*', \
+          'Access-Control-Allow-Methods' : 'PUT,GET', \
+          'Access-Control-Allow-Headers' : "Content-Type"}
+
     def put(self, id):
 
         data = DinnerResource.parser.parse_args()
@@ -163,6 +169,12 @@ class DinnerRegistrar(Resource):
         required = True,
         help = "Professor ID cannot be left blank. Must be integer."
     )
+
+    def options (self):
+        return {'Allow' : 'PUT' }, 200, \
+        { 'Access-Control-Allow-Origin': '*', \
+          'Access-Control-Allow-Methods' : 'PUT,GET', \
+          'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
     def post(self):

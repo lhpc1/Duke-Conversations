@@ -58,6 +58,11 @@ class StudentResource(Resource):
         required = True, # If there is no price argument, stop.
         help = "Grad year cannot be left blank"
     )
+    def options (self):
+        return {'Allow' : 'PUT' }, 200, \
+        { 'Access-Control-Allow-Origin': '*', \
+          'Access-Control-Allow-Methods' : 'PUT,GET', \
+          'Access-Control-Allow-Headers' : "Content-Type"}
 
     # GET a particular strain's information by id
     def get(self,netID):
