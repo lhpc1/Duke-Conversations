@@ -74,9 +74,9 @@ class DinnerResource(Resource):
     def get(self,id):
         found = DinnerModel.find_by_id(id)
         if(found):
-            return found.json(), {"Access-Control-Allow-Origin":"*"}
+            return found.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No Dinner could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"message":"No Dinner could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     def put(self, id):
 
@@ -99,15 +99,15 @@ class DinnerResource(Resource):
 
         dinnerOfInterest.save_to_db()
 
-        return DinnerModel.find_by_id(id).json(), 500, {"Access-Control-Allow-Origin":"*"}
+        return DinnerModel.find_by_id(id).json(), 200, {"Access-Control-Allow-Origin":"*"}
 
     def delete(self,id):
 
         if(DinnerModel.find_by_id(id)):
             DinnerModel.find_by_id(id).delete_from_db()
-            return {"Message":"Dinner with id " + ID + " deleted."}, 500, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"Dinner with id " + ID + " deleted."}, 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"Message":"No dinner with " + id + " found."}, 500, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No dinner with " + id + " found."}, 404, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return a list of all strains in the db
 class DinnerListResource(Resource):

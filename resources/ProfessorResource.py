@@ -65,7 +65,7 @@ class ProfessorResource(Resource):
         if(professorOfInterest):
             return professorOfInterest.json(), {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No professor could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}
+        return {"message":"No professor could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
     def put(self, uniqueID):
@@ -85,15 +85,15 @@ class ProfessorResource(Resource):
 
         professorOfInterest.save_to_db()
 
-        return ProfessorModel.find_by_id(uniqueID).json()
+        return ProfessorModel.find_by_id(uniqueID).json(),  200, {"Access-Control-Allow-Origin":"*"}
 
     def delete(self,uniqueID):
 
         if(ProfessorModel.find_by_id(uniqueID)):
             ProfessorModel.find_by_id(uniqueID).delete_from_db()
-            return {"Message":"Professor with id " + uniqueID + " deleted."}, 500, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"Professor with id " + uniqueID + " deleted."}, 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"Message":"No professor with " + uniqueID + " found."}, 500, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No professor with " + uniqueID + " found."}, 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return a list of all strains in the db
 class ProfessorListResource(Resource):
@@ -164,7 +164,7 @@ class ProfessorRegistrar(Resource):
 
         # Error trapping to see if a professor already exists with that particular idea
         if(ProfessorModel.find_by_id(data.uniqueID)):
-            return {"Error":"A professor with that Unique ID already exists"}, 200, {"Access-Control-Allow-Origin":"*"}
+            return {"Error":"A professor with that Unique ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new ProfessorModel object containing the passed properties.
         newProf = ProfessorModel(**data) ## ** automatically separates dict keywords into arguments
