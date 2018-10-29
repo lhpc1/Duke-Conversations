@@ -10,6 +10,7 @@ from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, P
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar
+from resources.WebhooksTest import WebhooksTest
 
 # Initialize our flask application
 app = Flask(__name__)
@@ -51,6 +52,7 @@ api.add_resource(DinnerRegistrar, "/dinner/register")
 api.add_resource(DinnerListResource, "/dinners")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")
+api.add_resource(WebhooksTest, "/webhooks/test")
 
 
 if __name__ == "__main__":
