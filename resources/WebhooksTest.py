@@ -84,4 +84,4 @@ class WebhooksTest(Resource):
         # netStudent.save_to_db()
 
         # Return the just posted student
-        return {"message": "Data successfully posted <3"}
+        return {"message": "Data successfully posted <3"}, 200, {"Access-Control-Allow-Origin":"*"}
