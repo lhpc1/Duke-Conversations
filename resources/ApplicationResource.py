@@ -43,9 +43,9 @@ class ApplicationRegistrar(Resource):
     )
 
     def options (self):
-        return {'Allow' : 'PUT,' }, 200, \
+        return {'Allow' : 'PUT, POST' }, 200, \
         { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET', \
+          'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table

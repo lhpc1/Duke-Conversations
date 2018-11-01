@@ -79,7 +79,7 @@ class DinnerResource(Resource):
         return {"message":"No Dinner could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     def options (self):
-        return {'Allow' : 'PUT' }, 200, \
+        return {'Allow' : 'PUT, GET, POST' }, 200, \
         { 'Access-Control-Allow-Origin': '*', \
           'Access-Control-Allow-Methods' : 'PUT,GET', \
           'Access-Control-Allow-Headers' : "Content-Type"}
