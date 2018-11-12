@@ -41,9 +41,13 @@ class ProfessorModel(db.Model):
     # The school of the professor. 0 maps t Pratt, 1 maps to Trinity
     school = db.Column(db.Integer)
 
+    email = db.Column(db.String)
+
     # Here we define the child relationship of the dinner object. As one professor could have many dinners, it makes more sense to
     # define them like this.
     dinners = db.relationship("DinnerModel")
+
+    # email
 
     ##################################################################################################################
     ### /MODEL PROPERTIES ############################################################################################
@@ -54,7 +58,7 @@ class ProfessorModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, uniqueID, firstName, lastName, genderPronouns, department, title, school):
+    def __init__(self, uniqueID, firstName, lastName, genderPronouns, department, title, school, email):
 
         # Construcint a professor object using the passed arguments
         self.uniqueID = uniqueID
@@ -64,6 +68,7 @@ class ProfessorModel(db.Model):
         self.department = department
         self.title = title
         self.school = school
+        self.email = email
 
         # Upon the initilization of a new professor, the starting dinner count should be 0
         self.dinnerCount = 0

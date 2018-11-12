@@ -52,6 +52,12 @@ class ProfessorResource(Resource):
         required = True, # If there is no price argument, stop.
         help = "School cannot be left blank"
     )
+
+    parser.add_argument("email",
+        type = String,
+        required = True,
+        help = "Email cannot be left blank"
+    )
     #
     # parser.add_argument("dinnerID",
     #     type = int,
@@ -80,6 +86,7 @@ class ProfessorResource(Resource):
             professorOfInterest.department = data["department"]
             professorOfInterest.title = data["title"]
             professorOfInterest.school = data["school"]
+            professorOfInterest.email = data["email"]
         else:
             professorOfInterest = ProfessorModel(**data)
 
@@ -150,6 +157,12 @@ class ProfessorRegistrar(Resource):
         help = "School cannot be left blank"
     )
 
+    parser.add_argument("email",
+        type = String,
+        required = True,
+        help = "Email cannot be left blank"
+    )
+
     # parser.add_argument("dinnerID",
     #     type = int,
     #     required = True, # If there is no price argument, stop.
@@ -161,7 +174,7 @@ class ProfessorRegistrar(Resource):
         { 'Access-Control-Allow-Origin': '*', \
           'Access-Control-Allow-Methods' : 'PUT,GET', \
           'Access-Control-Allow-Headers' : "Content-Type"}
-          
+
     # Create a new strain, add it to the table
     def post(self):
 
