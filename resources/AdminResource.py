@@ -23,7 +23,7 @@ class AdminRegister(Resource):
 
     def post(self):
         # Read the post request and get the username and password fields
-        data = UserRegister.parser.parse_args()
+        data = AdminRegister.parser.parse_args()
 
         if AdminModel.findByUsername(data["username"]):
             return {"Message" : "This user already exists. Cannot create new user."}, 400

@@ -11,7 +11,7 @@ from resources.StudentResource import StudentResource, StudentRegistrar, Student
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar
 from resources.WebhooksTest import WebhooksTest
-from resources.AdminResource import AdminResource
+from resources.AdminResource import AdminRegister
 # Initialize our flask application
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -27,9 +27,9 @@ api = Api(app)
 # Configuring token based authentication
 jwt = JWT(app, authenticate, identity) #/ auth
 #Ask the db to create all the necessary tables before operation
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
+@app.before_first_request
+def create_tables():
+    db.create_all()
 # def options (self):
 #     return {'Allow' : 'PUT' }, 200, \
 #     { 'Access-Control-Allow-Origin': '*', \
@@ -52,7 +52,7 @@ api.add_resource(DinnerRegistrar, "/dinner/register")
 api.add_resource(DinnerListResource, "/dinners")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")
-api.add_resource(AdminResource,"/admin/register")
+api.add_resource(AdminRegister,"/admin/register")
 api.add_resource(WebhooksTest, "/webhooks/test")
 
 
