@@ -6,7 +6,7 @@ from db import db
 from datetime import datetime
 
 # This data model represents a review of a dinner in memory. Each StudentReview is associated with a student object in memory.
-# Each StudentReview is in turn a child of the dinner class. 
+# Each StudentReview is in turn a child of the dinner class.
 class StudentReviewModel(db.Model):
 
     # Defining the schema for the table to store the db information.

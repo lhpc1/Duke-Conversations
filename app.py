@@ -11,7 +11,7 @@ from resources.StudentResource import StudentResource, StudentRegistrar, Student
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar
 from resources.WebhooksTest import WebhooksTest
-
+from resources.AdminResource import AdminResource
 # Initialize our flask application
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -52,6 +52,7 @@ api.add_resource(DinnerRegistrar, "/dinner/register")
 api.add_resource(DinnerListResource, "/dinners")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")
+api.add_resource(AdminResource,"/admin/register")
 api.add_resource(WebhooksTest, "/webhooks/test")
 
 
