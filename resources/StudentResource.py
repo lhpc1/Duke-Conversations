@@ -58,6 +58,7 @@ class StudentResource(Resource):
         required = True, # If there is no price argument, stop.
         help = "Grad year cannot be left blank"
     )
+
     def options (self):
         return {'Allow' : 'PUT' }, 200, \
         { 'Access-Control-Allow-Origin': '*', \
@@ -91,7 +92,7 @@ class StudentResource(Resource):
 
         studentOfInterest.save_to_db()
 
-        return StudentModel.find_by_id(netID).json(), 500, {"Access-Control-Allow-Origin":"*"}
+        return StudentModel.find_by_id(netID).json(), 200, {"Access-Control-Allow-Origin":"*"}
 
     def delete(self,netID):
 
