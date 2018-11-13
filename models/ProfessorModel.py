@@ -76,7 +76,7 @@ class ProfessorModel(db.Model):
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         return {"uniqueID": self.uniqueID, "firstName": self.firstName, "lastName": self.lastName, "genderPronouns": self.genderPronouns,
-                "department": self.department, "title": self.title, "school": self.school, "dinnerCount": self.dinnerCount}
+                "department": self.department, "title": self.title, "school": self.school, "dinnerCount": self.dinnerCount, "email":self.email}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
