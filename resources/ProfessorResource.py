@@ -54,7 +54,7 @@ class ProfessorResource(Resource):
     )
 
     parser.add_argument("email",
-        type = String,
+        type = str,
         required = True,
         help = "Email cannot be left blank"
     )
@@ -158,7 +158,7 @@ class ProfessorRegistrar(Resource):
     )
 
     parser.add_argument("email",
-        type = String,
+        type = str,
         required = True,
         help = "Email cannot be left blank"
     )
