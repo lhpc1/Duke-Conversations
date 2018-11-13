@@ -11,12 +11,6 @@ class ProfessorResource(Resource):
     # Defining a parser that will handle data collection from post requests
     parser = reqparse.RequestParser()
 
-    parser.add_argument("uniqueID",
-        type = str,
-        required = True, # If there is no price argument, stop.
-        help = "UniqueID cannot be left blank"
-    )
-
     parser.add_argument("firstName",
         type = str,
         required = True, # If there is no price argument, stop.
