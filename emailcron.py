@@ -13,9 +13,6 @@ with app.app_context():
 def hello():
     print("hello")
 
-@manager.command
-def delete():
-    
 
 
 if __name__ == "__main__":
