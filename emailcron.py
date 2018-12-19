@@ -12,9 +12,10 @@ with app.app_context():
 
 @manager.command
 def hello():
-    dinners = DinnerModel.return_all()
-    print(dinners)
-    print("hello")
+    dinners = DinnerModel.return_all_dinners()
+    for dinner in dinners:
+        for application in dinner.applications:
+            print(application.json())
 
 
 

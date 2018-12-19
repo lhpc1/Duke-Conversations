@@ -125,5 +125,10 @@ class DinnerModel(db.Model):
         return allDinnersJSON
 
     @classmethod
+    def return_all_objects(cls):
+        allDinners = cls.query.all()
+        return allDinners
+
+    @classmethod
     def return_last_item(cls):
         return db.session.query(cls).order_by(cls.id.desc()).first()
