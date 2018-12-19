@@ -13,8 +13,6 @@ class PronounsResource(Resource):
 
     # GET a JSON dictionary of each Pronoun number correspondance
     def get(self,netID):
-        student = StudentModel.find_by_id(netID)
-        if(student):
-            return student.json(), 200, {"Access-Control-Allow-Origin":"*"}
-
+        
+        pronounDictionary = {}
         return {"message":"No student could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}

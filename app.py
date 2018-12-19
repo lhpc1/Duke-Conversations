@@ -5,6 +5,9 @@ from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 from flask_cors import CORS
 
+# Configure mail client
+from flask_mail import Mail, Message
+
 # Import our resources
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
@@ -20,7 +23,17 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = "jose"
+app.config.update(
+	DEBUG=True,
+	#EMAIL SETTINGS
+	MAIL_SERVER='smtp.gmail.com',
+	MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = 'dukeconvo@gmail.com',
+	MAIL_PASSWORD = "Louieis1_best"
+	)
 
+mail = Mail(app)
 # Initialize flask_restful Api
 api = Api(app)
 

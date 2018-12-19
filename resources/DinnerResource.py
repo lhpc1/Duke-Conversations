@@ -111,9 +111,9 @@ class DinnerResource(Resource):
 
         if(DinnerModel.find_by_id(id)):
             DinnerModel.find_by_id(id).delete_from_db()
-            return {"Message":"Dinner with id " + ID + " deleted."}, 200, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"Dinner with id {} deleted.".format(id)}, 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"Message":"No dinner with " + id + " found."}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No dinner with id {} found.".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return a list of all strains in the db
 class DinnerListResource(Resource):

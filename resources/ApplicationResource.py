@@ -10,6 +10,51 @@ from db import db
 
 class ApplicationResource(Resource):
 
+    # Defining a parser that will handle data collection from post requests
+    parser = reqparse.RequestParser()
+
+    parser.add_argument("interest",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "interest cannot be left blank"
+    )
+
+    parser.add_argument("studentID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "Student ID cannot be left blank"
+    )
+
+    parser.add_argument("dinnerID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "Dinner ID cannot be left blank"
+    )
+
+    parser.add_argument("status",
+        type = bool,
+        required = True, # If there is no price argument, stop.
+        help = "Dinner ID cannot be left blank"
+    )
+
+    parser.add_argument("present",
+        type = bool,
+        required = True, # If there is no price argument, stop.
+        help = "Dinner ID cannot be left blank"
+    )
+
+    parser.add_argument("confirmed",
+        type = bool,
+        required = True, # If there is no price argument, stop.
+        help = "Dinner ID cannot be left blank"
+    )
+
+    def options (self):
+        return {'Allow' : 'PUT, POST' }, 200, \
+        { 'Access-Control-Allow-Origin': '*', \
+          'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
+          'Access-Control-Allow-Headers' : "Content-Type"}
+
     # GET a particular strain's information by id
     def get(self,id):
         application = ApplicationModel.find_by_id(id)
@@ -17,6 +62,26 @@ class ApplicationResource(Resource):
             return application.json(), 200,{"Access-Control-Allow-Origin":"*"}
 
         return {"message":"No application could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+
+    def put(self,id):
+        # Get the application which needs to be updated
+        data = ApplicationResource.parser.parse_args()
+
+        if(ApplicationModel.find_by_id(id)):
+            application = ApplicationModel.find_by_id(id)
+            #Update the applicaiton
+            application.status = data["status"]
+            application.interest = data["interest"]
+            application.confirmed = data["confirmed"]
+            application.present = data["present"]
+            application.dinnerID = data["dinnerID"]
+            application.studentID = data["studentID"]
+        else:
+            return {"Message":"No Application could be found with that ID"},  200, {"Access-Control-Allow-Origin":"*"}
+
+        application.save_to_db()
+        return ApplicationModel.find_by_id(id).json(),  200, {"Access-Control-Allow-Origin":"*"}
+
 
 # A resource to register a new strain
 class ApplicationRegistrar(Resource):

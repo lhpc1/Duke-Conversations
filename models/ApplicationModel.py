@@ -61,6 +61,7 @@ class ApplicationModel(db.Model):
         self.status = 0
         self.interest = False
         self.present = False
+        self.confirmed = False
 
         # The interst value is dynamically given by the user
         self.interest = interest

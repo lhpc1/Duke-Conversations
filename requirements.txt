@@ -9,3 +9,7 @@ scipy
 sklearn
 scikit-learn
 Flask-cors
+Flask-Mail
+Flask-Script
+psycopg2
+apscheduler
