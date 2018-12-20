@@ -29,9 +29,9 @@ app.config.update(
 	MAIL_SERVER='smtp.gmail.com',
 	MAIL_PORT=465,
 	MAIL_USE_SSL=True,
-	MAIL_USERNAME = 'dukeconvo@gmail.com',
+	MAIL_USERNAME = 'yasab27@gmail.com',
 	MAIL_PASSWORD = "Louieis1_best"
-	)
+)
 
 mail = Mail(app)
 # Initialize flask_restful Api
