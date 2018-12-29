@@ -44,9 +44,9 @@ api = Api(app)
 # # Configuring token based authentication
 # jwt = JWT(app, authenticate, identity) #/ auth
 #Ask the db to create all the necessary tables before operation
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 # def options (self):
 #     return {'Allow' : 'PUT' }, 200, \
