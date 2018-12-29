@@ -3,6 +3,7 @@ from db import db
 from app import app
 from flask_mail import Message, Mail
 from models.DinnerModel import DinnerModel
+from models.UserModel import UserModel
 
 import time
 import datetime
@@ -15,7 +16,15 @@ with app.app_context():
 
 # def generateMessage(student, dinner):
 
+@manager.command
+def populate():
+    a = UserModel("Cooper", "pass" , 2)
+    db.session.add(a)
+    db.session.commit()
 
+    allUsers = db.session.query(UserModel).all()
+    for user in allUsers:
+        print(user.username)
 
 @manager.command
 def hello():

@@ -2,19 +2,23 @@
 from flask import Flask, send_file, request, jsonify
 from flask_restful import Api
 from flask_jwt import JWT, jwt_required
-from security import authenticate, identity
+from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
+# from security import authenticate, identity
 from flask_cors import CORS
 
 # Configure mail client
 from flask_mail import Mail, Message
+
+# Authentication resources
+from models.UserModel import UserModel
 
 # Import our resources
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar
-from resources.WebhooksTest import WebhooksTest
-from resources.AdminResource import AdminRegister
+from resources.UserResource import UserResource, UserListResource
+
 # Initialize our flask application
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -37,16 +41,62 @@ mail = Mail(app)
 # Initialize flask_restful Api
 api = Api(app)
 
-# Configuring token based authentication
-jwt = JWT(app, authenticate, identity) #/ auth
+# # Configuring token based authentication
+# jwt = JWT(app, authenticate, identity) #/ auth
 #Ask the db to create all the necessary tables before operation
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 # def options (self):
 #     return {'Allow' : 'PUT' }, 200, \
 #     { 'Access-Control-Allow-Origin': '*', \
 #       'Access-Control-Allow-Methods' : 'PUT,GET' }
+
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
+
+################################
+### MANAGING AUTHENTICATION ####
+################################
+login = LoginManager(app)
+
+@login.user_loader
+def load_user(user_id):
+    return UserModel.query.get(user_id)
+
+@app.route("/login", methods = ["POST", "GET"])
+def login():
+	if request.method == 'POST':
+		content = request.get_json()
+		if "username" and "password" in content:
+			if UserModel.find_by_username(content["username"]):
+				user = UserModel.find_by_username(content["username"])
+				login_user(user)
+				return jsonify({'Message':"Logged in User with username {} and id {}".format(user.username, user.id)})
+			else:
+				return jsonify({"Message":"No user could be found with that username"})
+		else:
+			return jsonify({"Message":"Login requests must have username and password fields"})
+
+    # user = UserModel.query.get(1)
+	return jsonify({"Message":"error"})
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return "Logged out"
+
+@app.route("/userinfo")
+@login_required
+def userinfo():
+	return jsonify({"Message":"Current user role: {}".format(current_user.role)})
+
+################################
+### /MANAGING AUTHENTICATION ###
+################################
 
 # Setting up a basic route for the homepage without using Flask-RESTful. This enables us to run our angular on the front end
 @app.route("/")
@@ -65,9 +115,8 @@ api.add_resource(DinnerRegistrar, "/dinner/register")
 api.add_resource(DinnerListResource, "/dinners")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")
-api.add_resource(AdminRegister,"/admin/register")
-api.add_resource(WebhooksTest, "/webhooks/test")
-
+api.add_resource(UserResource,"/user/<int:id>")
+api.add_resource(UserListResource,"/users")
 
 if __name__ == "__main__":
     # We import SQLAlchemy here from DB alchemy due to the problems with circular importsself.

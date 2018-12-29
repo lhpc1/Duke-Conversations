@@ -4,6 +4,7 @@
 from flask import Flask, request
 from flask_restful import Resource, reqparse
 from models.DinnerModel import DinnerModel
+from models.ProfessorModel import ProfessorModel
 from db import db
 
 class DinnerResource(Resource):
@@ -70,6 +71,12 @@ class DinnerResource(Resource):
         help = "Transportation cannot be left blank. Must be Boolean."
     )
 
+    parser.add_argument("userID",
+        type = int,
+        required = True,
+        help = "userID cannot be left blank. Must be int."
+    )
+
     # GET a particular dinner's information by id
     def get(self,id):
         found = DinnerModel.find_by_id(id)
@@ -100,6 +107,7 @@ class DinnerResource(Resource):
             dinnerOfInterest.catering = data["catering"]
             dinnerOfInterest.transportation = data["transportation"]
             dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
+            dinnerOfInterest.userID = data["userID"]
         else:
             dinnerOfInterest = DinnerModel(**data)
 
@@ -178,9 +186,11 @@ class DinnerRegistrar(Resource):
 
     # Create a new strain, add it to the table
     def post(self):
-
         # Acquire all of the data in a dict of each argument defined in the parser above.
         data = DinnerRegistrar.parser.parse_args();
+
+        if ProfessorModel.find_by_id(data["professorID"]) is None:
+            return {"Message":"Dinner could not be created as no such professor could be found with that ID"}
 
         # Create a new ProfessorModel object containing the passed properties.
         newDinner = DinnerModel(**data) ## ** automatically separates dict keywords into arguments
