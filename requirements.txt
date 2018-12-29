@@ -13,3 +13,4 @@ Flask-Mail
 Flask-Script
 psycopg2
 apscheduler
+Flask-Login
