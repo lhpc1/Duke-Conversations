@@ -6,6 +6,9 @@ from flask_restful import Resource, reqparse
 from models.StudentModel import StudentModel
 from db import db
 
+from flask_login import login_required
+
+
 class StudentResource(Resource):
 
     # Defining a parser that will handle data collection from post requests

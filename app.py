@@ -77,7 +77,7 @@ def login():
 					login_user(user)
 				else:
 					return jsonify({"Message":"Incorrect username or password"})
-					
+
 				return jsonify({'Message':"Logged in User with username {} and id {}".format(user.username, user.id)})
 			else:
 				return jsonify({"Message":"No user could be found with that username"})
