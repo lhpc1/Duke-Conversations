@@ -2,10 +2,10 @@
 <ul>
   <li> POST "/login" with valid username and password credentials will generate a new user session</li>
   <li> GET "/logout" will logout the current user</li>
-  <li> GET "/user/[int:id]" will return a user's information by id"</li>
+  <li> GET "/user/[int:id]" will return a user's information by id</li>
   <li> GET "/users/" will return information on all users in the db </li>
   <li> GET "/userinfo" will return information on the currently logged in user </li>
-  
+
   <hr>
 
   <li> GET "/professors" will return a list of all professors </li>
@@ -78,6 +78,7 @@
     <li> "catering": Bool </li>
     <li> "transportation": Bool </li>
     <li> "invitationSentTimeStamp": String </li>
+    <li> "userID": int </li>
   </ul>
 
   <li> PUT "/student/[ID]" will update a  student object in memory </li>
