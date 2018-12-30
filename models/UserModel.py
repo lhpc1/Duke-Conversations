@@ -9,6 +9,7 @@ class UserModel(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20))
     password = db.Column(db.String(20))
+    email = db.Column(db.String(40))
 
     # 0 = Regular User; 1 = Admin; 2 = Super Admin
     role = db.Column(db.Integer)
@@ -17,16 +18,19 @@ class UserModel(db.Model, UserMixin):
     # define them like this.
     dinners = db.relationship("DinnerModel")
 
-    def __init__(self, username, password, role):
+    def __init__(self, username, password, email, role):
         self.username = username
         self.password = password
+        self.email = email
         if role is not 0 or 1 or 2:
             self.role = 0
+        else:
+            self.role = role
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         dinnerJSON = [dinner.json() for dinner in self.dinners]
-        return {"id":self.id, "username":self.username, "role":self.role, "dinners":dinnerJSON}
+        return {"id":self.id, "username":self.username, "role":self.role, "email": self.email, "dinners":dinnerJSON}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
