@@ -53,9 +53,9 @@ api = Api(app)
 #     { 'Access-Control-Allow-Origin': '*', \
 #       'Access-Control-Allow-Methods' : 'PUT,GET' }
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 ################################
 ### MANAGING AUTHENTICATION ####
