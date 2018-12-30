@@ -165,5 +165,11 @@ class ApplicationRegistrar(Resource):
         # Save the new APPLICATION to the database.
         newApp.save_to_db()
 
+        # Increase the number of applications for the students
+        student = StudentModel.find_by_id(data["studentID"])
+        student.numberApplications += 1
+        student.numberApplicationsSemester += 1
+
+        student.save_to_db();
 
         return ApplicationModel.return_last_item().json(), 200, {"Access-Control-Allow-Origin":"*"}

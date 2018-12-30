@@ -16,6 +16,7 @@ with app.app_context():
 @manager.command
 def gentables():
     db.create_all()
+    print('TABLES GENERATED')
 
 # def generateMessage(student, dinner):
 

@@ -101,7 +101,7 @@ class StudentResource(Resource):
 
         if(StudentModel.find_by_id(netID)):
             StudentModel.find_by_id(netID).delete_from_db()
-            return {"Message":"Student with id {} deleted.".format(netID)}, 500, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"Student with id {} deleted.".format(netID)}, 200, {"Access-Control-Allow-Origin":"*"}
 
         return {"Message":"No student with {} found.".format(netID)}, 500, {"Access-Control-Allow-Origin":"*"}
 
