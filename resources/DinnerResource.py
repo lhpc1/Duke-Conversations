@@ -137,9 +137,24 @@ class DinnerListResource(Resource):
 
 class DinnerStatusCodeResource(Resource):
 
+    parser = reqparse.RequestParser()
+
+    parser.add_argument("status",type = int, location = "args")
+
+    parser.add_argument("id",type = str, location = "args")
+
     # Return a dinner by a status code
-    def get(self, code):
-        return DinnerModel.return_all_dinners_by_status(code), 200, {"Access-Control-Allow-Origin":"*"}
+    def get(self):
+        data = DinnerStatusCodeResource.parser.parse_args()
+
+        if data["status"] is None and data["id"]:
+            return DinnerModel.return_by_userID(data["id"]), 200, {"Access-Control-Allow-Origin":"*"}
+        elif data["status"] and data["id"] is None:
+            return DinnerModel.return_all_dinners_by_status(data["status"]), 200, {"Access-Control-Allow-Origin":"*"}
+        elif data["status"] and data["id"]:
+            return DinnerModel.return_by_status_and_id(data["status"], data["id"]), 200, {"Access-Control-Allow-Origin":"*"}
+        else:
+            return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to register a new strain
 class DinnerRegistrar(Resource):

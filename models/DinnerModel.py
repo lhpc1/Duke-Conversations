@@ -143,6 +143,17 @@ class DinnerModel(db.Model):
         allDinnersJSON = [dinner.json() for dinner in allDinners]
         return allDinnersJSON
 
+    @classmethod
+    def return_by_status_and_id(cls, status, id):
+        allDinners = cls.query.filter_by(userID = id).filter_by(status=status)
+        allDinnersJSON = [dinner.json() for dinner in allDinners]
+        return allDinnersJSON
+
+    @classmethod
+    def return_by_userID(cls, id):
+        allDinners = cls.query.filter_by(userID=id)
+        allDinnersJSON = [dinner.json() for dinner in allDinners]
+        return allDinnersJSON
 
     @classmethod
     def return_last_item(cls):

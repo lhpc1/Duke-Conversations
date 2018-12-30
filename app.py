@@ -41,22 +41,6 @@ mail = Mail(app)
 # Initialize flask_restful Api
 api = Api(app)
 
-# # Configuring token based authentication
-# jwt = JWT(app, authenticate, identity) #/ auth
-#Ask the db to create all the necessary tables before operation
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
-
-# def options (self):
-#     return {'Allow' : 'PUT' }, 200, \
-#     { 'Access-Control-Allow-Origin': '*', \
-#       'Access-Control-Allow-Methods' : 'PUT,GET' }
-
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
-
 ################################
 ### MANAGING AUTHENTICATION ####
 ################################
@@ -116,7 +100,7 @@ api.add_resource(StudentRegistrar, "/student/register")
 api.add_resource(StudentListResource,"/students")
 api.add_resource(DinnerResource, "/dinner/<int:id>")
 api.add_resource(DinnerRegistrar, "/dinner/register")
-api.add_resource(DinnerStatusCodeResource,"/dinner/status/<int:code>")
+api.add_resource(DinnerStatusCodeResource,"/dinner/selective")
 api.add_resource(DinnerListResource, "/dinners")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")

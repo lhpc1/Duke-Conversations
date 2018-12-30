@@ -48,6 +48,9 @@ class UserModel(db.Model, UserMixin):
         self.major = major
         self.emailText = emailText
 
+        self.semDinnerCount = 0
+        self.dinnerCount = 0
+
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         dinnerJSON = [dinner.json() for dinner in self.dinners]
