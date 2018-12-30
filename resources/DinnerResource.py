@@ -111,6 +111,11 @@ class DinnerResource(Resource):
         else:
             dinnerOfInterest = DinnerModel(**data)
 
+        # If the dinner gains a userID, but is not completely done "not 2", then update the status to 1, which
+        # means it is claimed but does not have a user yet.
+        if dinnerOfInterest.userID and dinnerOfInterest.status is not 2:
+            dinnerOfInterest.status = 1
+
         dinnerOfInterest.save_to_db()
 
         return DinnerModel.find_by_id(id).json(), 200, {"Access-Control-Allow-Origin":"*"}
@@ -129,6 +134,12 @@ class DinnerListResource(Resource):
     # Return all strains in a json format
     def get(self):
         return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
+
+class DinnerStatusCodeResource(Resource):
+
+    # Return a dinner by a status code
+    def get(self, code):
+        return DinnerModel.return_all_dinners_by_status(code), 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to register a new strain
 class DinnerRegistrar(Resource):

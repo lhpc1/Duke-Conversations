@@ -85,7 +85,6 @@ def remindProfessor(dinner):
         except Exception as e:
             return {"Message": str(e)}
 
-
 def remindUser(dinner):
     from app import mail
 

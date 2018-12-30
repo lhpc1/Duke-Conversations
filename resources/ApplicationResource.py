@@ -130,7 +130,8 @@ class ApplicationRegistrar(Resource):
         # Create a new Application object containing the passed properties.
         newApp = ApplicationModel(**data) ## ** automatically separates dict keywords into arguments
 
-        # Save the new professor to the database.
+        # Save the new APPLICATION to the database.
         newApp.save_to_db()
+
 
         return ApplicationModel.return_last_item().json(), 200, {"Access-Control-Allow-Origin":"*"}

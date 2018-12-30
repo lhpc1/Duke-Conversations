@@ -55,6 +55,9 @@ class DinnerModel(db.Model):
     # The dietary restrictions of this dinner. By default, this is set to none.
     dietaryRestrictions = db.Column(db.String)
 
+    # The current status of the dinner. 2 == completely filled. 1 == spots open, 0 == unclaimed
+    status = db.Column(db.Integer)
+
     # TODO: Store path to a static directory to hold pictures of the dinner.
 
     # TODO: Implement a child relationship for professors.
@@ -97,13 +100,14 @@ class DinnerModel(db.Model):
         self.catering = False
         self.transportation = False
         self.userID = None
+        self.status = 0
 
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         applicationJSON = [app.json() for app in self.applications]
         return {"id": self.id, "timeStamp": self.timeStamp, "topic": self.topic, "description": self.description, "studentLimit": self.studentLimit,
-                "address": self.address, "dietaryRestrictions":self.dietaryRestrictions, "invitationSentTimeStamp": self.invitationSentTimeStamp, "catering": self.catering,
+                "address": self.address, "dietaryRestrictions":self.dietaryRestrictions, "status":self.status, "invitationSentTimeStamp": self.invitationSentTimeStamp, "catering": self.catering,
                 "transportation": self.transportation, "professorID": self.professorID, "professor":self.professor.json(), "userID":self.userID, "applications": applicationJSON }
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
@@ -132,6 +136,13 @@ class DinnerModel(db.Model):
     def return_all_objects(cls):
         allDinners = cls.query.all()
         return allDinners
+
+    @classmethod
+    def return_all_dinners_by_status( cls, status):
+        allDinners = cls.query.filter_by(status=status)
+        allDinnersJSON = [dinner.json() for dinner in allDinners]
+        return allDinnersJSON
+
 
     @classmethod
     def return_last_item(cls):
