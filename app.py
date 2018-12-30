@@ -73,7 +73,11 @@ def login():
 		if "username" and "password" in content:
 			if UserModel.find_by_username(content["username"]):
 				user = UserModel.find_by_username(content["username"])
-				login_user(user)
+				if content["password"] == user.password:
+					login_user(user)
+				else:
+					return jsonify({"Message":"Incorrect username or password"})
+					
 				return jsonify({'Message':"Logged in User with username {} and id {}".format(user.username, user.id)})
 			else:
 				return jsonify({"Message":"No user could be found with that username"})
