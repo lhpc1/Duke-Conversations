@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask_restful import Resource, reqparse
 from models.DinnerModel import DinnerModel
 from models.ProfessorModel import ProfessorModel
+from models.UserModel import UserModel
 from db import db
 
 class DinnerResource(Resource):
@@ -117,6 +118,12 @@ class DinnerResource(Resource):
             dinnerOfInterest.status = 1
 
         dinnerOfInterest.save_to_db()
+
+        # increase the number of dinners for this userID
+        user = UserModel.find_by_id(data["userID"])
+        user.dinnerCount += 1
+        user.semDinnerCount += 1
+        user.save_to_db();
 
         return DinnerModel.find_by_id(id).json(), 200, {"Access-Control-Allow-Origin":"*"}
 
