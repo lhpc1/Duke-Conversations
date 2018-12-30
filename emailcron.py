@@ -13,12 +13,15 @@ manager = Manager(app)
 with app.app_context():
     db.init_app(app)
 
+@manager.command
+def gentables():
+    db.create_all()
 
 # def generateMessage(student, dinner):
 
 @manager.command
 def populate():
-    a = UserModel("Yasa", "pass" , "yasab27@gmail.com", 2)
+    a = UserModel("coopedmunds", "pass" , "cooper.edmunds@duke.edu", 2,"ce10", "12345", "Cooper","Edmunds", "123-123-1234",1, "Lorem Ipsum" )
     db.session.add(a)
     db.session.commit()
 

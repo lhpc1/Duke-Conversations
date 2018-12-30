@@ -14,11 +14,23 @@ class UserModel(db.Model, UserMixin):
     # 0 = Regular User; 1 = Admin; 2 = Super Admin
     role = db.Column(db.Integer)
 
+    # Other information
+    netID = db.Column(db.String)
+    uniqueID = db.Column(db.String)
+    firstName = db.Column(db.String)
+    lastName = db.Column(db.String)
+    phone = db.Column(db.String)
+    major = db.Column(db.Integer)
+    dinnerCount = db.Column(db.Integer)
+    semDinnerCount = db.Column(db.Integer)
+    emailText = db.Column(db.String)
+
+
     # Here we define the child relationship of the dinner object. As one user could have many dinners, it makes more sense to
     # define them like this.
     dinners = db.relationship("DinnerModel")
 
-    def __init__(self, username, password, email, role):
+    def __init__(self, username, password, email, role, netID, uniqueID, firstName, lastName, phone, major, emailText):
         self.username = username
         self.password = password
         self.email = email
@@ -27,10 +39,21 @@ class UserModel(db.Model, UserMixin):
         else:
             self.role = role
 
+        # Instantiate non-authentication necessary information about the user
+        self.netID = netID
+        self.uniqueID = uniqueID
+        self.firstName = firstName
+        self.lastName = lastName
+        self.phone = phone
+        self.major = major
+        self.emailText = emailText
+
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         dinnerJSON = [dinner.json() for dinner in self.dinners]
-        return {"id":self.id, "username":self.username, "role":self.role, "email": self.email, "dinners":dinnerJSON}
+        return {"id":self.id, "username":self.username, "role":self.role, "email": self.email, "netID":self.netID,
+        "uniqueID":self.uniqueID, "firstName":self.firstName, "lastName": self.lastName, "phone": self.phone,
+        "major": self.major, "emailText": self.emailText, "semDinnerCount": self.semDinnerCount, "dinnerCount":self.dinnerCount, "dinners":dinnerJSON}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
