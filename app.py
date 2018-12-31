@@ -45,6 +45,7 @@ api = Api(app)
 ### MANAGING AUTHENTICATION ####
 ################################
 login = LoginManager(app)
+login.login_view = "login"
 
 @login.user_loader
 def load_user(user_id):
@@ -68,8 +69,11 @@ def login():
 		else:
 			return jsonify({"Message":"Login requests must have username and password fields"})
 
+	if request.method == "GET":
     # user = UserModel.query.get(1)
-	return jsonify({"Message":"error"})
+		return jsonify({"Message":"Please authenticate with POST request"})
+
+	return jsonify({"Message":"Error"})
 
 @app.route("/logout")
 @login_required
