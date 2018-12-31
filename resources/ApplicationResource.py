@@ -94,25 +94,16 @@ class ApplicationConfirmer(Resource):
     # Create a new strain, add it to the table
     def post(self):
 
-        # Acquire all of the data in a dict of each argument defined in the parser above.
-        data = ApplicationRegistrar.parser.parse_args();
+        # Acquire the list of applications to update
+        content = request.get_json()
+        updatedApplications = []
+        for applicationNumber,statusUpdate in content.items():
+            application = ApplicationModel.find_by_id(int(applicationNumber))
+            application.status = statusUpdate
+            updatedApplications.append(applicationNumber)
+            application.save_to_db()
 
-        # Checking to see if a student object even exists with that particular net id
-        if not (StudentModel.find_by_id(data["studentID"])):
-            return {"ERROR": "No student could be found with that ID"}, 404,{"Access-Control-Allow-Origin":"*"}
-
-        # Checking to see if a dinner object even exists with that particular net id
-        if not (DinnerModel.find_by_id(data["dinnerID"])):
-            return {"ERROR": "No dinner could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
-
-        # Create a new Application object containing the passed properties.
-        newApp = ApplicationModel(**data) ## ** automatically separates dict keywords into arguments
-
-        # Save the new APPLICATION to the database.
-        newApp.save_to_db()
-
-
-        return ApplicationModel.return_last_item().json(), 200, {"Access-Control-Allow-Origin":"*"}
+        return {"message":"Updated applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
 
 
 # A resource to register a new strain

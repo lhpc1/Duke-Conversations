@@ -96,6 +96,13 @@ class DinnerResource(Resource):
 
         data = DinnerResource.parser.parse_args()
 
+        # If there is an older user, subtract their total dinner count by one
+        if dinnerOfInterest.userID:
+            user = UserModel.find_by_id(dinnerOfInterest.userID)
+            user.dinnerCount -= 1
+            user.semDinnerCount -= 1
+            user.save_to_db();
+
         if(DinnerModel.find_by_id(id)):
             dinnerOfInterest = DinnerModel.find_by_id(id)
             dinnerOfInterest.timeStamp = data["timeStamp"]
@@ -119,7 +126,7 @@ class DinnerResource(Resource):
 
         dinnerOfInterest.save_to_db()
 
-        # increase the number of dinners for this userID
+        # increase the number of dinners for this new userID
         user = UserModel.find_by_id(data["userID"])
         user.dinnerCount += 1
         user.semDinnerCount += 1
