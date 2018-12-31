@@ -16,7 +16,7 @@ from models.UserModel import UserModel
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource, DinnerStatusCodeResource, DinnerConfirmer
-from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar, ApplicationConfirmer
+from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar, ApplicationConfirmer, ApplicationCheckin
 from resources.UserResource import UserResource, UserListResource
 
 # Initialize our flask application
@@ -106,6 +106,7 @@ api.add_resource(DinnerConfirmer, "/dinner/confirm/<int:id>")
 api.add_resource(ApplicationConfirmer, "/application/update")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")
+api.add_resource(ApplicationCheckin, "/application/checkin")
 api.add_resource(UserResource,"/user/<int:id>")
 api.add_resource(UserListResource,"/users")
 

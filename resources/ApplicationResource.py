@@ -106,6 +106,34 @@ class ApplicationConfirmer(Resource):
         return {"message":"Updated applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
 
 
+class ApplicationCheckin(Resource):
+
+    def options (self):
+        return {'Allow' : 'PUT, POST' }, 200, \
+        { 'Access-Control-Allow-Origin': '*', \
+          'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
+          'Access-Control-Allow-Headers' : "Content-Type"}
+
+    # Create a new strain, add it to the table
+    def post(self):
+
+        # Acquire the list of applications to update
+        content = request.get_json()
+
+        if "present" not in content:
+            return {"Message":"Please include present keyword followed by array of apps to mark present"}, 400, {"Access-Control-Allow-Origin":"*"}
+
+        updatedApplications = []
+        appsToUpdate = content["present"]
+        for app in appsToUpdate:
+            if ApplicationModel.find_by_id(app):
+                application = ApplicationModel.find_by_id(app)
+                application.present = True
+                updatedApplications.append(app)
+                application.save_to_db()
+
+        return {"message":"Marked present applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
+
 # A resource to register a new strain
 class ApplicationRegistrar(Resource):
 
