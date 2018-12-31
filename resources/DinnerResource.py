@@ -177,7 +177,6 @@ class DinnerStatusCodeResource(Resource):
 # Get a dinner by and classify it as complete
 class DinnerConfirmer(Resource):
 
-    @login_required
     def get(self, id):
         # Get the dinner, change status, and then email everyone it is complete
         dinnerToConfirm = DinnerModel.find_by_id(id)

@@ -72,9 +72,10 @@ def login():
 
 	if request.method == "GET":
     # user = UserModel.query.get(1)
-		return jsonify({"Message":"Coudld not authentiacte"}), 401
+		return jsonify({"Message":"Could not authentiacte"}), 401
 
 	return jsonify({"Message":"Error"})
+
 
 @app.route("/logout")
 @login_required
