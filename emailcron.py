@@ -40,26 +40,28 @@ def emailStudents(dinner):
     # If it is between three and 2 days away
     if dinnerTimeDifference <= 259200 and dinnerTimeDifference >= 172800:
         for application in dinner.applications:
-            try:
-                dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
-                msg = Message("Three Day Notification!",
-                  sender="yasab27@gmail.com",
-                  recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
-                msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
-                mail.send(msg)
-            except Exception as e:
-                return {"Message": str(e)}
+            if application.status is 1:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("Three Day Notification!",
+                      sender="yasab27@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
     else:
         for application in dinner.applications:
-            try:
-                dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
-                msg = Message("One Day Notification!",
-                  sender="yasab27@gmail.com",
-                  recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
-                msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
-                mail.send(msg)
-            except Exception as e:
-                return {"Message": str(e)}
+            if application.status is 1:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("One Day Notification!",
+                      sender="yasab27@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
 
 def remindProfessor(dinner):
     from app import mail
