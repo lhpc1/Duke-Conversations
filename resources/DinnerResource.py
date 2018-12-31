@@ -149,8 +149,8 @@ class DinnerResource(Resource):
 class DinnerListResource(Resource):
 
     # Return all strains in a json format
-    @login_required
     def get(self):
+        print(current_user.firstName)
         return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
 class DinnerStatusCodeResource(Resource):

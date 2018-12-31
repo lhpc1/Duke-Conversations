@@ -1,12 +1,11 @@
 # This model, utilizing flask-login will enable session based authentitcation.
 from db import db
-from flask_login import UserMixin
 
-class UserModel(db.Model, UserMixin):
+class UserModel(db.Model):
     # The unique ID of the user
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column( db.Integer, primary_key=True)
     username = db.Column(db.String(20))
     password = db.Column(db.String(20))
     email = db.Column(db.String(40))
@@ -54,7 +53,7 @@ class UserModel(db.Model, UserMixin):
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         dinnerJSON = [dinner.json() for dinner in self.dinners]
-        return {"id":self.id, "username":self.username, "role":self.role, "email": self.email, "netID":self.netID,
+        return {"id":self.id,  "role":self.role, "email": self.email, "netID":self.netID,
         "uniqueID":self.uniqueID, "firstName":self.firstName, "lastName": self.lastName, "phone": self.phone,
         "major": self.major, "emailText": self.emailText, "semDinnerCount": self.semDinnerCount, "dinnerCount":self.dinnerCount, "dinners":dinnerJSON}
 

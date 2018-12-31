@@ -1,12 +1,12 @@
-from models.authentication.AdminModel import AdminModel
+from models.UserModel import UserModel
 from werkzeug.security import safe_str_cmp
 
 # We've transferred all of our DB operations to our user class
 def authenticate(username,password):
-    admin = AdminModel.findByUsername(username)
-    if admin and safe_str_cmp(admin.password, password):
-        return admin
+    user = UserModel.find_by_username(username)
+    if user and safe_str_cmp(user.password, password):
+        return user
 
 def identity(payload):
     admin_id = payload["identity"]
-    return AdminModel.findById(admin_id)
+    return UserModel.find_by_id(admin_id)

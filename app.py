@@ -1,8 +1,10 @@
 # Importing essential dependencies
 from flask import Flask, send_file, request, jsonify
 from flask_restful import Api
-from flask_jwt import JWT, jwt_required
-from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
+from flask_jwt import JWT, jwt_required, current_identity
+from security import authenticate, identity
+
+# from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
 # from security import authenticate, identity
 from flask_cors import CORS
 
@@ -40,62 +42,18 @@ app.config.update(
 mail = Mail(app)
 # Initialize flask_restful Api
 api = Api(app)
+jwt = JWT(app, authenticate, identity) #/ auth
 
-################################
-### MANAGING AUTHENTICATION ####
-################################
-login = LoginManager(app)
-login.login_view = "login"
-
-@login.user_loader
-def load_user(user_id):
-	print("HELLLO")
-	return UserModel.query.get(user_id)
-
-@app.route("/login", methods = ["POST", "GET"])
-def login():
-	if request.method == 'POST':
-		content = request.get_json()
-		if "username" and "password" in content:
-			if UserModel.find_by_username(content["username"]):
-				user = UserModel.find_by_username(content["username"])
-				if content["password"] == user.password:
-					login_user(user)
-				else:
-					return jsonify({"Message":"Incorrect username or password"})
-
-				return jsonify({'Message':"Logged in User with username {} and id {}".format(user.username, user.id)})
-			else:
-				return jsonify({"Message":"No user could be found with that username"})
-		else:
-			return jsonify({"Message":"Login requests must have username and password fields"})
-
-	if request.method == "GET":
-    # user = UserModel.query.get(1)
-		return jsonify({"Message":"Could not authentiacte"}), 401
-
-	return jsonify({"Message":"Error"})
-
-
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    return "Logged out"
-
-@app.route("/userinfo")
-@login_required
-def userinfo():
-	return jsonify({"Message":"Current user role: {}".format(current_user.role)})
-
-################################
-### /MANAGING AUTHENTICATION ###
-################################
 
 # Setting up a basic route for the homepage without using Flask-RESTful. This enables us to run our angular on the front end
 @app.route("/")
 def home():
     return send_file("templates/index.html")
+
+@app.route("/userinfo")
+@jwt_required()
+def info():
+	return jsonify(current_identity.json())
 
 # Allow for the creation of standard user objects
 api.add_resource(ProfessorRegistrar,"/professor/register")
@@ -121,4 +79,4 @@ if __name__ == "__main__":
     # Our models and in turn resources use SQL Alchemy, so we need to import the final version here
     from db import db
     db.init_app(app)
-    app.run(port=5000, debug=True)
+    app.run("localhost", debug=True)

@@ -1,10 +1,9 @@
 <h1> END POINTS </h1>
 <ul>
-  <li> POST "/login" with valid username and password credentials will generate a new user session</li>
-  <li> GET "/logout" will logout the current user</li>
+  <li> POST "/auth" with valid username and password credentials will return a JWT Token</li>
   <li> GET "/user/[int:id]" will return a user's information by id</li>
   <li> GET "/users/" will return information on all users in the db </li>
-  <li> GET "/userinfo" will return information on the currently logged in user </li>
+  <li> GET "/userinfo" will return information on the user corresponding to the token used for authorization</li>
 
   <hr>
 
@@ -31,7 +30,7 @@
 
   <li> POST "/application/checkin" will bulk update many applicatio, marking them as present</li>
   <p> This application accepts an array of applicaiton numbers given under the keyword "present" </p>
-  
+
   <li> POST "/professor/register" will create a new professor object in memory </li>
   <ul>
     <li> "uniqueID": String </li>

@@ -14,3 +14,4 @@ Flask-Script
 psycopg2
 apscheduler
 Flask-Login
+itsdangerous
