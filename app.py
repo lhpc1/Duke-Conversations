@@ -15,7 +15,7 @@ from models.UserModel import UserModel
 # Import our resources
 from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, ProfessorListResource
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
-from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource, DinnerStatusCodeResource
+from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource, DinnerStatusCodeResource, DinnerConfirmer
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar, ApplicationConfirmer
 from resources.UserResource import UserResource, UserListResource
 
@@ -102,6 +102,7 @@ api.add_resource(DinnerResource, "/dinner/<int:id>")
 api.add_resource(DinnerRegistrar, "/dinner/register")
 api.add_resource(DinnerStatusCodeResource,"/dinner/selective")
 api.add_resource(DinnerListResource, "/dinners")
+api.add_resource(DinnerConfirmer, "/dinner/confirm/<int:id>")
 api.add_resource(ApplicationConfirmer, "/application/update")
 api.add_resource(ApplicationResource,"/application/<int:id>")
 api.add_resource(ApplicationRegistrar,"/application/register")

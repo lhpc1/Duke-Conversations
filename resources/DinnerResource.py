@@ -170,6 +170,52 @@ class DinnerStatusCodeResource(Resource):
         else:
             return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
+# Get a dinner by and classify it as complete
+class DinnerConfirmer(Resource):
+
+    def get(self, id):
+
+        # Get the dinner, change status, and then email everyone it is complete
+        dinnerToConfirm = DinnerModel.find_by_id(id)
+
+        dinnerToConfirm.status = 2
+        dinnerToConfirm.save_to_db()
+
+        DinnerConfirmer.notifyRecipients(id)
+
+        return {"Message":"Dinner with {} is confirmed. All accepted applicants have been emailed".format(id)}, 200, {"Access-Control-Allow-Origin":"*"}
+
+    # Email every applicant with a confirmed status upon
+    @classmethod
+    def notifyRecipients(cls, id):
+        from app import mail
+
+        dinner = DinnerModel.find_by_id(id)
+
+        for application in dinner.applications:
+            if application.status is 1:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("Accepted",
+                      sender="yasab27@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "You've been accepted to the dinner hosted by {} {}. It is on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
+
+            if application.status is 3:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("Accepted",
+                      sender="yasab27@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "You've been waitlisted to the dinner hosted by {} {}. It is on {}. Please contact us if you'd like to be removed from the waitlist.".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
+
+
 # A resource to register a new strain
 class DinnerRegistrar(Resource):
 
