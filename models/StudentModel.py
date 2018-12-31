@@ -44,7 +44,7 @@ class StudentModel(db.Model):
     graduationYear = db.Column(db.Integer)
 
     # Here we store the total number of applications ever, number of selections ever as well as applications and selections in that semester.
-    # A chron job will automatically go in and update the list at the end of a term.
+    # This is automatically iterated by the applications endpoint when a new application is created. 
     numberApplications = db.Column(db.Integer)
 
     numberSelections = db.Column(db.Integer)

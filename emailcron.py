@@ -129,5 +129,26 @@ def hello():
         remindProfessor(dinner)
     print(time.time())
 
+# Iterate through all of the students in the database whose dinners have already past. If they confirmed
+# but where not present, blacklist them.
+@manager.command
+def blacklist():
+    dinners = DinnerModel.return_all_objects()
+
+    for dinner in dinners:
+        # if the dinner has past, i.e. if the current timestamp exceeds the dinner timestamp
+        if int(float(dinner.timeStamp)) < time.time():
+            # Get all of the applications
+            applications = dinner.applications
+
+            # Iterate through all of the applications of the dinner, find the users which confirmed
+            # but didn't show up, and then blacklist them.
+            for app in applications:
+                if app.confirmed and not app.present:
+                    student = StudentModel.find_by_id(app.studentID)
+                    student.blackList = True
+                    student.save_to_db()
+
+
 if __name__ == "__main__":
     manager.run()

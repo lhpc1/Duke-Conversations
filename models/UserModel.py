@@ -76,7 +76,7 @@ class UserModel(db.Model, UserMixin):
 
     @classmethod
     def find_by_username(cls,username):
-        found = cls.query.filter_by(username = username).first() # All ID numbers are unique so this should always return one object
+        found = cls.query.filter_by(username = username).first() # All usernames are unique so this should always return one object
         return found
 
     @classmethod

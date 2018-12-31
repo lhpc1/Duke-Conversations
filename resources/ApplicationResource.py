@@ -98,7 +98,7 @@ class ApplicationConfirmer(Resource):
           'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
           'Access-Control-Allow-Headers' : "Content-Type"}
 
-    # Create a new strain, add it to the table
+    # Create a new object, add it to the table
     def post(self):
 
         # Acquire the list of applications to update
@@ -107,6 +107,15 @@ class ApplicationConfirmer(Resource):
         for applicationNumber,statusUpdate in content.items():
             application = ApplicationModel.find_by_id(int(applicationNumber))
             application.status = statusUpdate
+
+            # If the applicant is being updated to 1, this indicates that the user has been selected, so the
+            # number of selections for the student associated to the application needs to be increased by one
+            if statusUpdate is 1:
+                student = StudentModel.find_by_id(application.studentID)
+                student.numberSelections += 1
+                student.numberSelectionsSemester += 1
+                student.save_to_db()
+
             updatedApplications.append(applicationNumber)
             application.save_to_db()
 
