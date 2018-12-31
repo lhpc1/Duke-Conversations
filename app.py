@@ -49,7 +49,8 @@ login.login_view = "login"
 
 @login.user_loader
 def load_user(user_id):
-    return UserModel.query.get(user_id)
+	print("HELLLO")
+	return UserModel.query.get(user_id)
 
 @app.route("/login", methods = ["POST", "GET"])
 def login():
@@ -71,7 +72,7 @@ def login():
 
 	if request.method == "GET":
     # user = UserModel.query.get(1)
-		return jsonify({"Message":"Please authenticate with POST request"})
+		return jsonify({"Message":"Coudld not authentiacte"}), 401
 
 	return jsonify({"Message":"Error"})
 

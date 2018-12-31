@@ -10,6 +10,7 @@ from db import db
 from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
 
 
+
 class DinnerResource(Resource):
     # Defining a parser that will handle data collection from post requests
     parser = reqparse.RequestParser()
