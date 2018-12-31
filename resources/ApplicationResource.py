@@ -28,25 +28,31 @@ class ApplicationResource(Resource):
     parser.add_argument("dinnerID",
         type = str,
         required = True, # If there is no price argument, stop.
-        help = "Dinner ID cannot be left blank"
+        help = "dinnerID cannot be left blank"
     )
 
     parser.add_argument("status",
         type = bool,
         required = True, # If there is no price argument, stop.
-        help = "Dinner ID cannot be left blank"
+        help = "status cannot be left blank"
     )
 
     parser.add_argument("present",
         type = bool,
         required = True, # If there is no price argument, stop.
-        help = "Dinner ID cannot be left blank"
+        help = "present cannot be left blank"
     )
 
     parser.add_argument("confirmed",
         type = bool,
         required = True, # If there is no price argument, stop.
-        help = "Dinner ID cannot be left blank"
+        help = "confirmed cannot be left blank"
+    )
+
+    parser.add_argument("blackList",
+        type = bool,
+        required = True, # If there is no price argument, stop.
+        help = "blackList cannot be left blank"
     )
 
     def options (self):
@@ -76,6 +82,7 @@ class ApplicationResource(Resource):
             application.present = data["present"]
             application.dinnerID = data["dinnerID"]
             application.studentID = data["studentID"]
+            application.blackList = data["blackList"]
         else:
             return {"Message":"No Application could be found with that ID"},  200, {"Access-Control-Allow-Origin":"*"}
 
@@ -173,6 +180,9 @@ class ApplicationRegistrar(Resource):
         # Checking to see if a student object even exists with that particular net id
         if not (StudentModel.find_by_id(data["studentID"])):
             return {"ERROR": "No student could be found with that ID"}, 404,{"Access-Control-Allow-Origin":"*"}
+
+        if StudentModel.find_by_id(data["studentID"]).blackList:
+            return {"ERROR": "This student has been blacklisted and may not apply"}, 404,{"Access-Control-Allow-Origin":"*"}
 
         # Checking to see if a dinner object even exists with that particular net id
         if not (DinnerModel.find_by_id(data["dinnerID"])):

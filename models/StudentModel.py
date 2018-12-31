@@ -53,6 +53,8 @@ class StudentModel(db.Model):
 
     numberSelectionsSemester = db.Column(db.Integer)
 
+    blackList = db.Column(db.Boolean)
+
     # FOREIGN KEY RELATIONSHIPS ######################################################################################
 
     # Here will be a list of associated applications which are taken by this student
@@ -83,6 +85,8 @@ class StudentModel(db.Model):
         self.numberSelections = 0
         self.numberApplicationsSemester = 0
         self.numberSelectionsSemester = 0
+
+        self.blackList = False
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):

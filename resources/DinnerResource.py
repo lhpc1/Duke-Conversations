@@ -7,6 +7,8 @@ from models.DinnerModel import DinnerModel
 from models.ProfessorModel import ProfessorModel
 from models.UserModel import UserModel
 from db import db
+from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
+
 
 class DinnerResource(Resource):
     # Defining a parser that will handle data collection from post requests
@@ -173,8 +175,8 @@ class DinnerStatusCodeResource(Resource):
 # Get a dinner by and classify it as complete
 class DinnerConfirmer(Resource):
 
+    @login_required
     def get(self, id):
-
         # Get the dinner, change status, and then email everyone it is complete
         dinnerToConfirm = DinnerModel.find_by_id(id)
 
