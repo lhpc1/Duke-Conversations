@@ -23,7 +23,12 @@ def gentables():
 @manager.command
 def populate():
     a = UserModel("coopedmunds", "pass" , "cooper.edmunds@duke.edu", 2,"ce10", "12345", "Cooper","Edmunds", "123-123-1234",1, "Lorem Ipsum" )
+    b = UserModel("yasab27", "pass" , "ymb@duke.edu", 2,"ymb8", "12345", "Yasa","Baig", "123-123-1234",1, "Lorem Ipsum" )
+    c = UserModel("grantbes", "pass" , "gbes@duke.edu", 2,"gbe1", "12345", "Grant","Besner", "123-123-1234",1, "Lorem Ipsum" )
+
     db.session.add(a)
+    db.session.add(b)
+    db.session.add(c)
     db.session.commit()
 
     allUsers = db.session.query(UserModel).all()

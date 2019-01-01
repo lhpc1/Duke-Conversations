@@ -7,9 +7,6 @@ from models.DinnerModel import DinnerModel
 from models.ProfessorModel import ProfessorModel
 from models.UserModel import UserModel
 from db import db
-from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
-
-
 
 class DinnerResource(Resource):
     # Defining a parser that will handle data collection from post requests
@@ -99,13 +96,6 @@ class DinnerResource(Resource):
 
         data = DinnerResource.parser.parse_args()
 
-        # If there is an older user, subtract their total dinner count by one
-        if dinnerOfInterest.userID:
-            user = UserModel.find_by_id(dinnerOfInterest.userID)
-            user.dinnerCount -= 1
-            user.semDinnerCount -= 1
-            user.save_to_db();
-
         if(DinnerModel.find_by_id(id)):
             dinnerOfInterest = DinnerModel.find_by_id(id)
             dinnerOfInterest.timeStamp = data["timeStamp"]
@@ -114,11 +104,29 @@ class DinnerResource(Resource):
             dinnerOfInterest.studentLimit = data["studentLimit"]
             dinnerOfInterest.address = data["address"]
             dinnerOfInterest.dietaryRestrictions = data["dietaryRestrictions"]
-            dinnerOfInterest.professorID = data["professorID"]
+
+            if ProfessorModel.find_by_id(data["professorID"]):
+                dinnerOfInterest.professorID = data["professorID"]
+            else:
+                return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+
             dinnerOfInterest.catering = data["catering"]
             dinnerOfInterest.transportation = data["transportation"]
             dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
-            dinnerOfInterest.userID = data["userID"]
+
+            # If there is an older user, subtract their total dinner count by one
+            if UserModel.find_by_id(dinnerOfInterest.userID):
+                user = UserModel.find_by_id(dinnerOfInterest.userID)
+                user.dinnerCount -= 1
+                user.semDinnerCount -= 1
+                user.save_to_db();
+
+            # Assign new userID
+            if UserModel.find_by_id(data["userID"]):
+                dinnerOfInterest.userID = data["userID"]
+
+            else:
+                return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
         else:
             dinnerOfInterest = DinnerModel(**data)
 
@@ -135,7 +143,7 @@ class DinnerResource(Resource):
         user.semDinnerCount += 1
         user.save_to_db();
 
-        return DinnerModel.find_by_id(id).json(), 200, {"Access-Control-Allow-Origin":"*"}
+        return dinnerOfInterest.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
     def delete(self,id):
 
