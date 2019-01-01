@@ -5,10 +5,7 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
-from security import authenticate, identity
 
-# from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
-# from security import authenticate, identity
 from flask_cors import CORS
 
 # Configure mail client
@@ -32,7 +29,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 # Configuring SQL Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+app.config['JWT_SECRET_KEY'] = 'lemon'
 app.secret_key = "jose"
 app.config.update(
 	DEBUG=True,
@@ -66,7 +63,6 @@ def login():
 		user = UserModel.find_by_username(username)
 	else:
 		return jsonify({"msg": "No user with username {}".format(username)}), 400
-
 
 	if password == user.password:
 		access_token = create_access_token(identity=username)
@@ -110,6 +106,7 @@ api.add_resource(UserListResource,"/users")
 api.add_resource(UserRegistrar, "/user/register")
 api.add_resource(StudentReviewListResource, "/studentreviews")
 api.add_resource(StudentReviewRegistrar, "/review/student/register")
+api.add_resource(StudentReviewResource, "/review/student/<int:id>")
 
 if __name__ == "__main__":
     # We import SQLAlchemy here from DB alchemy due to the problems with circular importsself.
