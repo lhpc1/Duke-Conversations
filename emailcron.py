@@ -132,6 +132,7 @@ def hello():
     for dinner in dinners:
         emailStudents(dinner)
         remindProfessor(dinner)
+        remindUser(dinner)
     print(time.time())
 
 # Iterate through all of the students in the database whose dinners have already past. If they confirmed

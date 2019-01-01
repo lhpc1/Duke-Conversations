@@ -74,7 +74,7 @@ class StudentResource(Resource):
         if(student):
             return student.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No student could be found with that ID"}, 500, {"Access-Control-Allow-Origin":"*"}
+        return {"message":"No student could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
     def put(self, netID):
@@ -103,7 +103,7 @@ class StudentResource(Resource):
             StudentModel.find_by_id(netID).delete_from_db()
             return {"Message":"Student with id {} deleted.".format(netID)}, 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"Message":"No student with {} found.".format(netID)}, 500, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No student with {} found.".format(netID)}, 404, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return all students
 class StudentListResource(Resource):
@@ -173,20 +173,20 @@ class StudentRegistrar(Resource):
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
-    
+
     def post(self):
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
         data = StudentRegistrar.parser.parse_args();
 
-        # Error trapping to see if a professor already exists with that particular idea
+        # Error trapping to see if a student already exists with that particular idea
         if(StudentModel.find_by_id(data.netID)):
             return {"Error":"A student with that net ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new StudentModel object containing the passed properties.
         netStudent = StudentModel(**data) ## ** automatically separates dict keywords into arguments
 
-        # Save the new professor to the database.
+        # Save the new student to the database.
         netStudent.save_to_db()
 
         # Return the just posted student
