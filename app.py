@@ -1,7 +1,10 @@
 # Importing essential dependencies
 from flask import Flask, send_file, request, jsonify
 from flask_restful import Api
-from flask_jwt import JWT, jwt_required, current_identity
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 from security import authenticate, identity
 
 # from flask_login import UserMixin, LoginManager, current_user, login_user, logout_user, login_required
@@ -19,7 +22,7 @@ from resources.ProfessorResource import ProfessorResource, ProfessorRegistrar, P
 from resources.StudentResource import StudentResource, StudentRegistrar, StudentListResource
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource, DinnerStatusCodeResource, DinnerConfirmer
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar, ApplicationConfirmer, ApplicationCheckin
-from resources.UserResource import UserResource, UserListResource
+from resources.UserResource import UserResource, UserListResource, UserRegistrar
 
 # Initialize our flask application
 app = Flask(__name__)
@@ -28,6 +31,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 # Configuring SQL Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
 app.secret_key = "jose"
 app.config.update(
 	DEBUG=True,
@@ -42,18 +46,47 @@ app.config.update(
 mail = Mail(app)
 # Initialize flask_restful Api
 api = Api(app)
-jwt = JWT(app, authenticate, identity) #/ auth
+jwt = JWTManager(app) #/ auth
 
+@app.route('/login', methods=['POST'])
+def login():
+	if not request.is_json:
+		return jsonify({"msg": "Missing JSON in request"}), 400
+
+	username = request.json.get('username', None)
+	password = request.json.get('password', None)
+	if not username:
+		return jsonify({"msg": "Missing username parameter"}), 400
+	if not password:
+		return jsonify({"msg": "Missing password parameter"}), 400
+
+	# See if there is a user with this particular username
+	if UserModel.find_by_username(username) is not None:
+		user = UserModel.find_by_username(username)
+	else:
+		return jsonify({"msg": "No user with username {}".format(username)}), 400
+
+
+	if password == user.password:
+		access_token = create_access_token(identity=username)
+	else:
+		return jsonify({"msg": "Invalid Password"}), 400
+
+	return jsonify(access_token=access_token), 200
 
 # Setting up a basic route for the homepage without using Flask-RESTful. This enables us to run our angular on the front end
 @app.route("/")
 def home():
     return send_file("templates/index.html")
 
-@app.route("/userinfo")
-@jwt_required()
-def info():
-	return jsonify(current_identity.json())
+@app.route('/protected', methods=['GET'])
+@jwt_required
+def protected():
+	# Access the identity of the current user with get_jwt_identity
+	current_user = get_jwt_identity()
+	user = UserModel.find_by_username(current_user)
+	return jsonify(user.json()), 200
+
 
 # Allow for the creation of standard user objects
 api.add_resource(ProfessorRegistrar,"/professor/register")
@@ -73,6 +106,7 @@ api.add_resource(ApplicationRegistrar,"/application/register")
 api.add_resource(ApplicationCheckin, "/application/checkin")
 api.add_resource(UserResource,"/user/<int:id>")
 api.add_resource(UserListResource,"/users")
+api.add_resource(UserRegistrar, "/user/register")
 
 if __name__ == "__main__":
     # We import SQLAlchemy here from DB alchemy due to the problems with circular importsself.

@@ -33,10 +33,7 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
         self.email = email
-        if role is not 0 or 1 or 2:
-            self.role = 0
-        else:
-            self.role = role
+        self.role = role
 
         # Instantiate non-authentication necessary information about the user
         self.netID = netID

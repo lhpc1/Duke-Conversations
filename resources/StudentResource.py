@@ -173,6 +173,7 @@ class StudentRegistrar(Resource):
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
+    
     def post(self):
 
         # Acquire all of the data in a dict of each argument defined in the parser above.

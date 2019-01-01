@@ -7,6 +7,7 @@ from models.DinnerModel import DinnerModel
 from models.ProfessorModel import ProfessorModel
 from models.UserModel import UserModel
 from db import db
+from flask_jwt_extended import jwt_required
 
 class DinnerResource(Resource):
     # Defining a parser that will handle data collection from post requests
