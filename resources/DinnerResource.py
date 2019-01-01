@@ -84,7 +84,7 @@ class DinnerResource(Resource):
         if(found):
             return found.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No Dinner could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"message":"No Dinner could be found with id {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
 
     def options (self):
         return {'Allow' : 'PUT, GET, POST' }, 200, \
@@ -106,7 +106,14 @@ class DinnerResource(Resource):
             dinnerOfInterest.dietaryRestrictions = data["dietaryRestrictions"]
 
             if ProfessorModel.find_by_id(data["professorID"]):
+
+                if ProfessorModel.find_by_id(dinnerOfInterest.professorID):
+                    profesor = ProfessorModel.find_by_id(dinnerOfInterest.professorID)
+                    professor.dinnerCount -= 1
+                    professor.save_to_db();
+
                 dinnerOfInterest.professorID = data["professorID"]
+
             else:
                 return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
@@ -114,15 +121,17 @@ class DinnerResource(Resource):
             dinnerOfInterest.transportation = data["transportation"]
             dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
 
-            # If there is an older user, subtract their total dinner count by one
-            if UserModel.find_by_id(dinnerOfInterest.userID):
-                user = UserModel.find_by_id(dinnerOfInterest.userID)
-                user.dinnerCount -= 1
-                user.semDinnerCount -= 1
-                user.save_to_db();
 
             # Assign new userID
             if UserModel.find_by_id(data["userID"]):
+
+                # If there is an older user, subtract their total dinner count by one
+                if UserModel.find_by_id(dinnerOfInterest.userID):
+                    user = UserModel.find_by_id(dinnerOfInterest.userID)
+                    user.dinnerCount -= 1
+                    user.semDinnerCount -= 1
+                    user.save_to_db();
+
                 dinnerOfInterest.userID = data["userID"]
 
             else:
@@ -142,6 +151,10 @@ class DinnerResource(Resource):
         user.dinnerCount += 1
         user.semDinnerCount += 1
         user.save_to_db();
+
+        profesor = ProfessorModel.find_by_id(data["professorID"])
+        professor.dinnerCount += 1
+        professor.save_to_db();
 
         return dinnerOfInterest.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -186,7 +199,10 @@ class DinnerConfirmer(Resource):
 
     def get(self, id):
         # Get the dinner, change status, and then email everyone it is complete
-        dinnerToConfirm = DinnerModel.find_by_id(id)
+        if DinnerModel.find_by_id(id):
+            dinnerToConfirm = DinnerModel.find_by_id(id)
+        else:
+            return {"Message":"No dinner could be found with id  {}".format(id)}
 
         dinnerToConfirm.status = 2
         dinnerToConfirm.save_to_db()
@@ -203,6 +219,7 @@ class DinnerConfirmer(Resource):
         dinner = DinnerModel.find_by_id(id)
 
         for application in dinner.applications:
+
             if application.status is 1:
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
@@ -286,7 +303,7 @@ class DinnerRegistrar(Resource):
         data = DinnerRegistrar.parser.parse_args();
 
         if ProfessorModel.find_by_id(data["professorID"]) is None:
-            return {"Message":"Dinner could not be created as no such professor could be found with that ID"}
+            return {"Message":"Dinner could not be created as no such professor could be found with id {}.".format(data["professorID"])}, 404
 
         # Create a new ProfessorModel object containing the passed properties.
         newDinner = DinnerModel(**data) ## ** automatically separates dict keywords into arguments

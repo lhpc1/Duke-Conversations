@@ -105,19 +105,22 @@ class ApplicationConfirmer(Resource):
         content = request.get_json()
         updatedApplications = []
         for applicationNumber,statusUpdate in content.items():
-            application = ApplicationModel.find_by_id(int(applicationNumber))
-            application.status = statusUpdate
 
-            # If the applicant is being updated to 1, this indicates that the user has been selected, so the
-            # number of selections for the student associated to the application needs to be increased by one
-            if statusUpdate is 1:
-                student = StudentModel.find_by_id(application.studentID)
-                student.numberSelections += 1
-                student.numberSelectionsSemester += 1
-                student.save_to_db()
+            if ApplicationModel.find_by_id(int(applicationNumber)):
 
-            updatedApplications.append(applicationNumber)
-            application.save_to_db()
+                application = ApplicationModel.find_by_id(int(applicationNumber))
+                application.status = statusUpdate
+
+                # If the applicant is being updated to 1, this indicates that the user has been selected, so the
+                # number of selections for the student associated to the application needs to be increased by one
+                if statusUpdate is 1:
+                    student = StudentModel.find_by_id(application.studentID)
+                    student.numberSelections += 1
+                    student.numberSelectionsSemester += 1
+                    student.save_to_db()
+
+                updatedApplications.append(applicationNumber)
+                application.save_to_db()
 
         return {"message":"Updated applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -191,7 +194,7 @@ class ApplicationRegistrar(Resource):
             return {"ERROR": "No student could be found with that ID"}, 404,{"Access-Control-Allow-Origin":"*"}
 
         if StudentModel.find_by_id(data["studentID"]).blackList:
-            return {"ERROR": "This student has been blacklisted and may not apply"}, 404,{"Access-Control-Allow-Origin":"*"}
+            return {"ERROR": "This student has been blacklisted and may not apply"}, 400,{"Access-Control-Allow-Origin":"*"}
 
         # Checking to see if a dinner object even exists with that particular net id
         if not (DinnerModel.find_by_id(data["dinnerID"])):
