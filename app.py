@@ -23,6 +23,7 @@ from resources.StudentResource import StudentResource, StudentRegistrar, Student
 from resources.DinnerResource import DinnerResource, DinnerRegistrar, DinnerListResource, DinnerStatusCodeResource, DinnerConfirmer
 from resources.ApplicationResource import ApplicationResource, ApplicationRegistrar, ApplicationConfirmer, ApplicationCheckin
 from resources.UserResource import UserResource, UserListResource, UserRegistrar
+from resources.ReviewResource import StudentReviewResource, StudentReviewListResource, StudentReviewRegistrar
 
 # Initialize our flask application
 app = Flask(__name__)
@@ -107,6 +108,8 @@ api.add_resource(ApplicationCheckin, "/application/checkin")
 api.add_resource(UserResource,"/user/<int:id>")
 api.add_resource(UserListResource,"/users")
 api.add_resource(UserRegistrar, "/user/register")
+api.add_resource(StudentReviewListResource, "/studentreviews")
+api.add_resource(StudentReviewRegistrar, "/review/student/register")
 
 if __name__ == "__main__":
     # We import SQLAlchemy here from DB alchemy due to the problems with circular importsself.

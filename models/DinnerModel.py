@@ -72,6 +72,7 @@ class DinnerModel(db.Model):
     applications = db.relationship("ApplicationModel", lazy = "dynamic")
 
     # TODO: Implement child relationship for student reviews
+    studentReviews = db.relationship("StudentReviewModel", lazy = "dynamic")
 
     # TODO: Implement child relationship for professor reviews
 
@@ -106,9 +107,10 @@ class DinnerModel(db.Model):
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         applicationJSON = [app.json() for app in self.applications]
+        studentReviewJSON = [studentReview.json() for studentReview in self.studentReviews]
         return {"id": self.id, "timeStamp": self.timeStamp, "topic": self.topic, "description": self.description, "studentLimit": self.studentLimit,
                 "address": self.address, "dietaryRestrictions":self.dietaryRestrictions, "status":self.status, "invitationSentTimeStamp": self.invitationSentTimeStamp, "catering": self.catering,
-                "transportation": self.transportation, "professorID": self.professorID, "professor":self.professor.json(), "userID":self.userID, "applications": applicationJSON }
+                "transportation": self.transportation, "professorID": self.professorID, "professor":self.professor.json(), "userID":self.userID, "applications": applicationJSON, "studentReviews":studentReviewJSON }
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
