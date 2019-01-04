@@ -42,7 +42,7 @@ class UserResource(Resource):
     #
 
     # Only super admins can delete other users
-    @jwt_required
+    # @jwt_required
     def delete(self,id):
 
         current_user = get_jwt_identity()
@@ -60,7 +60,7 @@ class UserResource(Resource):
 class UserListResource(Resource):
 
     # Return all strains in a json format
-    @jwt_required
+    # @jwt_required
     def get(self):
         return UserModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
