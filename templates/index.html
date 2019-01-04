@@ -29,12 +29,12 @@
   </ul>
 
   <li> POST "/application/update" will bulk update many application statuses simultaneously</li>
-  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and entries (ints) are their new statuses. 0 is pending, 1 is confirmed, 2 is denied, 3 is waitlisted </p>
+  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and entries (ints) are their new statuses. 0 is pending, 1 is confirmed, 2 is denied, 3 is waitlisted. Ex: {"1": 0 , "2": 3} </p>
 
   <li> POST "/application/checkin" will bulk update many applications, marking them as present or absent.</li>
   <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and values are whether the item is "present"  or "absent". Ex: {"1":"present", "2":"absent"}</p>
 
-  <li> POST "/professor/register" will create a new professor object in memory </li>
+  <li> POST "/professor/register" will create a new professor object   </li>
     <ul>
     <li> "uniqueID": String </li>
     <li> "firstName": String </li>
@@ -46,7 +46,7 @@
     <li> "school": Integer </li>
   </ul>
 
-  <li> POST "/dinner/register" will create a new professor object in memory </li>
+  <li> POST "/dinner/register" will create a new dinner object  </li>
   <ul>
     <li> "timeStamp": String </li>
     <li> "topic": String </li>
@@ -57,7 +57,7 @@
     <li> "professorID": String </li>
   </ul>
 
-  <li> POST "/student/register" will create a new professor object in memory </li>
+  <li> POST "/student/register" will create a new student object </li>
   <ul>
     <li> "netID": String </li>
     <li> "uniqueID": String </li>
@@ -71,7 +71,7 @@
 
   <hr>
 
-  <li> PUT "/professor/[ID]" will update a new professor object in memory </li>
+  <li> PUT "/professor/[ID]" will update a new professor object   </li>
   <ul>
     <li> "firstName": String </li>
     <li> "lastName": String </li>
@@ -83,7 +83,7 @@
   </ul>
 
 
-  <li> PUT "/dinner/[ID]" will update a dinner object in memory </li>
+  <li> PUT "/dinner/[ID]" will update a dinner object   </li>
   <ul>
     <li> "timeStamp": String </li>
     <li> "topic": String </li>
@@ -98,7 +98,7 @@
     <li> "userID": int </li>
   </ul>
 
-  <li> PUT "/student/[ID]" will update a  student object in memory </li>
+  <li> PUT "/student/[ID]" will update a  student object   </li>
   <ul>
     <li> "uniqueID": String </li>
     <li> "firstName": String </li>
