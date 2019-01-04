@@ -107,14 +107,12 @@ class DinnerResource(Resource):
             dinnerOfInterest.dietaryRestrictions = data["dietaryRestrictions"]
 
             if ProfessorModel.find_by_id(data["professorID"]):
-
                 if ProfessorModel.find_by_id(dinnerOfInterest.professorID):
-                    profesor = ProfessorModel.find_by_id(dinnerOfInterest.professorID)
+                    professor = ProfessorModel.find_by_id(dinnerOfInterest.professorID)
                     professor.dinnerCount -= 1
                     professor.save_to_db();
 
                 dinnerOfInterest.professorID = data["professorID"]
-
             else:
                 return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
@@ -125,16 +123,13 @@ class DinnerResource(Resource):
 
             # Assign new userID
             if UserModel.find_by_id(data["userID"]):
-
                 # If there is an older user, subtract their total dinner count by one
                 if UserModel.find_by_id(dinnerOfInterest.userID):
                     user = UserModel.find_by_id(dinnerOfInterest.userID)
                     user.dinnerCount -= 1
                     user.semDinnerCount -= 1
                     user.save_to_db();
-
                 dinnerOfInterest.userID = data["userID"]
-
             else:
                 return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
         else:
@@ -153,7 +148,7 @@ class DinnerResource(Resource):
         user.semDinnerCount += 1
         user.save_to_db();
 
-        profesor = ProfessorModel.find_by_id(data["professorID"])
+        professor = ProfessorModel.find_by_id(data["professorID"])
         professor.dinnerCount += 1
         professor.save_to_db();
 
