@@ -54,6 +54,10 @@ class UserModel(db.Model):
         "uniqueID":self.uniqueID, "firstName":self.firstName, "lastName": self.lastName, "phone": self.phone,
         "major": self.major, "emailText": self.emailText, "semDinnerCount": self.semDinnerCount, "dinnerCount":self.dinnerCount, "dinners":dinnerJSON}
 
+    def infojson(self):
+        return {"id":self.id,  "role":self.role, "email": self.email, "netID":self.netID,
+        "uniqueID":self.uniqueID, "firstName":self.firstName, "lastName": self.lastName, "phone": self.phone,
+        "major": self.major, "emailText": self.emailText, "semDinnerCount": self.semDinnerCount, "dinnerCount":self.dinnerCount}
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
         db.session.add(self)

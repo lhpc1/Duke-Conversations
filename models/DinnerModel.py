@@ -2,7 +2,7 @@
 # made database operations.
 from db import db
 from models.ProfessorModel import ProfessorModel
-
+from models.UserModel import UserModel
 #The python datetime object lets us store information about a specific datetime in easily encodable and decodable object format.
 from datetime import datetime
 
@@ -108,9 +108,15 @@ class DinnerModel(db.Model):
     def json(self):
         applicationJSON = [app.json() for app in self.applications]
         studentReviewJSON = [studentReview.json() for studentReview in self.studentReviews]
+
+        if UserModel.find_by_id(self.userID):
+            userString = self.user.infojson()
+        else:
+            userString = "No User Selected"
+
         return {"id": self.id, "timeStamp": self.timeStamp, "topic": self.topic, "description": self.description, "studentLimit": self.studentLimit,
                 "address": self.address, "dietaryRestrictions":self.dietaryRestrictions, "status":self.status, "invitationSentTimeStamp": self.invitationSentTimeStamp, "catering": self.catering,
-                "transportation": self.transportation, "professorID": self.professorID, "professor":self.professor.json(), "userID":self.userID, "applications": applicationJSON, "studentReviews":studentReviewJSON }
+                "transportation": self.transportation, "professorID": self.professorID, "professor":self.professor.json(), "userID":self.userID, "user":userString, "applications": applicationJSON, "studentReviews":studentReviewJSON }
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):
