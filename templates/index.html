@@ -29,13 +29,13 @@
   </ul>
 
   <li> POST "/application/update" will bulk update many application statuses simultaneously</li>
-  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and entries (ints) are their new statuses </p>
+  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and entries (ints) are their new statuses. 0 is pending, 1 is confirmed, 2 is denied, 3 is waitlisted </p>
 
   <li> POST "/application/checkin" will bulk update many applicatio, marking them as present</li>
-  <p> This application accepts an array of applicaiton numbers given under the keyword "present" </p>
+  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and values are whether the item is "present"  or "absent". Ex: {"1":"present", "2":"absent"}</p>
 
   <li> POST "/professor/register" will create a new professor object in memory </li>
-  <ul>
+!   <ul>
     <li> "uniqueID": String </li>
     <li> "firstName": String </li>
     <li> "lastName": String </li>

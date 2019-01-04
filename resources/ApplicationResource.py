@@ -125,6 +125,34 @@ class ApplicationConfirmer(Resource):
         return {"message":"Updated applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
 
 
+# class ApplicationCheckin(Resource):
+#
+#     def options (self):
+#         return {'Allow' : 'PUT, POST' }, 200, \
+#         { 'Access-Control-Allow-Origin': '*', \
+#           'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
+#           'Access-Control-Allow-Headers' : "Content-Type"}
+#
+#     # Create a new strain, add it to the table
+#     def post(self):
+#
+#         # Acquire the list of applications to update
+#         content = request.get_json()
+#
+#         if "present" not in content:
+#             return {"Message":"Please include present keyword followed by array of apps to mark present"}, 400, {"Access-Control-Allow-Origin":"*"}
+#
+#         updatedApplications = []
+#         appsToUpdate = content["present"]
+#         for app in appsToUpdate:
+#             if ApplicationModel.find_by_id(app):
+#                 application = ApplicationModel.find_by_id(app)
+#                 application.present = True
+#                 updatedApplications.append(app)
+#                 application.save_to_db()
+#
+#         return {"message":"Marked present applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
+
 class ApplicationCheckin(Resource):
 
     def options (self):
@@ -139,19 +167,43 @@ class ApplicationCheckin(Resource):
         # Acquire the list of applications to update
         content = request.get_json()
 
-        if "present" not in content:
-            return {"Message":"Please include present keyword followed by array of apps to mark present"}, 400, {"Access-Control-Allow-Origin":"*"}
+        for applicationNumber,statusUpdate in content.items():
 
-        updatedApplications = []
-        appsToUpdate = content["present"]
-        for app in appsToUpdate:
-            if ApplicationModel.find_by_id(app):
-                application = ApplicationModel.find_by_id(app)
-                application.present = True
-                updatedApplications.append(app)
-                application.save_to_db()
+            # Could not resolve
+            couldNotResolve = []
 
-        return {"message":"Marked present applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
+            # applications marked present
+            markedPresent = []
+
+            # Marked absent
+            markedAbsent = []
+
+            if ApplicationModel.find_by_id(int(applicationNumber)):
+
+                application = ApplicationModel.find_by_id(int(applicationNumber))
+
+                print(application.json())
+                print(statusUpdate)
+
+                # If the applicant is being updated to present, this indicates that the user has been selected, so the
+                # number of selections for the student associated to the application needs to be increased by one
+                if statusUpdate == "present":
+                    application.present = True
+                    application.save_to_db()
+                    markedPresent.append(applicationNumber)
+                elif statusUpdate == "absent":
+                    application.present = False
+                    application.save_to_db()
+                    markedAbsent.append(applicationNumber)
+                else:
+                    couldNotResolve.append(applicationNumber)
+                    
+            else:
+                couldNotResolve.append(applicationNumber)
+
+
+        return {"message":"Marked applications {} present. Marked {} Absent. Could not resolve applications with numbers {}.".format(str(markedPresent), str(markedAbsent), str(couldNotResolve))}, 200, {"Access-Control-Allow-Origin":"*"}
+
 
 # A resource to register a new strain
 class ApplicationRegistrar(Resource):

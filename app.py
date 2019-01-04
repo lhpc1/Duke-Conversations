@@ -108,6 +108,7 @@ api.add_resource(StudentReviewListResource, "/studentreviews")
 api.add_resource(StudentReviewRegistrar, "/review/student/register")
 api.add_resource(StudentReviewResource, "/review/student/<int:id>")
 
+
 if __name__ == "__main__":
     # We import SQLAlchemy here from DB alchemy due to the problems with circular importsself.
     # Our models and in turn resources use SQL Alchemy, so we need to import the final version here
