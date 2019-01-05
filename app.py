@@ -24,7 +24,9 @@ from resources.ReviewResource import StudentReviewResource, StudentReviewListRes
 
 # Initialize our flask application
 app = Flask(__name__)
-cors = CORS(app)
+CORS(app, origins="*", allow_headers=[
+    "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+    supports_credentials=True)
 
 # Configuring SQL Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
