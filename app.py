@@ -24,15 +24,12 @@ from resources.ReviewResource import StudentReviewResource, StudentReviewListRes
 
 # Initialize our flask application
 app = Flask(__name__)
-CORS(app, origins="*", allow_headers=[
-    "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
-    supports_credentials=True)
+CORS(app)
 
 # Configuring SQL Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JWT_SECRET_KEY'] = 'lemon'
-app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key = "jose"
 app.config.update(
 	DEBUG=True,
