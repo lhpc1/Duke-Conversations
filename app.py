@@ -6,7 +6,7 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 # Configure mail client
 from flask_mail import Mail, Message
@@ -24,12 +24,13 @@ from resources.ReviewResource import StudentReviewResource, StudentReviewListRes
 
 # Initialize our flask application
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app)
 
 # Configuring SQL Database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JWT_SECRET_KEY'] = 'lemon'
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key = "jose"
 app.config.update(
 	DEBUG=True,

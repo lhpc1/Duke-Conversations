@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask_restful import Resource, reqparse
 from models.StudentModel import StudentModel
 from db import db
+from flask_cors import CORS, cross_origin
 
 from flask_login import login_required
 
@@ -69,6 +70,7 @@ class StudentResource(Resource):
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # GET a particular strain's information by id
+    @cross_origin()
     def get(self,netID):
         student = StudentModel.find_by_id(netID)
         if(student):
