@@ -9,6 +9,9 @@ from models.UserModel import UserModel
 from db import db
 from flask_jwt_extended import jwt_required
 
+import time
+import datetime
+
 class DinnerResource(Resource):
     # Defining a parser that will handle data collection from post requests
     parser = reqparse.RequestParser()
@@ -99,6 +102,13 @@ class DinnerResource(Resource):
 
         if(DinnerModel.find_by_id(id)):
             dinnerOfInterest = DinnerModel.find_by_id(id)
+
+            if not ProfessorModel.find_by_id(data["professorID"]):
+                return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+
+            if not UserModel.find_by_id(data["userID"]):
+                return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+
             dinnerOfInterest.timeStamp = data["timeStamp"]
             dinnerOfInterest.topic = data["topic"]
             dinnerOfInterest.description = data["description"]
@@ -106,15 +116,12 @@ class DinnerResource(Resource):
             dinnerOfInterest.address = data["address"]
             dinnerOfInterest.dietaryRestrictions = data["dietaryRestrictions"]
 
-            if ProfessorModel.find_by_id(data["professorID"]):
-                if ProfessorModel.find_by_id(dinnerOfInterest.professorID):
-                    professor = ProfessorModel.find_by_id(dinnerOfInterest.professorID)
-                    professor.dinnerCount -= 1
-                    professor.save_to_db();
+            if ProfessorModel.find_by_id(dinnerOfInterest.professorID):
+                professor = ProfessorModel.find_by_id(dinnerOfInterest.professorID)
+                professor.dinnerCount -= 1
+                professor.save_to_db();
 
-                dinnerOfInterest.professorID = data["professorID"]
-            else:
-                return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+            dinnerOfInterest.professorID = data["professorID"]
 
             dinnerOfInterest.catering = data["catering"]
             dinnerOfInterest.transportation = data["transportation"]
@@ -122,16 +129,14 @@ class DinnerResource(Resource):
 
 
             # Assign new userID
-            if UserModel.find_by_id(data["userID"]):
-                # If there is an older user, subtract their total dinner count by one
-                if UserModel.find_by_id(dinnerOfInterest.userID):
-                    user = UserModel.find_by_id(dinnerOfInterest.userID)
-                    user.dinnerCount -= 1
-                    user.semDinnerCount -= 1
-                    user.save_to_db();
-                dinnerOfInterest.userID = data["userID"]
-            else:
-                return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+            # If there is an older user, subtract their total dinner count by one
+            if UserModel.find_by_id(dinnerOfInterest.userID):
+                user = UserModel.find_by_id(dinnerOfInterest.userID)
+                user.dinnerCount -= 1
+                user.semDinnerCount -= 1
+                user.save_to_db();
+            dinnerOfInterest.userID = data["userID"]
+
         else:
             dinnerOfInterest = DinnerModel(**data)
 
@@ -210,28 +215,43 @@ class DinnerConfirmer(Resource):
     # Email every applicant with a confirmed status upon
     @classmethod
     def notifyRecipients(cls, id):
+
         from app import mail
+        from flask_mail import Message
 
         dinner = DinnerModel.find_by_id(id)
 
-        for application in dinner.applications:
+        # Send a confirmation email to the user
+        try:
+            dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+            msg = Message("Dinner Confirmed",
+              sender="dukeconversationsreminders@gmail.com",
+              recipients=["{}@duke.edu".format(dinner.user.email)]) #entryOfInterest.email
+            msg.html = "You've published the dinner hosted by {} {}. It is on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+            mail.send(msg)
+        except Exception as e:
+            return {"Message": str(e)}
 
-            if application.status is 1:
+        # Email all accepted and waitlisted applicants
+        for application in dinner.applications:
+            print("Applications Status {}".format(application.status))
+            if application.status == 1:
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
                     msg = Message("Accepted",
-                      sender="yasab27@gmail.com",
+                      sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    print("{}@duke.edu".format(application.studentID))
                     msg.html = "You've been accepted to the dinner hosted by {} {}. It is on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
                     mail.send(msg)
                 except Exception as e:
                     return {"Message": str(e)}
 
-            if application.status is 3:
+            if application.status == 3:
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
                     msg = Message("Accepted",
-                      sender="yasab27@gmail.com",
+                      sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
                     msg.html = "You've been waitlisted to the dinner hosted by {} {}. It is on {}. Please contact us if you'd like to be removed from the waitlist.".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
                     mail.send(msg)

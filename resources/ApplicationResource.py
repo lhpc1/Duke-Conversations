@@ -187,17 +187,17 @@ class ApplicationCheckin(Resource):
 
                 # If the applicant is being updated to present, this indicates that the user has been selected, so the
                 # number of selections for the student associated to the application needs to be increased by one
-                if statusUpdate == "present":
+                if statusUpdate is True:
                     application.present = True
                     application.save_to_db()
                     markedPresent.append(applicationNumber)
-                elif statusUpdate == "absent":
+                elif statusUpdate is False:
                     application.present = False
                     application.save_to_db()
                     markedAbsent.append(applicationNumber)
                 else:
                     couldNotResolve.append(applicationNumber)
-                    
+
             else:
                 couldNotResolve.append(applicationNumber)
 

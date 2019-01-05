@@ -21,10 +21,20 @@ def gentables():
 # def generateMessage(student, dinner):
 
 @manager.command
+def createSuperAdmin():
+    a = UserModel("superadmin", "pass" , "yasab27@gmail.com", 2,"ce10", "12345", "Super","Admin", "123-123-1234",1, "Lorem Ipsum" )
+    db.session.add(a)
+    db.session.commit()
+
+    allUsers = db.session.query(UserModel).all()
+    for user in allUsers:
+        print("ADMINS: {} {} ROLE: {}".format(user.firstName, user.lastName, user.role))
+
+@manager.command
 def populate():
     a = UserModel("coopedmunds", "pass" , "cooper.edmunds@duke.edu", 2,"ce10", "12345", "Cooper","Edmunds", "123-123-1234",1, "Lorem Ipsum" )
-    b = UserModel("yasab27", "pass" , "ymb@duke.edu", 2,"ymb8", "12345", "Yasa","Baig", "123-123-1234",1, "Lorem Ipsum" )
-    c = UserModel("grantbes", "pass" , "gbes@duke.edu", 2,"gbe1", "12345", "Grant","Besner", "123-123-1234",1, "Lorem Ipsum" )
+    b = UserModel("yasab27", "pass" , "yasa.baig@duke.edu", 2,"ymb8", "12345", "Yasa","Baig", "123-123-1234",1, "Lorem Ipsum" )
+    c = UserModel("grantbes", "pass" , "grantbesner@duke.edu", 2,"gbe1", "12345", "Grant","Besner", "123-123-1234",1, "Lorem Ipsum" )
 
     db.session.add(a)
     db.session.add(b)
@@ -49,7 +59,7 @@ def emailStudents(dinner):
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
                     msg = Message("Three Day Notification!",
-                      sender="yasab27@gmail.com",
+                      sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
                     msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
                     mail.send(msg)
@@ -61,7 +71,7 @@ def emailStudents(dinner):
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
                     msg = Message("One Day Notification!",
-                      sender="yasab27@gmail.com",
+                      sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
                     msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
                     mail.send(msg)
@@ -79,7 +89,7 @@ def remindProfessor(dinner):
         try:
             dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
             msg = Message("Three Day Reminder!",
-              sender="yasab27@gmail.com",
+              sender="dukeconversationsreminders@gmail.com",
               recipients=[dinner.professor.email]) #entryOfInterest.email
             msg.html = "Don't forget you have a dinner on {}. Yay!".format(dinnerTime)
             mail.send(msg)
@@ -89,7 +99,7 @@ def remindProfessor(dinner):
         try:
             dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
             msg = Message("One Day Notification!",
-              sender="yasab27@gmail.com",
+              sender="dukeconversationsreminders@gmail.com",
               recipients=[dinner.professor.email]) #entryOfInterest.email
             msg.html = "Don't forget you have a dinner with on {}. Yay!".format( dinnerTime)
             mail.send(msg)
@@ -107,7 +117,7 @@ def remindUser(dinner):
         try:
             dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
             msg = Message("Three Day Reminder!",
-              sender="yasab27@gmail.com",
+              sender="dukeconversationsreminders@gmail.com",
               recipients=[dinner.user.email]) #entryOfInterest.email
             msg.html = "Don't forget you have a dinner on {}. Yay!".format(dinnerTime)
             mail.send(msg)
@@ -117,7 +127,7 @@ def remindUser(dinner):
         try:
             dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
             msg = Message("One Day Notification!",
-              sender="yasab27@gmail.com",
+              sender="dukeconversationsreminders@gmail.com",
               recipients=[dinner.user.email]) #entryOfInterest.email
             msg.html = "Don't forget you have a dinner with on {}. Yay!".format( dinnerTime)
             mail.send(msg)

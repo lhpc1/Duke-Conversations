@@ -31,8 +31,8 @@
   <li> POST "/application/update" will bulk update many application statuses simultaneously</li>
   <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and entries (ints) are their new statuses. 0 is pending, 1 is confirmed, 2 is denied, 3 is waitlisted. Ex: {"1": 0 , "2": 3} </p>
 
-  <li> POST "/application/checkin" will bulk update many applications, marking them as present or absent.</li>
-  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and values are whether the item is "present"  or "absent". Ex: {"1":"present", "2":"absent"}</p>
+  <li> POST "/application/checkin" will bulk update many applications, marking them as present (true) or absent (false).</li>
+  <p> This endpoint accepts a dict where keywords (Strings) are the ids of the applications and values are whether the item is "present"  or "absent". Ex: {"1": true, "2": false}</p>
 
   <li> POST "/professor/register" will create a new professor object   </li>
     <ul>
