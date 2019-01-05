@@ -92,7 +92,7 @@ class StudentResource(Resource):
             studentOfInterest.major = data["major"]
             studentOfInterest.graduationYear = data["graduationYear"]
         else:
-            studentOfInterest = StudentModel(**data)
+            studentOfInterest = StudentModel(netID =netID,**data)
 
         studentOfInterest.save_to_db()
 
