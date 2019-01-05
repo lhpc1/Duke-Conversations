@@ -82,7 +82,7 @@ class ProfessorResource(Resource):
             professorOfInterest.school = data["school"]
             professorOfInterest.email = data["email"]
         else:
-            professorOfInterest = ProfessorModel(**data)
+            professorOfInterest = ProfessorModel(uniqueID=uniqueID,**data)
 
         professorOfInterest.save_to_db()
 

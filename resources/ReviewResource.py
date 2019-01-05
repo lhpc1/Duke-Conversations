@@ -73,7 +73,7 @@ class StudentReviewResource(Resource):
                 return {"Message":"No dinner with that ID could be found, please enter a valid dinner ID"}, 404
 
         else:
-            reviewOfInterest = StudentReviewModel(**data)
+            reviewOfInterest = StudentReviewModel(id=id,**data)
 
         reviewOfInterest.save_to_db()
 

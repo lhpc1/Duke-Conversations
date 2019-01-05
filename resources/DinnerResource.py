@@ -138,7 +138,7 @@ class DinnerResource(Resource):
             dinnerOfInterest.userID = data["userID"]
 
         else:
-            dinnerOfInterest = DinnerModel(**data)
+            dinnerOfInterest = DinnerModel(id=id,**data)
 
         # If the dinner gains a userID, but is not completely done "not 2", then update the status to 1, which
         # means it is claimed but does not have a user yet.
