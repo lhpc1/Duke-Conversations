@@ -122,7 +122,6 @@ class DinnerResource(Resource):
                 professor.save_to_db();
 
             dinnerOfInterest.professorID = data["professorID"]
-
             dinnerOfInterest.catering = data["catering"]
             dinnerOfInterest.transportation = data["transportation"]
             dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
@@ -138,6 +137,13 @@ class DinnerResource(Resource):
             dinnerOfInterest.userID = data["userID"]
 
         else:
+
+            if not ProfessorModel.find_by_id(data["professorID"]):
+                return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+
+            if not UserModel.find_by_id(data["userID"]):
+                return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+
             dinnerOfInterest = DinnerModel(id=id,**data)
 
         # If the dinner gains a userID, but is not completely done "not 2", then update the status to 1, which

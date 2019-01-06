@@ -146,6 +146,12 @@ class DinnerModel(db.Model):
         return allDinners
 
     @classmethod
+    def return_by_professorID(cls, profID):
+        allDinners = cls.query.filter_by(professorID= profID)
+        return allDinners
+
+
+    @classmethod
     def return_all_dinners_by_status( cls, status):
         allDinners = cls.query.filter_by(status=status)
         allDinnersJSON = [dinner.json() for dinner in allDinners]

@@ -4,6 +4,7 @@
 from flask import Flask, request
 from flask_restful import Resource, reqparse
 from models.ProfessorModel import ProfessorModel
+from models.DinnerModel import DinnerModel
 from db import db
 
 class ProfessorResource(Resource):
@@ -91,10 +92,12 @@ class ProfessorResource(Resource):
     def delete(self,uniqueID):
 
         if(ProfessorModel.find_by_id(uniqueID)):
+            if DinnerModel.return_by_professorID(uniqueID):
+                return {"Message":"Professor with id {} is assigned to dinners and cannot be deleted.",format(uniqueID)}, 200, {"Access-Control-Allow-Origin":"*"}
             ProfessorModel.find_by_id(uniqueID).delete_from_db()
-            return {"Message":"Professor with id " + uniqueID + " deleted."}, 200, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"Professor with id {} deleted.",format(uniqueID)}, 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"Message":"No professor with " + uniqueID + " found."}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No professor with {} found.".format(uniqueID)}, 200, {"Access-Control-Allow-Origin":"*"}
 
 # A resource to return a list of all strains in the db
 class ProfessorListResource(Resource):
