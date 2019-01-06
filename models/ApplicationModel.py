@@ -70,7 +70,7 @@ class ApplicationModel(db.Model):
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
-        return {"id":self.id, "timeStamp": str(self.timeStamp), "status":self.status, "interest":self.interest, "confirmed":self.confirmed, "present":self.present, "studentID": self.studentID,
+        return {"id":self.id, "timeStamp": str(self.timeStamp), "status":self.status, "interest":self.interest, "confirmed":self.confirmed, "present":self.present, "studentID": self.studentID, "student":self.student.json(),
         "dinnerID": self.dinnerID}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
