@@ -93,7 +93,7 @@ class ProfessorResource(Resource):
 
         if(ProfessorModel.find_by_id(uniqueID)):
             if DinnerModel.return_by_professorID(uniqueID):
-                return {"Message":"Professor with id {} is assigned to dinner(s) and cannot be deleted. Sorry bby <3 <3 <3".format(uniqueID)}, 200, {"Access-Control-Allow-Origin":"*"}
+                return {"Message":"Professor with id {} is assigned to dinner(s) and cannot be deleted. Sorry bby <3 <3 <3".format(uniqueID)}, 400, {"Access-Control-Allow-Origin":"*"}
             ProfessorModel.find_by_id(uniqueID).delete_from_db()
             return {"Message":"Professor with id {} deleted.".format(uniqueID)}, 200, {"Access-Control-Allow-Origin":"*"}
 

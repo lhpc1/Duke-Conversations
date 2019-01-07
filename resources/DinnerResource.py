@@ -78,7 +78,7 @@ class DinnerResource(Resource):
 
     parser.add_argument("userID",
         type = int,
-        required = True,
+        required = False,
         help = "userID cannot be left blank. Must be int."
     )
 
@@ -106,8 +106,9 @@ class DinnerResource(Resource):
             if not ProfessorModel.find_by_id(data["professorID"]):
                 return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
-            if not UserModel.find_by_id(data["userID"]):
-                return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+            if data["userID"]:
+                if not UserModel.find_by_id(data["userID"]):
+                    return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
             dinnerOfInterest.timeStamp = data["timeStamp"]
             dinnerOfInterest.topic = data["topic"]
@@ -129,12 +130,13 @@ class DinnerResource(Resource):
 
             # Assign new userID
             # If there is an older user, subtract their total dinner count by one
-            if UserModel.find_by_id(dinnerOfInterest.userID):
-                user = UserModel.find_by_id(dinnerOfInterest.userID)
-                user.dinnerCount -= 1
-                user.semDinnerCount -= 1
-                user.save_to_db();
-            dinnerOfInterest.userID = data["userID"]
+            if data["userID"]:
+                if UserModel.find_by_id(dinnerOfInterest.userID):
+                    user = UserModel.find_by_id(dinnerOfInterest.userID)
+                    user.dinnerCount -= 1
+                    user.semDinnerCount -= 1
+                    user.save_to_db();
+                dinnerOfInterest.userID = data["userID"]
 
         else:
 
@@ -154,10 +156,11 @@ class DinnerResource(Resource):
         dinnerOfInterest.save_to_db()
 
         # increase the number of dinners for this new userID
-        user = UserModel.find_by_id(data["userID"])
-        user.dinnerCount += 1
-        user.semDinnerCount += 1
-        user.save_to_db();
+        if data["userID"]:
+            user = UserModel.find_by_id(data["userID"])
+            user.dinnerCount += 1
+            user.semDinnerCount += 1
+            user.save_to_db();
 
         professor = ProfessorModel.find_by_id(data["professorID"])
         professor.dinnerCount += 1
