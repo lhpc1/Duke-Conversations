@@ -329,6 +329,12 @@ class DinnerRegistrar(Resource):
         help = "Professor ID cannot be left blank. Must be integer."
     )
 
+    parser.add_argument("userID",
+        type = int,
+        required = False,
+        help = "Professor ID cannot be left blank. Must be integer."
+    )
+
     def options (self):
         return {'Allow' : 'PUT' }, 200, \
         { 'Access-Control-Allow-Origin': '*', \
@@ -342,6 +348,12 @@ class DinnerRegistrar(Resource):
 
         if ProfessorModel.find_by_id(data["professorID"]) is None:
             return {"Message":"Dinner could not be created as no such professor could be found with id {}.".format(data["professorID"])}, 404
+
+        if data["userID"]:
+            if data["userID"] == -1:
+                pass
+            elif not UserModel.find_by_id(data["userID"]):
+                return {"Message":"There is no user in the database with that ID. Could not create dinner"}, 404, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new ProfessorModel object containing the passed properties.
         newDinner = DinnerModel(**data) ## ** automatically separates dict keywords into arguments

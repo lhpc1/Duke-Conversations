@@ -86,7 +86,7 @@ class DinnerModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, timeStamp, topic, description, studentLimit, address, dietaryRestrictions, professorID):
+    def __init__( self, timeStamp, topic, description, studentLimit, address, dietaryRestrictions, professorID, userID = None):
 
         # Instantiating the basic information about the dinner
         self.timeStamp = timeStamp
@@ -96,13 +96,16 @@ class DinnerModel(db.Model):
         self.address = address
         self.dietaryRestrictions = dietaryRestrictions
         self.professorID = professorID
+        if not userID:
+            self.userID = -1
+        else:
+            self.userID = userID
+
         # Setting defaults
         self.invitationSentTimeStamp = "Not Sent"
         self.catering = False
         self.transportation = False
-        self.userID = None
         self.status = 0
-        self.userID = -1
 
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
