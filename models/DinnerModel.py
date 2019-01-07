@@ -102,6 +102,7 @@ class DinnerModel(db.Model):
         self.transportation = False
         self.userID = None
         self.status = 0
+        self.userID = -1
 
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)

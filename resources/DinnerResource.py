@@ -127,7 +127,6 @@ class DinnerResource(Resource):
             dinnerOfInterest.transportation = data["transportation"]
             dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
 
-
             # Assign new userID
             # If there is an older user, subtract their total dinner count by one
             if data["userID"]:
@@ -208,16 +207,28 @@ class DinnerStatusCodeResource(Resource):
 class DinnerConfirmer(Resource):
 
     def get(self, id):
+
         # Get the dinner, change status, and then email everyone it is complete
         if DinnerModel.find_by_id(id):
             dinnerToConfirm = DinnerModel.find_by_id(id)
         else:
-            return {"Message":"No dinner could be found with id  {}".format(id)}
+            return {"Message":"No dinner could be found with id  {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
+
+        if not UserModel.find_by_id(dinnerToConfirm.userID):
+            return {"Message":"This dinner is unclaimed and cannot be published"}, 400, {"Access-Control-Allow-Origin":"*"}
 
         dinnerToConfirm.status = 2
         dinnerToConfirm.save_to_db()
 
+        # Designate all pending applications who are not waitlisted as rejected
+        for application in dinnerToConfirm.applications:
+            if application.status == 0:
+                application.status = 2
+                application.save_to_db()
+
         DinnerConfirmer.notifyRecipients(id)
+
+        dinnerToConfirm.invitationSentTimeStamp = str(time.time())
 
         return {"Message":"Dinner with id {} is confirmed. All accepted applicants have been emailed".format(id)}, 200, {"Access-Control-Allow-Origin":"*"}
 
