@@ -107,7 +107,9 @@ class DinnerResource(Resource):
                 return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
             if data["userID"]:
-                if not UserModel.find_by_id(data["userID"]):
+                if data["userID"] == -1:
+                    pass
+                elif not UserModel.find_by_id(data["userID"]):
                     return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
             dinnerOfInterest.timeStamp = data["timeStamp"]
@@ -142,7 +144,7 @@ class DinnerResource(Resource):
             if not ProfessorModel.find_by_id(data["professorID"]):
                 return {"Message":"There is no professor in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
-            if not UserModel.find_by_id(data["userID"]):
+            if not UserModel.find_by_id(data["userID"]) or data["userID"] != -1:
                 return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
             dinnerOfInterest = DinnerModel(id=id,**data)
@@ -155,7 +157,7 @@ class DinnerResource(Resource):
         dinnerOfInterest.save_to_db()
 
         # increase the number of dinners for this new userID
-        if data["userID"]:
+        if data["userID"] and UserModel.find_by_id(data["userID"]):
             user = UserModel.find_by_id(data["userID"])
             user.dinnerCount += 1
             user.semDinnerCount += 1
