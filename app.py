@@ -66,11 +66,12 @@ def login():
     if UserModel.find_by_username(username) is not None:
     	user = UserModel.find_by_username(username)
     else:
-    	return jsonify({"msg": "No user with username {}".format(username)}), 400
+    	return jsonify({"msg": "No user with username {}".format(username)}), 404
 
     if password == user.password:
         access_token = create_access_token(identity=username)
-        returnJSON = user.json()
+        returnJSON = {}
+        returnJSON["user"] = user.json()
         returnJSON["access_token"] = access_token
     else:
         return jsonify({"msg": "Invalid Password"}), 400

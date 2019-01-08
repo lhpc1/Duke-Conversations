@@ -140,7 +140,7 @@ class UserRegistrar(Resource):
         current_user = get_jwt_identity()
         user = UserModel.find_by_username(current_user)
         if user.role is not 0:
-            return {"Message":"Only super adminds may create new users. You lack permissions."}, 401
+            return {"Message":"Only super admins may create new users. You lack permissions."}, 401
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
         data = UserRegistrar.parser.parse_args();
