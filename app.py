@@ -22,6 +22,9 @@ from resources.ApplicationResource import ApplicationResource, ApplicationRegist
 from resources.UserResource import UserResource, UserListResource, UserRegistrar
 from resources.ReviewResource import StudentReviewResource, StudentReviewListResource, StudentReviewRegistrar
 
+# For JWT Token length configuration
+from datetime import timedelta
+
 # Initialize our flask application
 app = Flask(__name__)
 CORS(app)
@@ -31,6 +34,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JWT_SECRET_KEY'] = 'lemon'
 app.secret_key = "jose"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days = 1)
 app.config.update(
 	DEBUG=True,
 	#EMAIL SETTINGS
