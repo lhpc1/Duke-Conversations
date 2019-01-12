@@ -6,7 +6,7 @@ from flask_restful import Resource, reqparse
 from models.StudentModel import StudentModel
 from db import db
 from flask_cors import CORS, cross_origin
-
+from flask_jwt_extended import jwt_required
 from flask_login import login_required
 
 
@@ -70,6 +70,7 @@ class StudentResource(Resource):
     #       'Access-Control-Allow-Headers' : "Content-Type"}
 
     # GET a particular strain's information by id
+    @jwt_required
     def get(self,netID):
         student = StudentModel.find_by_id(netID)
         if(student):
@@ -78,6 +79,7 @@ class StudentResource(Resource):
         return {"message":"No student could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
+    @jwt_required
     def put(self, netID):
 
         data = StudentResource.parser.parse_args()
@@ -98,6 +100,7 @@ class StudentResource(Resource):
 
         return StudentModel.find_by_id(netID).json(), 200, {"Access-Control-Allow-Origin":"*"}
 
+    @jwt_required
     def delete(self,netID):
 
         if(StudentModel.find_by_id(netID)):
@@ -110,6 +113,7 @@ class StudentResource(Resource):
 class StudentListResource(Resource):
 
     # Return all students in a json format
+    @jwt_required
     def get(self):
         return StudentModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -174,7 +178,7 @@ class StudentRegistrar(Resource):
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
-
+    @jwt_required
     def post(self):
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
