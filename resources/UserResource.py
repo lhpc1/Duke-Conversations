@@ -22,7 +22,7 @@ class UserResource(Resource):
             return {"Message":"You cannot view information about other users unless you are a super admin."}, 401
 
         if(user):
-            return user.json(), {"Access-Control-Allow-Origin":"*"}
+            return user.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
         return {"message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
