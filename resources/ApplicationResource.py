@@ -7,6 +7,7 @@ from models.ApplicationModel import ApplicationModel
 from models.StudentModel import StudentModel
 from models.DinnerModel import DinnerModel
 from db import db
+from flask_jwt_extended import jwt_required
 
 class ApplicationResource(Resource):
 
