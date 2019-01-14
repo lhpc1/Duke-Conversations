@@ -14,7 +14,11 @@ class UserResource(Resource):
     # GET a particular strain's information by id
     @jwt_required
     def get(self,id):
+        
         user = UserModel.find_by_id(id)
+
+        if not user:
+            return {"message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
         current_user = get_jwt_identity()
         currentUser = UserModel.find_by_username(current_user)
