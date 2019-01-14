@@ -90,12 +90,6 @@ class DinnerResource(Resource):
 
         return {"message":"No Dinner could be found with id {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
 
-    def options (self):
-        return {'Allow' : 'PUT, GET, POST' }, 200, \
-        { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET', \
-          'Access-Control-Allow-Headers' : "Content-Type"}
-
     def put(self, id):
 
         data = DinnerResource.parser.parse_args()
@@ -172,7 +166,8 @@ class DinnerResource(Resource):
     def delete(self,id):
 
         if(DinnerModel.find_by_id(id)):
-            DinnerModel.find_by_id(id).delete_from_db()
+            dinner = DinnerModel.find_by_id(id)
+            dinner.delete_from_db()
             return {"Message":"Dinner with id {} deleted.".format(id)}, 200, {"Access-Control-Allow-Origin":"*"}
 
         return {"Message":"No dinner with id {} found.".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
@@ -280,7 +275,6 @@ class DinnerConfirmer(Resource):
                 except Exception as e:
                     return {"Message": str(e)}
 
-
 # A resource to register a new strain
 class DinnerRegistrar(Resource):
 
@@ -335,11 +329,6 @@ class DinnerRegistrar(Resource):
         help = "Professor ID cannot be left blank. Must be integer."
     )
 
-    def options (self):
-        return {'Allow' : 'PUT' }, 200, \
-        { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET', \
-          'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
     def post(self):

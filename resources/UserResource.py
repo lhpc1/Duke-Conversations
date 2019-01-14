@@ -12,8 +12,15 @@ class UserResource(Resource):
     parser = reqparse.RequestParser()
 
     # GET a particular strain's information by id
+    @jwt_required
     def get(self,id):
         user = UserModel.find_by_id(id)
+
+        current_user = get_jwt_identity()
+        user = UserModel.find_by_username(current_user)
+        if user.id != current_user.id or current_user.id != 0:
+            return {"Message":"You cannot view information about other users unless you are a super admin."}, 401
+
         if(user):
             return user.json(), {"Access-Control-Allow-Origin":"*"}
 
@@ -42,13 +49,13 @@ class UserResource(Resource):
     #
 
     # Only super admins can delete other users
-    # @jwt_required
+    @jwt_required
     def delete(self,id):
 
         current_user = get_jwt_identity()
         user = UserModel.find_by_username(current_user)
         if user.role is not 0:
-            return {"Message":"Only super adminds may delete users. You lack permissions."}, 401
+            return {"Message":"Only super admids may delete users. You lack permissions."}, 401
 
         if(UserModel.find_by_id(id)):
             UserModel.find_by_id(id).delete_from_db()
@@ -63,6 +70,11 @@ class UserListResource(Resource):
     # @jwt_required
     @jwt_required
     def get(self):
+        current_user = get_jwt_identity()
+        user = UserModel.find_by_username(current_user)
+        if user.role is not 0:
+            return {"Message":"Only super admins may create new users. You lack permissions."}, 401
+
         return UserModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
 class UserRegistrar(Resource):
