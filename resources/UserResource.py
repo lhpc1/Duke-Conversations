@@ -19,34 +19,12 @@ class UserResource(Resource):
         current_user = get_jwt_identity()
         user = UserModel.find_by_username(current_user)
         if user.id != current_user.id or current_user.id != 0:
-            return {"Message":"You cannot view information about other users unless you are a super admin."}, 401
+            return {"Message":"You cannot view information about other users unless you are a super admin."}, 401,  {"Access-Control-Allow-Origin":"*"}
 
         if(user):
             return user.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
         return {"message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
-
-    # # Allow for updates to professors
-    # def put(self, uniqueID):
-    #
-    #     data = ProfessorResource.parser.parse_args()
-    #
-    #     if(ProfessorModel.find_by_id(uniqueID)):
-    #         professorOfInterest = ProfessorModel.find_by_id(uniqueID)
-    #         professorOfInterest.firstName = data["firstName"]
-    #         professorOfInterest.lastName = data["lastName"]
-    #         professorOfInterest.genderPronouns = data["genderPronouns"]
-    #         professorOfInterest.department = data["department"]
-    #         professorOfInterest.title = data["title"]
-    #         professorOfInterest.school = data["school"]
-    #         professorOfInterest.email = data["email"]
-    #     else:
-    #         professorOfInterest = ProfessorModel(**data)
-    #
-    #     professorOfInterest.save_to_db()
-    #
-    #     return ProfessorModel.find_by_id(uniqueID).json(),  200, {"Access-Control-Allow-Origin":"*"}
-    #
 
     # Only super admins can delete other users
     @jwt_required
