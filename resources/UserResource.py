@@ -14,7 +14,7 @@ class UserResource(Resource):
     # GET a particular strain's information by id
     @jwt_required
     def get(self,id):
-        
+
         user = UserModel.find_by_id(id)
 
         if not user:
@@ -22,7 +22,7 @@ class UserResource(Resource):
 
         current_user = get_jwt_identity()
         currentUser = UserModel.find_by_username(current_user)
-        if user.id != currentUser.id or currentUser.id != 0:
+        if user.id != currentUser.id and currentUser.id != 0:
             return {"Message":"You cannot view information about other users unless you are a super admin."}, 401,  {"Access-Control-Allow-Origin":"*"}
 
         if(user):
