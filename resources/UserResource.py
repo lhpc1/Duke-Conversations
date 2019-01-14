@@ -17,8 +17,8 @@ class UserResource(Resource):
         user = UserModel.find_by_id(id)
 
         current_user = get_jwt_identity()
-        user = UserModel.find_by_username(current_user)
-        if user.id != current_user.id or current_user.id != 0:
+        currentUser = UserModel.find_by_username(current_user)
+        if user.id != currentUser.id or currentUser.id != 0:
             return {"Message":"You cannot view information about other users unless you are a super admin."}, 401,  {"Access-Control-Allow-Origin":"*"}
 
         if(user):
