@@ -6,6 +6,7 @@ from flask_restful import Resource, reqparse
 from models.ProfessorModel import ProfessorModel
 from models.DinnerModel import DinnerModel
 from db import db
+from flask_jwt_extended import jwt_required
 
 class ProfessorResource(Resource):
 
@@ -61,6 +62,7 @@ class ProfessorResource(Resource):
     # )
 
     # GET a particular strain's information by id
+    @jwt_required
     def get(self,uniqueID):
         professorOfInterest = ProfessorModel.find_by_id(uniqueID)
         if(professorOfInterest):
@@ -69,6 +71,7 @@ class ProfessorResource(Resource):
         return {"message":"No professor could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
+    @jwt_required
     def put(self, uniqueID):
 
         data = ProfessorResource.parser.parse_args()
@@ -89,6 +92,7 @@ class ProfessorResource(Resource):
 
         return ProfessorModel.find_by_id(uniqueID).json(),  200, {"Access-Control-Allow-Origin":"*"}
 
+    @jwt_required
     def delete(self,uniqueID):
 
         if(ProfessorModel.find_by_id(uniqueID)):
@@ -103,6 +107,7 @@ class ProfessorResource(Resource):
 class ProfessorListResource(Resource):
 
     # Return all strains in a json format
+    @jwt_required
     def get(self):
         return ProfessorModel.return_all_professors(), 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -166,13 +171,8 @@ class ProfessorRegistrar(Resource):
     #     help = "School cannot be left blank"
     # )
 
-    def options (self):
-        return {'Allow' : 'PUT' }, 200, \
-        { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET', \
-          'Access-Control-Allow-Headers' : "Content-Type"}
-
     # Create a new strain, add it to the table
+    @jwt_required
     def post(self):
 
         # Acquire all of the data in a dict of each argument defined in the parser above.

@@ -83,6 +83,7 @@ class DinnerResource(Resource):
     )
 
     # GET a particular dinner's information by id
+    @jwt_required
     def get(self,id):
         found = DinnerModel.find_by_id(id)
         if(found):
@@ -90,6 +91,7 @@ class DinnerResource(Resource):
 
         return {"message":"No Dinner could be found with id {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
 
+    @jwt_required
     def put(self, id):
 
         data = DinnerResource.parser.parse_args()
@@ -163,6 +165,7 @@ class DinnerResource(Resource):
 
         return dinnerOfInterest.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
+    @jwt_required
     def delete(self,id):
 
         if(DinnerModel.find_by_id(id)):
@@ -176,6 +179,7 @@ class DinnerResource(Resource):
 class DinnerListResource(Resource):
 
     # Return all strains in a json format
+    @jwt_required
     def get(self):
         return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -188,6 +192,7 @@ class DinnerStatusCodeResource(Resource):
     parser.add_argument("id",type = str, location = "args")
 
     # Return a dinner by a status code
+    @jwt_required
     def get(self):
         data = DinnerStatusCodeResource.parser.parse_args()
 
@@ -203,6 +208,7 @@ class DinnerStatusCodeResource(Resource):
 # Get a dinner by and classify it as complete
 class DinnerConfirmer(Resource):
 
+    @jwt_required
     def get(self, id):
 
         # Get the dinner, change status, and then email everyone it is complete
@@ -331,6 +337,7 @@ class DinnerRegistrar(Resource):
 
 
     # Create a new strain, add it to the table
+    @jwt_required
     def post(self):
         # Acquire all of the data in a dict of each argument defined in the parser above.
         data = DinnerRegistrar.parser.parse_args();

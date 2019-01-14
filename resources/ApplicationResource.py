@@ -55,13 +55,8 @@ class ApplicationResource(Resource):
         help = "blackList cannot be left blank"
     )
 
-    def options (self):
-        return {'Allow' : 'PUT, POST' }, 200, \
-        { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
-          'Access-Control-Allow-Headers' : "Content-Type"}
-
     # GET a particular strain's information by id
+    @jwt_required
     def get(self,id):
         application = ApplicationModel.find_by_id(id)
         if(application):
@@ -69,6 +64,7 @@ class ApplicationResource(Resource):
 
         return {"message":"No application could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
+    @jwt_required
     def put(self,id):
         # Get the application which needs to be updated
         data = ApplicationResource.parser.parse_args()
@@ -92,13 +88,9 @@ class ApplicationResource(Resource):
 
 class ApplicationConfirmer(Resource):
 
-    def options (self):
-        return {'Allow' : 'PUT, POST' }, 200, \
-        { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
-          'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new object, add it to the table
+    @jwt_required
     def post(self):
 
         # Acquire the list of applications to update
@@ -155,13 +147,9 @@ class ApplicationConfirmer(Resource):
 
 class ApplicationCheckin(Resource):
 
-    def options (self):
-        return {'Allow' : 'PUT, POST' }, 200, \
-        { 'Access-Control-Allow-Origin': '*', \
-          'Access-Control-Allow-Methods' : 'PUT,GET, POST', \
-          'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
+    @jwt_required
     def post(self):
 
         # Acquire the list of applications to update
@@ -236,6 +224,7 @@ class ApplicationRegistrar(Resource):
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
+    @jwt_required
     def post(self):
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
