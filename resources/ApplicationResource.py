@@ -57,7 +57,7 @@ class ApplicationResource(Resource):
     )
 
     # GET a particular strain's information by id
-    @jwt_required
+    # @jwt_required
     def get(self,id):
         application = ApplicationModel.find_by_id(id)
         if(application):
@@ -65,7 +65,7 @@ class ApplicationResource(Resource):
 
         return {"message":"No application could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
-    @jwt_required
+    # @jwt_required
     def put(self,id):
         # Get the application which needs to be updated
         data = ApplicationResource.parser.parse_args()
@@ -225,7 +225,7 @@ class ApplicationRegistrar(Resource):
           'Access-Control-Allow-Headers' : "Content-Type"}
 
     # Create a new strain, add it to the table
-    @jwt_required
+    # @jwt_required
     def post(self):
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
