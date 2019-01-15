@@ -83,7 +83,7 @@ class DinnerResource(Resource):
     )
 
     # GET a particular dinner's information by id
-    @jwt_required
+    # @jwt_required
     def get(self,id):
         found = DinnerModel.find_by_id(id)
         if(found):
@@ -91,7 +91,7 @@ class DinnerResource(Resource):
 
         return {"message":"No Dinner could be found with id {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
 
-    @jwt_required
+    # @jwt_required
     def put(self, id):
 
         data = DinnerResource.parser.parse_args()
@@ -179,7 +179,7 @@ class DinnerResource(Resource):
 class DinnerListResource(Resource):
 
     # Return all strains in a json format
-    @jwt_required
+    # @jwt_required
     def get(self):
         return DinnerModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 

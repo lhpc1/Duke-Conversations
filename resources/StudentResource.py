@@ -70,7 +70,7 @@ class StudentResource(Resource):
     #       'Access-Control-Allow-Headers' : "Content-Type"}
 
     # GET a particular strain's information by id
-    @jwt_required
+    # @jwt_required
     def get(self,netID):
         student = StudentModel.find_by_id(netID)
         if(student):
@@ -79,7 +79,7 @@ class StudentResource(Resource):
         return {"message":"No student could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
-    @jwt_required
+    # @jwt_required
     def put(self, netID):
 
         data = StudentResource.parser.parse_args()
