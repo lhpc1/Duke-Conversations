@@ -68,7 +68,7 @@ class ProfessorResource(Resource):
         if(professorOfInterest):
             return professorOfInterest.json(), {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No professor could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No professor could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
     @jwt_required
@@ -180,7 +180,7 @@ class ProfessorRegistrar(Resource):
 
         # Error trapping to see if a professor already exists with that particular idea
         if(ProfessorModel.find_by_id(data.uniqueID)):
-            return {"Error":"A professor with that Unique ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"A professor with that Unique ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new ProfessorModel object containing the passed properties.
         newProf = ProfessorModel(**data) ## ** automatically separates dict keywords into arguments

@@ -76,7 +76,7 @@ class StudentResource(Resource):
         if(student):
             return student.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No student could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No student could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
     # @jwt_required
@@ -186,7 +186,7 @@ class StudentRegistrar(Resource):
 
         # Error trapping to see if a student already exists with that particular idea
         if(StudentModel.find_by_id(data.netID)):
-            return {"Error":"A student with that net ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"A student with that net ID already exists"}, 400, {"Access-Control-Allow-Origin":"*"}
 
         # Create a new StudentModel object containing the passed properties.
         netStudent = StudentModel(**data) ## ** automatically separates dict keywords into arguments

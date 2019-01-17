@@ -53,20 +53,20 @@ jwt = JWTManager(app) #/ auth
 @app.route('/login', methods=['POST'])
 def login():
     if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
+        return jsonify({"Message": "Missing JSON in request"}), 400
 
     username = request.json.get('username', None)
     password = request.json.get('password', None)
     if not username:
-    	return jsonify({"msg": "Missing username parameter"}), 400
+    	return jsonify({"Message": "Missing username parameter"}), 400
     if not password:
-    	return jsonify({"msg": "Missing password parameter"}), 400
+    	return jsonify({"Message": "Missing password parameter"}), 400
 
     # See if there is a user with this particular username
     if UserModel.find_by_username(username) is not None:
     	user = UserModel.find_by_username(username)
     else:
-    	return jsonify({"msg": "No user with username {}".format(username)}), 404
+    	return jsonify({"Message": "No user with username {}".format(username)}), 404
 
     if password == user.password:
         access_token = create_access_token(identity=username)
@@ -74,7 +74,7 @@ def login():
         returnJSON["user"] = user.json()
         returnJSON["access_token"] = access_token
     else:
-        return jsonify({"msg": "Invalid Password"}), 400
+        return jsonify({"Message": "Invalid Password"}), 400
 
     return jsonify(returnJSON), 200
 

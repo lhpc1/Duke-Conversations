@@ -18,7 +18,7 @@ class UserResource(Resource):
         user = UserModel.find_by_id(id)
 
         if not user:
-            return {"message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
+            return {"Message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
         current_user = get_jwt_identity()
         currentUser = UserModel.find_by_username(current_user)
@@ -28,7 +28,7 @@ class UserResource(Resource):
         if(user):
             return user.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
     # Only super admins can delete other users
     @jwt_required
