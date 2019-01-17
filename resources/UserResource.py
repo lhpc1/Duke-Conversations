@@ -55,7 +55,7 @@ class UserListResource(Resource):
         current_user = get_jwt_identity()
         user = UserModel.find_by_username(current_user)
         if user.role is not 0:
-            return {"Message":"Only super admins may create new users. You lack permissions."}, 401
+            return {"Message":"Only super admins may access the list of all users. You lack permissions."}, 401
 
         return UserModel.return_all(), 200, {"Access-Control-Allow-Origin":"*"}
 
@@ -66,25 +66,25 @@ class UserRegistrar(Resource):
     parser.add_argument("username",
         type = str,
         required = True, # If there is no price argument, stop.
-        help = "Username cannot be left blank"
+        help = "username cannot be left blank"
     )
 
     parser.add_argument("password",
         type = str,
         required = True, # If there is no price argument, stop.
-        help = "password name cannot be left blank"
+        help = "password cannot be left blank"
     )
 
     parser.add_argument("email",
         type = str,
         required = True, # If there is no price argument, stop.
-        help = "email name cannot be left blank"
+        help = "email cannot be left blank"
     )
 
     parser.add_argument("role",
         type = int,
         required = True, # If there is no price argument, stop.
-        help = "role name cannot be left blank"
+        help = "role cannot be left blank"
     )
 
     parser.add_argument("netID",
