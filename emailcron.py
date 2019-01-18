@@ -22,8 +22,10 @@ def gentables():
 
 @manager.command
 def createSuperAdmin():
-    a = UserModel("superadmin", "pass" , "yasab27@gmail.com", 2,"ce10", "12345", "Super","Admin", "123-123-1234",1, "Lorem Ipsum" )
+    a = UserModel("superadmin", "pass" , "yasab27@gmail.com", 0,"ce10", "12345", "Super","Admin", "123-123-1234",1, "Lorem Ipsum" )
+    b = UserModel("regulardude", "pass" , "yasa.baig@duke.edu", 1,"ymb8", "12345", "Yasa","Baig", "123-123-1234",1, "Lorem Ipsum Dolor Sic Amet" )
     db.session.add(a)
+    db.session.add(b)
     db.session.commit()
 
     allUsers = db.session.query(UserModel).all()
