@@ -22,11 +22,11 @@ class UserResource(Resource):
 
         current_user = get_jwt_identity()
         currentUser = UserModel.find_by_username(current_user)
-        if user.id != currentUser.id and currentUser.id != 0:
+        if user.id == currentUser.id or currentUser.id == 0:
+            if(user):
+                return user.json(), 200, {"Access-Control-Allow-Origin":"*"}
+        else:
             return {"Message":"You cannot view information about other users unless you are a super admin."}, 401,  {"Access-Control-Allow-Origin":"*"}
-
-        if(user):
-            return user.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
         return {"Message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
 
