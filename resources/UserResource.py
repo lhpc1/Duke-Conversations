@@ -22,7 +22,7 @@ class UserResource(Resource):
 
         current_user = get_jwt_identity()
         currentUser = UserModel.find_by_username(current_user)
-        if user.id == currentUser.id or currentUser.id == 0:
+        if user.id == currentUser.id or currentUser.role == 0:
             if(user):
                 return user.json(), 200, {"Access-Control-Allow-Origin":"*"}
         else:
