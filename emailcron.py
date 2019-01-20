@@ -8,6 +8,9 @@ from models.UserModel import UserModel
 import time
 import datetime
 
+# Getting beautiful soup for parsing html
+from bs4 import BeautifulSoup
+
 manager = Manager(app)
 
 with app.app_context():
@@ -31,6 +34,26 @@ def createSuperAdmin():
     allUsers = db.session.query(UserModel).all()
     for user in allUsers:
         print("ADMINS: {} {} ROLE: {}".format(user.firstName, user.lastName, user.role))
+
+@manager.command
+def testEmail():
+    from app import mail
+
+    try:
+        msg = Message("Congratulations!",
+          sender="dukeconversationsreminders@gmail.com",
+          recipients=["yasa.baig@duke.edu"])
+          #entryOfInterest.email
+
+        # Read the html from the email template.
+        soup = BeautifulSoup(open("email-templates/acceptance.html"),"html.parser")
+        print(soup.prettify())
+        msg.html = soup.prettify().format("CLORK BROID", "FRIDAY",
+                                            "JUNE 20TH", "COOPER EDMUNDS", "GRANT BESNER", "FRIDAY",
+                                            "5 WALLABY WAY SYDNEY", "JOMATO FARMING","123-123-1234", "GRANT BESNER")
+        mail.send(msg)
+    except Exception as e:
+        return {"Message": str(e)}
 
 @manager.command
 def populate():

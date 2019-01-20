@@ -49,7 +49,7 @@ class StudentReviewResource(Resource):
         if(review):
             return review.json(),200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No student review could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No student review could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # Allow for updates to professors
     def put(self, id):

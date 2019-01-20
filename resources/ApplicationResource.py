@@ -63,7 +63,7 @@ class ApplicationResource(Resource):
         if(application):
             return application.json(), 200,{"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No application could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No application could be found with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # @jwt_required
     def put(self,id):
@@ -115,7 +115,7 @@ class ApplicationConfirmer(Resource):
                 updatedApplications.append(applicationNumber)
                 application.save_to_db()
 
-        return {"message":"Updated applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"Updated applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
 
 
 # class ApplicationCheckin(Resource):
@@ -144,7 +144,7 @@ class ApplicationConfirmer(Resource):
 #                 updatedApplications.append(app)
 #                 application.save_to_db()
 #
-#         return {"message":"Marked present applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
+#         return {"Message":"Marked present applications {}".format(str(updatedApplications))}, 200, {"Access-Control-Allow-Origin":"*"}
 
 class ApplicationCheckin(Resource):
 
@@ -191,7 +191,7 @@ class ApplicationCheckin(Resource):
                 couldNotResolve.append(applicationNumber)
 
 
-        return {"message":"Marked applications {} present. Marked {} Absent. Could not resolve applications with numbers {}.".format(str(markedPresent), str(markedAbsent), str(couldNotResolve))}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"Marked applications {} present. Marked {} Absent. Could not resolve applications with numbers {}.".format(str(markedPresent), str(markedAbsent), str(couldNotResolve))}, 200, {"Access-Control-Allow-Origin":"*"}
 
 
 # A resource to register a new strain

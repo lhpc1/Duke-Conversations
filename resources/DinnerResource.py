@@ -12,6 +12,8 @@ from flask_jwt_extended import jwt_required
 import time
 import datetime
 
+from bs4 import BeautifulSoup
+
 class DinnerResource(Resource):
     # Defining a parser that will handle data collection from post requests
     parser = reqparse.RequestParser()
@@ -89,7 +91,7 @@ class DinnerResource(Resource):
         if(found):
             return found.json(), 200, {"Access-Control-Allow-Origin":"*"}
 
-        return {"message":"No Dinner could be found with id {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"No Dinner could be found with id {}".format(id)}, 404, {"Access-Control-Allow-Origin":"*"}
 
     # @jwt_required
     def put(self, id):
@@ -261,11 +263,22 @@ class DinnerConfirmer(Resource):
             if application.status == 1:
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    dinnerDay = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime("%A")
+
                     msg = Message("Accepted",
                       sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
                     print("{}@duke.edu".format(application.studentID))
-                    msg.html = "You've been accepted to the dinner hosted by {} {}. It is on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+
+                    # Read the html from the email template.
+                    soup = BeautifulSoup(open("email-templates/acceptance.html"),"html.parser")
+                    print(soup.prettify())
+
+                    msg.html = soup.prettify().format(dinner.professor.firstName + " " + dinner.professor.lastName, dinnerDay,
+                                                        dinnerTime, application.student.firstName + " " + application.student.lastName,
+                                                        dinner.user.firstName + " " + dinner.user.lastName, dinnerDay,
+                                                        dinner.professor.address, dinner.topic, dinner.user.phone, dinner.user.firstName + " " + dinner.user.lastName )
+
                     mail.send(msg)
                 except Exception as e:
                     return {"Message": str(e)}
@@ -350,9 +363,19 @@ class DinnerRegistrar(Resource):
                 pass
             elif not UserModel.find_by_id(data["userID"]):
                 return {"Message":"There is no user in the database with that ID. Could not create dinner"}, 404, {"Access-Control-Allow-Origin":"*"}
+            else:
+                user = UserModel.find_by_id(data["userID"])
+                user.dinnerCount += 1
+                user.semDinnerCount += 1
+                user.save_to_db()
 
         # Create a new ProfessorModel object containing the passed properties.
         newDinner = DinnerModel(**data) ## ** automatically separates dict keywords into arguments
+
+        # Iterate the amount of dinners for this professor by one
+        associatedProfessor = ProfessorModel.find_by_id(data["professorID"])
+        associatedProfessor.dinnerCount += 1
+        associatedProfessor.save_to_db()
 
         # Save the new professor to the database.
         newDinner.save_to_db()
