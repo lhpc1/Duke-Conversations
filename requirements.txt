@@ -15,3 +15,4 @@ psycopg2
 apscheduler
 Flask-Login
 itsdangerous
+beautifulsoup4
