@@ -274,11 +274,11 @@ class DinnerConfirmer(Resource):
                     soup = BeautifulSoup(open("email-templates/acceptance.html"),"html.parser")
                     print(soup.prettify())
 
-                    msg.html = soup.prettify().format(dinner.professor.firstName + " " + dinner.professor.lastName, dinnerDay,
-                                                        dinnerTime, application.student.firstName + " " + application.student.lastName,
-                                                        dinner.user.firstName + " " + dinner.user.lastName, dinnerDay,
-                                                        dinner.professor.address, dinner.topic, dinner.user.phone, dinner.user.firstName + " " + dinner.user.lastName )
-                    
+                    msg.html = soup.prettify().format(dinner.professor.firstName + dinner.professor.lastName, dinnerDay,
+                                                        dinnerTime, application.student.firstName + application.student.lastName,
+                                                        dinner.user.firstName  + dinner.user.lastName, dinnerDay,
+                                                        dinner.professor.address, dinner.topic, dinner.user.phone, dinner.user.firstName + dinner.user.lastName )
+
                     # msg.html = soup.prettify().format("CLORK BROID", "FRIDAY",
                     #                                     "JUNE 20TH", "COOPER EDMUNDS", "GRANT BESNER", "FRIDAY",
                     #                                     "5 WALLABY WAY SYDNEY", "JOMATO FARMING","123-123-1234", "GRANT BESNER")
