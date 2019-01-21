@@ -212,7 +212,6 @@ class DinnerConfirmer(Resource):
 
     @jwt_required
     def get(self, id):
-
         # Get the dinner, change status, and then email everyone it is complete
         if DinnerModel.find_by_id(id):
             dinnerToConfirm = DinnerModel.find_by_id(id)
@@ -272,17 +271,30 @@ class DinnerConfirmer(Resource):
 
                     # Read the html from the email template.
                     soup = BeautifulSoup(open("email-templates/acceptance.html"),"html.parser")
-                    print(soup.prettify())
+                    # print(soup.prettify())
+                    # print(dinner.professor.firstName)
+                    # print(dinner.professor.lastName)
+                    # print(dinnerDay)
+                    # print(application.student.firstName)
+                    # print(dinner.user.firstName)
+                    # print(dinner.topic)
+                    # print(dinner.user.phone)
+                    # print('HERE')
+                    # professorName = dinner.professor.firstName + dinner.professor.lastName
+                    # applicantName = application.student.firstName + application.student.lastName
+                    # dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    # dinnerDay = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime("%A")
+                    # userName = dinner.user.firstName + dinner.user.lastName
+                    # address = dinner.address
 
-                    msg.html = soup.prettify().format(dinner.professor.firstName + dinner.professor.lastName, dinnerDay,
-                                                        dinnerTime, application.student.firstName + application.student.lastName,
-                                                        dinner.user.firstName  + dinner.user.lastName, dinnerDay,
-                                                        dinner.professor.address, dinner.topic, dinner.user.phone, dinner.user.firstName + dinner.user.lastName )
 
-                    # msg.html = soup.prettify().format("CLORK BROID", "FRIDAY",
-                    #                                     "JUNE 20TH", "COOPER EDMUNDS", "GRANT BESNER", "FRIDAY",
-                    #                                     "5 WALLABY WAY SYDNEY", "JOMATO FARMING","123-123-1234", "GRANT BESNER")
 
+                    msg.html = soup.prettify().format(dinner.professor.firstName + " " + dinner.professor.lastName, dinnerDay,
+                                                        dinnerTime, application.student.firstName +  " " + application.student.lastName, dinner.user.firstName + " " + dinner.user.lastName,
+                                                        dinnerDay, dinner.address, dinner.topic,dinner.user.phone, dinner.user.firstName + ' ' + dinner.user.lastName)
+                    # msg.html = "<h1> KILL ME </h1>"
+
+                    # print(msg.html)
                     mail.send(msg)
                 except Exception as e:
                     return {"Message": str(e)}
