@@ -235,7 +235,7 @@ class DinnerConfirmer(Resource):
 
         dinnerToConfirm.invitationSentTimeStamp = str(time.time())
 
-        return {"Message":"Dinner with id {} is confirmed. All accepted applicants have been emailed".format(id)}, 200, {"Access-Control-Allow-Origin":"*"}
+        return {"Message":"Dinner with id {} is confirmed. All accepted applicants have been emailed. Confirmation email sent to  {}".format(id, dinner.user.email)}, 200, {"Access-Control-Allow-Origin":"*"}
 
     # Email every applicant with a confirmed status upon
     @classmethod
