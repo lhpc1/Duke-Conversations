@@ -138,6 +138,7 @@ class UserResource(Resource):
                 returnJSON = {}
                 returnJSON["user"] = userToChange.json()
                 returnJSON["Message"] = "Note: Could not modify role as you do not have superadmin credentials. "
+                return returnJSON
             else:
                 return userToChange.json()
         else:
