@@ -115,7 +115,7 @@ class UserResource(Resource):
 
         if(UserModel.find_by_id(id)):
             userToChange = UserModel.find_by_id(id)
-            if(UserModel.password != data["oldPassword"]):
+            if(userToChange.password != data["oldPassword"]):
                 return {"Messsage":"Old password did not match with this user. Please enter correct password before modifying."},401
 
             userToChange.username = data["username"]
