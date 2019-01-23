@@ -121,8 +121,9 @@ class UserResource(Resource):
             userToChange.username = data["username"]
             userToChange.password = data["newPassword"]
             userToChange.email = data["email"]
+            addedMessage = True
             if(currentUser.role == 0):
-                addedMessage = True
+                addedMessage = False
                 userToChange.role = data["role"]
 
             userToChange.netID = data["netID"]
