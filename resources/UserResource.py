@@ -107,7 +107,7 @@ class UserResource(Resource):
         else:
             return {"Message":"JSON token does not match any known user. Please register user first."}
 
-        if currentUser.id != id or currentUser.id != 0:
+        if currentUser.id != id or currentUser.role != 0:
             return {"Message":"Only super admins and users themselves may modify user information. You lack permissions."}, 401
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
@@ -121,7 +121,10 @@ class UserResource(Resource):
             userToChange.username = data["username"]
             userToChange.password = data["newPassword"]
             userToChange.email = data["email"]
-            userToChange.role = data["role"]
+            if(currentUser.role == 0):
+                addedMessage = True
+                userToChange.role = data["role"]
+
             userToChange.netID = data["netID"]
             userToChange.firstName = data["firstName"]
             userToChange.lastName = data["lastName"]
@@ -130,6 +133,12 @@ class UserResource(Resource):
             userToChange.emailText = data["emailText"]
 
             userToChange.save_to_db()
+            if(addedMessage):
+                returnJSON = {}
+                returnJSON["user"] = userToChange.json()
+                returnJSON["Message"] = "Note: Could not modify role as you do not have superadmin credentials. "
+            else:
+                return userToChange.json()
         else:
             return {"Message":"No user could be found with that id"},404
 
