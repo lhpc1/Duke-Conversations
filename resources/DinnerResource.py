@@ -271,23 +271,6 @@ class DinnerConfirmer(Resource):
 
                     # Read the html from the email template.
                     soup = BeautifulSoup(open("email-templates/acceptance.html"),"html.parser")
-                    # print(soup.prettify())
-                    # print(dinner.professor.firstName)
-                    # print(dinner.professor.lastName)
-                    # print(dinnerDay)
-                    # print(application.student.firstName)
-                    # print(dinner.user.firstName)
-                    # print(dinner.topic)
-                    # print(dinner.user.phone)
-                    # print('HERE')
-                    # professorName = dinner.professor.firstName + dinner.professor.lastName
-                    # applicantName = application.student.firstName + application.student.lastName
-                    # dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
-                    # dinnerDay = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime("%A")
-                    # userName = dinner.user.firstName + dinner.user.lastName
-                    # address = dinner.address
-
-
 
                     msg.html = soup.prettify().format(dinner.professor.firstName + " " + dinner.professor.lastName, dinnerDay,
                                                         dinnerTime, application.student.firstName +  " " + application.student.lastName, dinner.user.firstName + " " + dinner.user.lastName,

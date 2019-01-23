@@ -8,8 +8,76 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 class UserResource(Resource):
 
-    # Defining a parser that will handle data collection from post requests
     parser = reqparse.RequestParser()
+
+    parser.add_argument("username",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "username cannot be left blank"
+    )
+
+    parser.add_argument("newPassword",type = str, required = True, help = "newPassword cannot be left blank.")
+
+    parser.add_argument("oldPassword",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "oldPassword cannot be left blank"
+    )
+
+    parser.add_argument("email",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "email cannot be left blank"
+    )
+
+    parser.add_argument("role",
+        type = int,
+        required = True, # If there is no price argument, stop.
+        help = "role cannot be left blank"
+    )
+
+    parser.add_argument("netID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "netID name cannot be left blank"
+    )
+
+    parser.add_argument("uniqueID",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "uniqueID name cannot be left blank"
+    )
+
+    parser.add_argument("phone",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "phone cannot be left blank"
+    )
+
+    parser.add_argument("firstName",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "firstName cannot be left blank"
+    )
+
+    parser.add_argument("lastName",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "lastName cannot be left blank"
+    )
+
+    parser.add_argument("major",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "major cannot be left blank"
+    )
+
+    parser.add_argument("emailText",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "emailText cannot be left blank"
+    )
+
 
     # GET a particular strain's information by id
     @jwt_required
@@ -29,6 +97,43 @@ class UserResource(Resource):
             return {"Message":"You cannot view information about other users unless you are a super admin."}, 401,  {"Access-Control-Allow-Origin":"*"}
 
         return {"Message":"No user could be found with that ID"}, 200, {"Access-Control-Allow-Origin":"*"}
+
+
+    @jwt_required
+    def put(self,id):
+        current_user = get_jwt_identity()
+        if(UserModel.find_by_username(current_user)):
+            currentUser = UserModel.find_by_username(current_user)
+        else:
+            return {"Message":"JSON token does not match any known user. Please register user first."}
+
+        if currentUser.id != id or currentUser.id != 0:
+            return {"Message":"Only super admins and users themselves may modify user information. You lack permissions."}, 401
+
+        # Acquire all of the data in a dict of each argument defined in the parser above.
+        data = UserResource.parser.parse_args();
+
+        if(UserModel.find_by_id(id)):
+            userToChange = UserModel.find_by_id(id)
+            if(UserModel.password != data["oldPassword"]):
+                return {"Messsage":"Old password did not match with this user. Please enter correct password before modifying."},401
+
+            userToChange.username = data["username"]
+            userToChange.passwordd = data["newPassword"]
+            userToChange.email = data["email"]
+            userToChange.role = data["role"]
+            userToChange.netID = data["netID"]
+            userToChange.firstName = data["firstName"]
+            userToChange.lastName = data["lastName"]
+            userToChange.phone = data["phone"]
+            userToChange.major = data["major"]
+            userToChange.emailText = data["emailText"]
+
+            userToChange.save_to_db()
+        else:
+            return {"Message":"No user could be found with that id"},404
+
+        return {"Message":"Unexpected error on /User/put"}, 501
 
     # Only super admins can delete other users
     @jwt_required
