@@ -119,7 +119,7 @@ class UserResource(Resource):
                 return {"Messsage":"Old password did not match with this user. Please enter correct password before modifying."},401
 
             userToChange.username = data["username"]
-            userToChange.passwordd = data["newPassword"]
+            userToChange.password = data["newPassword"]
             userToChange.email = data["email"]
             userToChange.role = data["role"]
             userToChange.netID = data["netID"]
