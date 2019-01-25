@@ -20,7 +20,7 @@ class UserResource(Resource):
 
     parser.add_argument("oldPassword",
         type = str,
-        required = True, # If there is no price argument, stop.
+        required = False, # If there is no price argument, stop.
         help = "oldPassword cannot be left blank"
     )
 
@@ -107,7 +107,7 @@ class UserResource(Resource):
         else:
             return {"Message":"JSON token does not match any known user. Please register user first."}
 
-        if currentUser.id != id or currentUser.role != 0:
+        if currentUser.id != id and currentUser.role != 0:
             return {"Message":"Only super admins and users themselves may modify user information. You lack permissions."}, 401
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
@@ -115,7 +115,10 @@ class UserResource(Resource):
 
         if(UserModel.find_by_id(id)):
             userToChange = UserModel.find_by_id(id)
-            if(userToChange.password != data["oldPassword"]):
+            if(data["oldPassword"] is None and currentUser.role != 0):
+                return {"Message":"Please enter oldPassword field. Only superadmins may edit without oldPassword."}
+
+            if(userToChange.password != data["oldPassword"] and currentUser.role != 0):
                 return {"Messsage":"Old password did not match with this user. Please enter correct password before modifying."},401
 
             userToChange.username = data["username"]
