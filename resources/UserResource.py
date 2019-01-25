@@ -107,8 +107,9 @@ class UserResource(Resource):
         else:
             return {"Message":"JSON token does not match any known user. Please register user first."}
 
-        if currentUser.id != id and currentUser.role != 0:
-            return {"Message":"Only super admins and users themselves may modify user information. You lack permissions."}, 401
+        if currentUser.id != 0:
+            if currentUser.id != id:
+                return {"Message":"Only super admins and users themselves may modify user information. You lack permissions."}, 401
 
         # Acquire all of the data in a dict of each argument defined in the parser above.
         data = UserResource.parser.parse_args();
