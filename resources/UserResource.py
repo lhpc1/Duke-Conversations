@@ -107,7 +107,7 @@ class UserResource(Resource):
         else:
             return {"Message":"JSON token does not match any known user. Please register user first."}
 
-        if currentUser.id != 0:
+        if currentUser.role != 0:
             if currentUser.id != id:
                 return {"Message":"Only super admins and users themselves may modify user information. You lack permissions."}, 401
 
