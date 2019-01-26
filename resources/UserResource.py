@@ -16,7 +16,7 @@ class UserResource(Resource):
         help = "username cannot be left blank"
     )
 
-    parser.add_argument("newPassword",type = str, required = false, help = "newPassword cannot be left blank.")
+    parser.add_argument("newPassword",type = str, required = False, help = "newPassword cannot be left blank.")
 
     parser.add_argument("oldPassword",
         type = str,
@@ -126,7 +126,7 @@ class UserResource(Resource):
 
             if data["newPassword"]:
                 userToChange.password = data["newPassword"]
-                
+
             userToChange.email = data["email"]
             addedMessage = True
             if(currentUser.role == 0):
