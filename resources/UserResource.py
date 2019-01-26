@@ -16,7 +16,7 @@ class UserResource(Resource):
         help = "username cannot be left blank"
     )
 
-    parser.add_argument("newPassword",type = str, required = True, help = "newPassword cannot be left blank.")
+    parser.add_argument("newPassword",type = str, required = false, help = "newPassword cannot be left blank.")
 
     parser.add_argument("oldPassword",
         type = str,
@@ -123,7 +123,10 @@ class UserResource(Resource):
                 return {"Messsage":"Old password did not match with this user. Please enter correct password before modifying."},401
 
             userToChange.username = data["username"]
-            userToChange.password = data["newPassword"]
+
+            if data["newPassword"]:
+                userToChange.password = data["newPassword"]
+                
             userToChange.email = data["email"]
             addedMessage = True
             if(currentUser.role == 0):
