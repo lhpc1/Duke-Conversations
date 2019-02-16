@@ -379,4 +379,4 @@ class DinnerRegistrar(Resource):
         # Save the new professor to the database.
         newDinner.save_to_db()
 
-        return DinnerModel.return_last_item().json(), 201, {"Access-Control-Allow-Origin":"*"}
+        return newDinner.json(), 201, {"Access-Control-Allow-Origin":"*"}
