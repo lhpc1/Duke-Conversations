@@ -218,6 +218,12 @@ class ApplicationRegistrar(Resource):
         help = "Dinner ID cannot be left blank"
     )
 
+    parser.add_argument("dietaryRestriction",
+        type = str,
+        required = True, # If there is no price argument, stop.
+        help = "dietaryRestriction cannot be left blank"
+    )
+
     def options (self):
         return {'Allow' : 'PUT, POST' }, 200, \
         { 'Access-Control-Allow-Origin': '*', \

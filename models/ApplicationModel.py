@@ -29,6 +29,8 @@ class ApplicationModel(db.Model):
     # The word count is enforced on the frontend.
     interest = db.Column(db.String)
 
+    dietaryRestriction = db.Column(db.String)
+
     # The "confirmed" status is a boolean indicating whether the applicant, after being accepted, confirmed they were coming to the
     # dinners
     confirmed = db.Column(db.Boolean)
@@ -54,7 +56,7 @@ class ApplicationModel(db.Model):
     ##################################################################################################################
 
     # Constructing a new ProfessorModel object using passed properties for the arguments
-    def __init__(self, interest, studentID, dinnerID):
+    def __init__(self, interest, studentID, dinnerID, dietaryRestriction):
 
         # By default, the status is initially set on creation to be pending. The student is also not automatically confirmed or
         # marked present for similar reasons.
@@ -67,11 +69,12 @@ class ApplicationModel(db.Model):
         self.interest = interest
         self.studentID = studentID
         self.dinnerID = dinnerID
+        self.dietaryRestriction = dietaryRestriction
 
     # Return a json representation of the object (note that this returns a dict since Flask automatically converts into json)
     def json(self):
         return {"id":self.id, "timeStamp": str(self.timeStamp), "status":self.status, "interest":self.interest, "confirmed":self.confirmed, "present":self.present, "studentID": self.studentID, "student":self.student.json(),
-        "dinnerID": self.dinnerID}
+        "dinnerID": self.dinnerID, "dietaryRestriction":self.dietaryRestriction}
 
     # Write this particular professor model instance to the DB. Note this also will automatically perform an update as well from a PUT request.
     def save_to_db(self):

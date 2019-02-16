@@ -1,4 +1,7 @@
 # Importing essential dependencies
+
+import os
+
 from flask import Flask, send_file, request, jsonify
 from flask_restful import Api
 from flask_jwt_extended import (
@@ -30,7 +33,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuring SQL Database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///data.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JWT_SECRET_KEY'] = 'lemon'
 app.secret_key = "jose"
