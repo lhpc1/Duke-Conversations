@@ -44,7 +44,7 @@ class ApplicationModel(db.Model):
     student = db.relationship("StudentModel")
 
     # Every student object is also the child object of a dinner
-    dinnerID = db.Column(db.String, db.ForeignKey("dinners.id"))
+    dinnerID = db.Column(db.Integer, db.ForeignKey("dinners.id"))
     dinner = db.relationship("DinnerModel")
 
     ##################################################################################################################
