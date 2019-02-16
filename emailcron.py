@@ -78,24 +78,63 @@ def emailStudents(dinner):
     print(dinnerTimeDifference)
     print(datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x'))
     # If it is between three and 2 days away
-    if dinnerTimeDifference <= 259200 and dinnerTimeDifference >= 172800:
+    #
+    #
+    #
+    if dinnerTimeDifference <= 1.21e+6 and dinnerTimeDifference >= 1.123e6:
         for application in dinner.applications:
             if application.status is 1:
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
-                    msg = Message("Three Day Notification!",
+                    msg = Message("Two Week Reminder!",
                       sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
                     msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
                     mail.send(msg)
                 except Exception as e:
                     return {"Message": str(e)}
-    else:
+    elif dinnerTimeDifference <= 691200 and dinnerTimeDifference >= 604800:
         for application in dinner.applications:
             if application.status is 1:
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
-                    msg = Message("One Day Notification!",
+                    msg = Message("One Week Reminder!",
+                      sender="dukeconversationsreminders@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
+    elif dinnerTimeDifference <= 518400 and dinnerTimeDifference >= 432000:
+        for application in dinner.applications:
+            if application.status is 1:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("Five Day Reminder!",
+                      sender="dukeconversationsreminders@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
+    elif dinnerTimeDifference <= 259200 and dinnerTimeDifference >= 172800:
+        for application in dinner.applications:
+            if application.status is 1:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("Three Day Reminder!",
+                      sender="dukeconversationsreminders@gmail.com",
+                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                    msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
+                    mail.send(msg)
+                except Exception as e:
+                    return {"Message": str(e)}
+    elif dinnerTimeDifference <= 86400 and dinnerTimeDifference >= 0:
+        for application in dinner.applications:
+            if application.status is 1:
+                try:
+                    dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
+                    msg = Message("One Day Reminder!",
                       sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
                     msg.html = "Don't forget you have a dinner with {} {} on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
