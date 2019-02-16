@@ -355,7 +355,7 @@ class DinnerRegistrar(Resource):
         data = DinnerRegistrar.parser.parse_args();
 
         if ProfessorModel.find_by_id(data["professorID"]) is None:
-            return {"Message":"Dinner could not be created as no such professor could be found with id {}.".format(data["professorID"])}, 404
+            return {"Message":"Dinner could not be created as no such professor could be found with id {}.".format(data["professorID"])}, 404, {"Access-Control-Allow-Origin":"*"}
 
         if data["userID"]:
             if data["userID"] == -1:
