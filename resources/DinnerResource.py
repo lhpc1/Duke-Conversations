@@ -106,9 +106,16 @@ class DinnerResource(Resource):
 
             if data["userID"]:
                 if data["userID"] == -1:
+                    if UserModel.find_by_id(dinnerOfInterest.userID):
+                        user = UserModel.find_by_id(dinnerOfInterest.userID)
+                        user.dinnerCount -= 1
+                        user.semDinnerCount -= 1
+                        user.save_to_db();
                     dinnerOfInterest.userID = None
                 elif not UserModel.find_by_id(data["userID"]):
                     return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
+                elif UserModel.find_by_id(data["userID"]):
+                    dinnerOfInterest.userID = data["userID"]
 
             dinnerOfInterest.timeStamp = data["timeStamp"]
             dinnerOfInterest.topic = data["topic"]
@@ -128,14 +135,7 @@ class DinnerResource(Resource):
             dinnerOfInterest.invitationSentTimeStamp = data["invitationSentTimeStamp"]
 
             # Assign new userID
-            # If there is an older user, subtract their total dinner count by one
-            if data["userID"]:
-                if UserModel.find_by_id(dinnerOfInterest.userID):
-                    user = UserModel.find_by_id(dinnerOfInterest.userID)
-                    user.dinnerCount -= 1
-                    user.semDinnerCount -= 1
-                    user.save_to_db();
-                dinnerOfInterest.userID = data["userID"]
+
 
         else:
 
