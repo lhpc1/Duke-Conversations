@@ -97,7 +97,7 @@ class DinnerModel(db.Model):
         self.dietaryRestrictions = dietaryRestrictions
         self.professorID = professorID
         if not userID:
-            self.userID = -1
+            self.userID = 1
         else:
             self.userID = userID
 

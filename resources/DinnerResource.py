@@ -359,7 +359,19 @@ class DinnerRegistrar(Resource):
 
         if data["userID"]:
             if data["userID"] == -1:
-                pass
+                # Create a new ProfessorModel object containing the passed properties.
+                newDinner = DinnerModel(**(data.pop("userID"))) ## ** automatically separates dict keywords into arguments
+
+                # Iterate the amount of dinners for this professor by one
+                associatedProfessor = ProfessorModel.find_by_id(data["professorID"])
+                associatedProfessor.dinnerCount += 1
+                associatedProfessor.save_to_db()
+
+                # Save the new professor to the database.
+                newDinner.save_to_db()
+
+                return newDinner.json(), 201, {"Access-Control-Allow-Origin":"*"}
+
             elif not UserModel.find_by_id(data["userID"]):
                 return {"Message":"There is no user in the database with that ID. Could not create dinner"}, 404, {"Access-Control-Allow-Origin":"*"}
             else:
