@@ -106,7 +106,7 @@ class DinnerResource(Resource):
 
             if data["userID"]:
                 if data["userID"] == -1:
-                    pass
+                    dinnerOfInterest.userID = None
                 elif not UserModel.find_by_id(data["userID"]):
                     return {"Message":"There is no user in the database with that ID"}, 404, {"Access-Control-Allow-Origin":"*"}
 
