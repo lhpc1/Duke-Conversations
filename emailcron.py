@@ -71,6 +71,41 @@ def populate():
     for user in allUsers:
         print(user.username)
 
+@manager.command
+def populateMega():
+    a = UserModel("rcw15","convo434","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("aa377","convo868","aa377@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("gmb33","convo838","gmb33@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("ls301","convo292","ls301@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("aa377","convo404","fyf@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("fyf","convo191","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("kl262","convo929","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("al343","convo010","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("mk377","convo737","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("su30","convo353","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("ksd28","convo232","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("sjk45","convo303","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("al325","convo949","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("acc86","convo383","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("rp161","convo939","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("jk370","convo363","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("aea33","convo848","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("jmc178","convo181","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("lpc23","convo202","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("kah138","convo272","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("adn22","convo939","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("ay103","convo434","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("ahz2","convo505","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    a = UserModel("hlk4","convo121","rwc15@duke.edu", 2, "rwc15", "12345", "Bo","Carlson","7044915888",1, "Lorem Ipsum" )
+    db.session.add(a)
+    db.session.add(b)
+    db.session.add(c)
+    db.session.commit()
+
+    allUsers = db.session.query(UserModel).all()
+    for user in allUsers:
+        print(user.username)
+
 def remindStudents(dinner):
 
     from app import mail

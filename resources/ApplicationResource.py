@@ -254,11 +254,24 @@ class ApplicationRegistrar(Resource):
         # Save the new APPLICATION to the database.
         newApp.save_to_db()
 
+        # Send out an email confirming the application
+
+
         # Increase the number of applications for the students
         student = StudentModel.find_by_id(data["studentID"])
         student.numberApplications += 1
         student.numberApplicationsSemester += 1
 
         student.save_to_db();
+
+        # Send a confirmation email to the user
+        try:
+            msg = Message("Application Successfully Submitted",
+              sender="dukeconversationsreminders@gmail.com",
+              recipients=["{}@duke.edu".format(student.email)]) #entryOfInterest.email
+            msg.html = "Your application for {} has been successfully submitted.".format(newApp.dinner.topic)
+            mail.send(msg)
+        except Exception as e:
+            return {"Message": str(e)}
 
         return ApplicationModel.return_last_item().json(), 200, {"Access-Control-Allow-Origin":"*"}

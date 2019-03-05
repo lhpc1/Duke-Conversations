@@ -192,10 +192,10 @@ class UserRegistrar(Resource):
         help = "username cannot be left blank"
     )
 
-    parser.add_argument("password",
+    parser.add_argument("newPassword",
         type = str,
         required = True, # If there is no price argument, stop.
-        help = "password cannot be left blank"
+        help = "newPassword cannot be left blank"
     )
 
     parser.add_argument("email",
@@ -264,7 +264,9 @@ class UserRegistrar(Resource):
         data = UserRegistrar.parser.parse_args();
 
         # Create a new StudentModel object containing the passed properties.
-        newUser = UserModel(**data) ## ** automatically separates dict keywords into arguments
+        dummyPassword = data["newPassword"]
+        del data["newPassword"]
+        newUser = UserModel(**data, password=dummyPassword) ## ** automatically separates dict keywords into arguments
 
         # Save the new professor to the database.
         newUser.save_to_db()
