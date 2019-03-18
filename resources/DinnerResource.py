@@ -288,6 +288,7 @@ class DinnerConfirmer(Resource):
                     msg = Message("Accepted",
                       sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
+                      #TODO
                     msg.html = "You've been waitlisted to the dinner hosted by {} {}. It is on {}. Please contact us if you'd like to be removed from the waitlist.".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
                     mail.send(msg)
                 except Exception as e:

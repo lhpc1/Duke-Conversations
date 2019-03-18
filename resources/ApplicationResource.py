@@ -268,7 +268,8 @@ class ApplicationRegistrar(Resource):
         try:
             msg = Message("Application Successfully Submitted",
               sender="dukeconversationsreminders@gmail.com",
-              recipients=["{}@duke.edu".format(student.email)]) #entryOfInterest.email
+              recipients=["{}@duke.edu".format(student.netID)]) #entryOfInterest.email
+            #TODO
             msg.html = "Your application for {} has been successfully submitted.".format(newApp.dinner.topic)
             mail.send(msg)
         except Exception as e:

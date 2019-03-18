@@ -114,9 +114,7 @@ def remindStudents(dinner):
     print(dinnerTimeDifference)
     print(datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x'))
 
-    if dinnerTimeDifference <= 1.21e+6 and dinnerTimeDifference >= 1.123e6:
-        emailStudents(dinner, "Two Week Reminder")
-    elif dinnerTimeDifference <= 691200 and dinnerTimeDifference >= 604800:
+    if dinnerTimeDifference <= 691200 and dinnerTimeDifference >= 604800:
         emailStudents(dinner, "One Week Reminder")
     elif dinnerTimeDifference <= 518400 and dinnerTimeDifference >= 432000:
         emailStudents(dinner, "5 Day Reminder")
@@ -148,14 +146,8 @@ def remindProfessor(dinner):
 
     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
 
-    if dinnerTimeDifference <= 1.21e+6 and dinnerTimeDifference >= 1.123e6:
-        emailProf("Two Week Reminder", dinner.professor.email, dinnerTime )
-    elif dinnerTimeDifference <= 691200 and dinnerTimeDifference >= 604800:
+    if dinnerTimeDifference <= 691200 and dinnerTimeDifference >= 604800:
         emailProf("One Week Reminder", dinner.professor.email, dinnerTime)
-    elif dinnerTimeDifference <= 518400 and dinnerTimeDifference >= 432000:
-        emailProf("5 Day Reminder", dinner.professor.email, dinnerTime)
-    elif dinnerTimeDifference <= 259200 and dinnerTimeDifference >= 172800:
-        emailProf("Three Day Reminder", dinner.professor.email, dinnerTime)
     elif dinnerTimeDifference <= 86400 and dinnerTimeDifference >= 0:
         emailProf("One Day Reminder", dinner.professor.email, dinnerTime)
 
@@ -164,6 +156,7 @@ def emailProf(notificationLine, recipient, dinnerTime):
         msg = Message(notificationLine,
           sender="dukeconversationsreminders@gmail.com",
           recipients=[recipient]) #entryOfInterest.email
+        #TODO
         msg.html = "Don't forget you have a dinner with on {}.  !".format( dinnerTime)
         mail.send(msg)
     except Exception as e:
@@ -193,6 +186,7 @@ def emailUser(notificationLine, recipient, dinnerTime):
         msg = Message(notificationLine,
           sender="dukeconversationsreminders@gmail.com",
           recipients=[recipient]) #entryOfInterest.email
+        #TODO
         msg.html = "Don't forget you are hosting a dinner on {}.  !".format( dinnerTime)
         mail.send(msg)
     except Exception as e:
