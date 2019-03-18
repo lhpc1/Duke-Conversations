@@ -266,8 +266,8 @@ class DinnerConfirmer(Resource):
 
                     msg = Message("Accepted",
                       sender="dukeconversationsreminders@gmail.com",
-                      recipients=["{}@duke.edu".format(application.studentID)]) #entryOfInterest.email
-                    print("{}@duke.edu".format(application.studentID))
+                      recipients=["{}@duke.edu".format(application.netID)]) #entryOfInterest.email
+                    print("{}@duke.edu".format(application.netID))
 
                     # Read the html from the email template.
                     soup = BeautifulSoup(open("email-templates/acceptance.html"),"html.parser")
