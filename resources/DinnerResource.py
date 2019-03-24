@@ -249,7 +249,7 @@ class DinnerConfirmer(Resource):
         try:
             dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
             msg = Message("Dinner Confirmed",
-              sender="no+reply@dukeconversations.com",
+              sender="dukeconversationsreminders@gmail.com",
               recipients=["{}@duke.edu".format(dinner.user.email)]) #entryOfInterest.email
             msg.html = "You've published the dinner hosted by {} {}. It is on {}. Yay!".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
             mail.send(msg)
@@ -265,7 +265,7 @@ class DinnerConfirmer(Resource):
                     dinnerDay = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime("%A")
 
                     msg = Message("Accepted",
-                      sender="no+reply@dukeconversations.com",
+                      sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.student.netID)]) #entryOfInterest.email
                     print("{}@duke.edu".format(application.netID))
 
@@ -286,7 +286,7 @@ class DinnerConfirmer(Resource):
                 try:
                     dinnerTime = datetime.datetime.fromtimestamp(int(dinner.timeStamp)).strftime('%x')
                     msg = Message("Accepted",
-                      sender="no+reply@dukeconversations.com",
+                      sender="dukeconversationsreminders@gmail.com",
                       recipients=["{}@duke.edu".format(application.student.netID)]) #entryOfInterest.email
                       #TODO
                     msg.html = "You've been waitlisted to the dinner hosted by {} {}. It is on {}. Please contact us if you'd like to be removed from the waitlist.".format(dinner.professor.firstName, dinner.professor.lastName, dinnerTime)
